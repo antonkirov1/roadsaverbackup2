@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "@/components/ui/use-toast";
 import { Settings, User, Flag, Phone, History, Euro, Info, Mail, MessageCircle } from 'lucide-react';
 import { useTranslation } from '@/utils/translations';
@@ -91,12 +92,32 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
       status: 'completed',
       user: 'Bob Brown',
       employee: 'Tom Davis'
+    },
+    { 
+      id: 4, 
+      type: 'tow-truck', 
+      date: '2024-01-02', 
+      time: '11:45',
+      completedTime: '13:00',
+      status: 'completed',
+      user: 'Alice Green',
+      employee: 'Chris Lee'
+    },
+    { 
+      id: 5, 
+      type: 'other-car-problems', 
+      date: '2023-12-28', 
+      time: '08:20',
+      completedTime: '09:30',
+      status: 'completed',
+      user: 'David White',
+      employee: 'Emma Brown'
     }
   ];
   
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md font-clash mx-4 max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-md font-clash mx-4 max-h-[90vh] overflow-hidden">
         <DialogHeader>
           <DialogTitle>{t('settings')}</DialogTitle>
           <DialogDescription>
@@ -124,155 +145,162 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
             </TabsTrigger>
           </TabsList>
           
-          <TabsContent value="account" className="space-y-4 min-h-[300px]">
-            <div className="flex items-center justify-center py-4">
-              <AvatarUpload
-                currentAvatar={userAvatar}
-                onAvatarChange={handleAvatarChange}
-                defaultAvatar="/lovable-uploads/0a354359-97fd-4c78-a387-7423f09f2554.png"
-                size={80}
-                variant="user"
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <h3 className="font-medium">{t('user-account')}</h3>
-              <p className="text-sm text-muted-foreground">
-                {t('username')}: {newUsername}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                {t('email')}: {newEmail}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                {t('phone-number')} {newPhoneNumber}
-              </p>
-            </div>
-            
-            <Button 
-              onClick={() => setShowAccountEdit(true)}
-              className="w-full bg-green-600 hover:bg-green-700"
-            >
-              Change account information
-            </Button>
-            
-            <div className="space-y-2">
-              <h3 className="font-medium">{t('language')}</h3>
-              <div className="flex space-x-2">
-                <Button 
-                  variant={currentLanguage === 'en' ? 'default' : 'outline'} 
-                  size="sm"
-                  onClick={() => onLanguageChange('en')}
-                  className={currentLanguage === 'en' ? 'bg-green-600 hover:bg-green-700' : ''}
-                >
-                  🇬🇧 {t('english')}
-                </Button>
-                <Button 
-                  variant={currentLanguage === 'bg' ? 'default' : 'outline'} 
-                  size="sm"
-                  onClick={() => onLanguageChange('bg')}
-                  className={currentLanguage === 'bg' ? 'bg-green-600 hover:bg-green-700' : ''}
-                >
-                  🇧🇬 {t('bulgarian')}
-                </Button>
-              </div>
-            </div>
-            
-            <Button 
-              variant="destructive" 
-              size="sm" 
-              className="w-full"
-              onClick={handleLogout}
-            >
-              {t('logout')}
-            </Button>
-          </TabsContent>
-          
-          <TabsContent value="history" className="space-y-4 min-h-[300px]">
-            <div className="text-center py-4">
-              <History className="h-12 w-12 mx-auto text-green-600 mb-4" />
-              <h3 className="text-lg font-medium mb-2">{t('request-history')}</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                {t('requests-desc')}
-              </p>
-              
-              <div className="space-y-2 text-left">
-                {requestHistory.length > 0 ? (
-                  requestHistory.map((request) => (
-                    <div key={request.id} className="p-3 bg-secondary rounded-lg">
-                      <div className="flex justify-between items-center">
-                        <span className="font-medium">{t(request.type)}</span>
-                        <span className="text-sm text-green-600">{t('completed')}</span>
-                      </div>
-                      <p className="text-sm text-muted-foreground">{request.date} - {request.time}</p>
-                      <p className="text-sm text-muted-foreground">Completed: {request.completedTime}</p>
-                      <p className="text-sm text-muted-foreground">User: {request.user}</p>
-                      <p className="text-sm text-muted-foreground">Employee: {request.employee}</p>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-center text-muted-foreground">{t('no-requests')}</p>
-                )}
-              </div>
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="payment" className="space-y-4 min-h-[300px]">
-            <div className="py-8 text-center">
-              <Settings className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-              <h3 className="text-lg font-medium mb-2">{t('payment-options')}</h3>
-              <p className="text-sm text-muted-foreground">
-                {t('payment-future-update')}
-              </p>
-              
-              <Button className="mt-4 bg-green-600 hover:bg-green-700" disabled>
-                {t('add-payment-method')}
-              </Button>
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="about" className="space-y-4 min-h-[300px]">
-            <div className="space-y-2 text-center py-4">
-              <h2 className="text-xl font-bold">RoadSaver</h2>
-              <p className="text-sm text-muted-foreground">{t('version')} 1.0.0</p>
-              
-              <div className="mt-4">
-                <p className="text-sm">
-                  Emergency road assistance service work hours:
-                </p>
-                <p className="text-sm">
-                  Mon - Friday from 09:00 - 17:00.
-                </p>
-                <p className="text-sm mt-2 text-orange-600 px-2 leading-relaxed">
-                  For service requests outside of working hours, please contact support
-                </p>
+          <div className="min-h-[350px]">
+            <TabsContent value="account" className="space-y-4 mt-0">
+              <div className="flex items-center justify-center py-4">
+                <AvatarUpload
+                  currentAvatar={userAvatar}
+                  onAvatarChange={handleAvatarChange}
+                  defaultAvatar="/lovable-uploads/0a354359-97fd-4c78-a387-7423f09f2554.png"
+                  size={80}
+                  variant="user"
+                />
               </div>
               
-              <div className="mt-6">
-                <h3 className="font-medium mb-2">{t('contact-information')}</h3>
+              <div className="space-y-2">
+                <h3 className="font-medium">{t('user-account')}</h3>
                 <p className="text-sm text-muted-foreground">
-                  {t('email')}: roadsaverapp@gmail.com
+                  {t('username')}: {newUsername}
                 </p>
-                <p className="text-sm text-muted-foreground mb-4">
-                  {t('phone')}: +359 888 123 456
+                <p className="text-sm text-muted-foreground">
+                  {t('email')}: {newEmail}
                 </p>
-                
-                <div className="grid grid-cols-2 gap-2">
-                  <Button variant="outline" size="sm" className="bg-blue-600 text-white hover:bg-blue-700 text-xs">
-                    📘 Facebook
+                <p className="text-sm text-muted-foreground">
+                  {t('phone-number')} {newPhoneNumber}
+                </p>
+              </div>
+              
+              <Button 
+                onClick={() => setShowAccountEdit(true)}
+                className="w-full bg-green-600 hover:bg-green-700"
+              >
+                Change account information
+              </Button>
+              
+              <div className="space-y-2">
+                <h3 className="font-medium">{t('language')}</h3>
+                <div className="flex space-x-2">
+                  <Button 
+                    variant={currentLanguage === 'en' ? 'default' : 'outline'} 
+                    size="sm"
+                    onClick={() => onLanguageChange('en')}
+                    className={currentLanguage === 'en' ? 'bg-green-600 hover:bg-green-700' : ''}
+                  >
+                    🇬🇧 {t('english')}
                   </Button>
-                  <Button variant="outline" size="sm" className="bg-blue-500 text-white hover:bg-blue-600 text-xs">
-                    💬 Messenger
-                  </Button>
-                  <Button variant="outline" size="sm" className="bg-green-500 text-white hover:bg-green-600 text-xs">
-                    📱 WhatsApp
-                  </Button>
-                  <Button variant="outline" size="sm" className="bg-purple-600 text-white hover:bg-purple-700 text-xs">
-                    📞 Viber
+                  <Button 
+                    variant={currentLanguage === 'bg' ? 'default' : 'outline'} 
+                    size="sm"
+                    onClick={() => onLanguageChange('bg')}
+                    className={currentLanguage === 'bg' ? 'bg-green-600 hover:bg-green-700' : ''}
+                  >
+                    🇧🇬 {t('bulgarian')}
                   </Button>
                 </div>
               </div>
-            </div>
-          </TabsContent>
+              
+              <Button 
+                variant="destructive" 
+                size="sm" 
+                className="w-full"
+                onClick={handleLogout}
+              >
+                {t('logout')}
+              </Button>
+            </TabsContent>
+            
+            <TabsContent value="history" className="mt-0">
+              <div className="text-center py-4">
+                <History className="h-12 w-12 mx-auto text-green-600 mb-4" />
+                <h3 className="text-lg font-medium mb-2">{t('request-history')}</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  {t('requests-desc')}
+                </p>
+                
+                <ScrollArea className="h-[250px] w-full">
+                  <div className="space-y-2 text-left px-2">
+                    {requestHistory.length > 0 ? (
+                      requestHistory.map((request) => (
+                        <div key={request.id} className="p-3 bg-secondary rounded-lg">
+                          <div className="flex justify-between items-center">
+                            <span className="font-medium">{t(request.type)}</span>
+                            <span className="text-sm text-green-600">{t('completed')}</span>
+                          </div>
+                          <p className="text-sm text-muted-foreground">{request.date} - {request.time}</p>
+                          <p className="text-sm text-muted-foreground">Completed: {request.completedTime}</p>
+                          <p className="text-sm text-muted-foreground">User: {request.user}</p>
+                          <p className="text-sm text-muted-foreground">Employee: {request.employee}</p>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-center text-muted-foreground">{t('no-requests')}</p>
+                    )}
+                  </div>
+                </ScrollArea>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="payment" className="mt-0">
+              <div className="py-8 text-center">
+                <Settings className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                <h3 className="text-lg font-medium mb-2">{t('payment-options')}</h3>
+                <p className="text-sm text-muted-foreground">
+                  {t('payment-future-update')}
+                </p>
+                
+                <Button className="mt-4 bg-green-600 hover:bg-green-700" disabled>
+                  {t('add-payment-method')}
+                </Button>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="about" className="mt-0">
+              <ScrollArea className="h-[350px] w-full">
+                <div className="space-y-2 text-center py-4 px-2">
+                  <h2 className="text-xl font-bold">RoadSaver</h2>
+                  <p className="text-sm text-muted-foreground">{t('version')} 1.0.0</p>
+                  
+                  <div className="mt-4">
+                    <p className="text-sm">
+                      Emergency road assistance service work hours:
+                    </p>
+                    <p className="text-sm">
+                      Mon - Friday from 09:00 - 17:00.
+                    </p>
+                    <p className="text-sm mt-2 text-orange-600 px-2 leading-relaxed">
+                      For service requests outside of working hours,<br />
+                      please contact support
+                    </p>
+                  </div>
+                  
+                  <div className="mt-6">
+                    <h3 className="font-medium mb-2">{t('contact-information')}</h3>
+                    <p className="text-sm text-muted-foreground">
+                      {t('email')}: roadsaverapp@gmail.com
+                    </p>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      {t('phone')}: +359 888 123 456
+                    </p>
+                    
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button variant="outline" size="sm" className="bg-blue-600 text-white hover:bg-blue-700 text-xs">
+                        📘 Facebook
+                      </Button>
+                      <Button variant="outline" size="sm" className="bg-blue-500 text-white hover:bg-blue-600 text-xs">
+                        💬 Messenger
+                      </Button>
+                      <Button variant="outline" size="sm" className="bg-green-500 text-white hover:bg-green-600 text-xs">
+                        📱 WhatsApp
+                      </Button>
+                      <Button variant="outline" size="sm" className="bg-purple-600 text-white hover:bg-purple-700 text-xs">
+                        📞 Viber
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </ScrollArea>
+            </TabsContent>
+          </div>
         </Tabs>
 
         {/* Account Edit Dialog */}

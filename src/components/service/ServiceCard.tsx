@@ -98,13 +98,13 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ type, onClick }) => {
         return { 
           icon: (
             <svg className="h-8 w-8 sm:h-10 sm:w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-              <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/>
-              <circle cx="7" cy="18" r="2"/>
-              <path d="M15 18H9"/>
-              <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/>
-              <circle cx="17" cy="18" r="2"/>
-              <path d="M8 8h6"/>
-              <path d="M8 12h4"/>
+              <rect x="1" y="8" width="12" height="8" rx="1"/>
+              <circle cx="5" cy="18" r="2"/>
+              <circle cx="19" cy="18" r="2"/>
+              <path d="M15 8v8h4l2-3v-3h-2"/>
+              <path d="M1 11h12"/>
+              <rect x="13" y="6" width="8" height="4"/>
+              <path d="M13 10h8"/>
             </svg>
           ), 
           title: t('tow-truck'),
