@@ -97,18 +97,24 @@ export default {
 					'0%, 100%': { opacity: '1' },
 					'50%': { opacity: '0.7' }
 				},
-        'deflate-pulse': {
-          '0%, 100%': { transform: 'scale(1)' },
-          '50%': { transform: 'scale(0.9)' },
+        'deflate-wobble': { // New animation for flat-tyre
+          '0%': { transform: 'scale(1) rotate(0deg)' },
+          '25%': { transform: 'scale(0.9) rotate(3deg)' },
+          '50%': { transform: 'scale(0.8) rotate(-3deg)' },
+          '75%': { transform: 'scale(0.85) rotate(1deg)' },
+          '100%': { transform: 'scale(1) rotate(0deg)' }
         },
-        'fuel-flicker': {
+        'fuel-flicker': { // Kept old one if used elsewhere, though not in ServiceCard
           '0%, 100%': { opacity: '1' },
           '25%, 75%': { opacity: '0.6' },
           '50%': { opacity: '0.8' },
         },
-        'fuel-empty-flash': {
-          '0%, 100%': { color: 'currentColor', opacity: '1' },
-          '50%': { color: 'theme("colors.roadsaver.red")', opacity: '0.7' },
+        'fuel-sputter-flash': { // New animation for out-of-fuel
+          '0%, 100%': { transform: 'translateX(0) rotate(0deg)', color: 'currentColor', opacity: '1' },
+          '20%': { transform: 'translateX(-2px) rotate(-3deg)' },
+          '40%': { transform: 'translateX(2px) rotate(3deg)' },
+          '60%': { transform: 'translateX(-1px) rotate(-2deg)', color: 'theme("colors.roadsaver.red")', opacity: '0.7' },
+          '80%': { transform: 'translateX(1px) rotate(2deg)' }
         },
         'battery-flash-red': {
           '0%, 100%': { color: 'currentColor' },
@@ -118,11 +124,11 @@ export default {
           '0%, 100%': { transform: 'rotate(0deg)' },
           '50%': { transform: 'rotate(20deg)' },
         },
-        'truck-rumble': {
+        'truck-pull': { // New animation for tow-truck
           '0%, 100%': { transform: 'translateX(0px)' },
-          '25%': { transform: 'translateX(-2px)' },
-          '50%': { transform: 'translateX(0px)' },
-          '75%': { transform: 'translateX(2px)' },
+          '30%': { transform: 'translateX(3px)' },
+          '60%': { transform: 'translateX(2.5px)' },
+          '90%': { transform: 'translateX(-1px)' },
         },
         'phone-ring': {
           '0%, 100%': { transform: 'rotate(0deg)' },
@@ -134,12 +140,12 @@ export default {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'pulse-subtle': 'pulse-subtle 2s ease-in-out infinite',
-        'deflate-pulse': 'deflate-pulse 1.8s ease-in-out infinite',
+        'deflate-wobble': 'deflate-wobble 2s ease-in-out infinite', // New
         'fuel-flicker': 'fuel-flicker 1.2s ease-in-out infinite', // Kept old one
-        'fuel-empty-flash': 'fuel-empty-flash 1.5s ease-in-out infinite', // New animation utility
+        'fuel-sputter-flash': 'fuel-sputter-flash 1.8s ease-in-out infinite', // New
         'battery-flash-red': 'battery-flash-red 1.5s ease-in-out infinite',
         'wrench-turn': 'wrench-turn 2.5s ease-in-out infinite alternate',
-        'truck-rumble': 'truck-rumble 0.6s linear infinite alternate',
+        'truck-pull': 'truck-pull 2.2s ease-in-out infinite', // New
         'phone-ring': 'phone-ring 1.3s ease-in-out infinite',
 			}
 		}

@@ -49,14 +49,14 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ type, onClick }) => {
 
     switch (type) {
       case 'flat-tyre':
-        animationClass = "animate-deflate-pulse";
+        animationClass = "animate-deflate-wobble";
         return { 
           icon: <Disc3 className={`${iconSizeClass} ${animationClass}`} />, 
           title: t('flat-tyre'),
           description: t('flat-tyre-desc')
         };
       case 'out-of-fuel':
-        animationClass = "animate-fuel-empty-flash";
+        animationClass = "animate-fuel-sputter-flash";
         return { 
           icon: <Fuel className={`${iconSizeClass} ${animationClass}`} />, 
           title: t('out-of-fuel'),
@@ -77,7 +77,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ type, onClick }) => {
           description: t('car-battery-desc')
         };
       case 'tow-truck':
-        animationClass = "animate-truck-rumble";
+        animationClass = "animate-truck-pull";
         return { 
           icon: <Truck className={`${iconSizeClass} ${animationClass}`} />, 
           title: t('tow-truck'),
