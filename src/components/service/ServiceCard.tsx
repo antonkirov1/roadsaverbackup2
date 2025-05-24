@@ -108,8 +108,12 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ type, onClick }) => {
         };
       case 'tow-truck':
         animationClass = "animate-truck-pull";
-        const greenFilterStyle = { filter: 'brightness(0) saturate(100%) invert(37%) sepia(61%) saturate(1358%) hue-rotate(95deg) brightness(99%) contrast(91%)' };
-        // Use the new image path as fallback if processing fails or hasn't completed
+        // Original filter to turn black image to green
+        const colorizeFilter = 'brightness(0) saturate(100%) invert(37%) sepia(61%) saturate(1358%) hue-rotate(95deg) brightness(99%) contrast(91%)';
+        // Prepend a drop-shadow filter to simulate thicker lines. The shadow is black so it gets colorized.
+        const combinedFilter = `drop-shadow(0px 0px 0.5px black) ${colorizeFilter}`;
+        const greenFilterStyle = { filter: combinedFilter };
+        
         const iconSrc = processedTowTruckIconUrl || '/lovable-uploads/14fd5d8b-cd3a-4614-b664-52f591fae6f6.png';
         
         return { 
@@ -118,11 +122,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ type, onClick }) => {
                   alt={t('tow-truck')} 
                   className={`${iconSizeClass} ${animationClass}`} 
                   style={greenFilterStyle} 
-                  // Add object-contain to ensure the image fits within the bounds without being cropped,
-                  // especially if the aspect ratio of the processed image differs.
                   onError={() => {
-                    // Fallback to original if the processed one fails to load for some reason
-                    // (though `processedTowTruckIconUrl` already handles this by starting with original)
                     if (processedTowTruckIconUrl !== '/lovable-uploads/14fd5d8b-cd3a-4614-b664-52f591fae6f6.png') {
                          setProcessedTowTruckIconUrl('/lovable-uploads/14fd5d8b-cd3a-4614-b664-52f591fae6f6.png');
                     }
