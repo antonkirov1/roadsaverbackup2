@@ -97,12 +97,46 @@ export default {
 				'pulse-subtle': {
 					'0%, 100%': { opacity: '1' },
 					'50%': { opacity: '0.7' }
-				}
+				},
+        'deflate-pulse': {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(0.9)' },
+        },
+        'fuel-flicker': {
+          '0%, 100%': { opacity: '1' },
+          '25%, 75%': { opacity: '0.6' },
+          '50%': { opacity: '0.8' },
+        },
+        'battery-flash-red': {
+          '0%, 100%': { color: 'currentColor' }, // Assuming icon inherits color from parent (text-green-600)
+          '50%': { color: 'theme("colors.roadsaver.red")' }, // Using theme('colors.red.500') or a custom red
+        },
+        'wrench-turn': {
+          '0%, 100%': { transform: 'rotate(0deg)' },
+          '50%': { transform: 'rotate(20deg)' },
+        },
+        'truck-rumble': {
+          '0%, 100%': { transform: 'translateX(0px)' },
+          '25%': { transform: 'translateX(-2px)' },
+          '50%': { transform: 'translateX(0px)' },
+          '75%': { transform: 'translateX(2px)' },
+        },
+        'phone-ring': {
+          '0%, 100%': { transform: 'rotate(0deg)' },
+          '10%, 30%, 50%, 70%, 90%': { transform: 'rotate(-10deg)' },
+          '20%, 40%, 60%, 80%': { transform: 'rotate(10deg)' },
+        },
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'pulse-subtle': 'pulse-subtle 2s ease-in-out infinite'
+				'pulse-subtle': 'pulse-subtle 2s ease-in-out infinite',
+        'deflate-pulse': 'deflate-pulse 1.8s ease-in-out infinite',
+        'fuel-flicker': 'fuel-flicker 1.2s ease-in-out infinite',
+        'battery-flash-red': 'battery-flash-red 1.5s ease-in-out infinite',
+        'wrench-turn': 'wrench-turn 2.5s ease-in-out infinite alternate',
+        'truck-rumble': 'truck-rumble 0.6s linear infinite alternate',
+        'phone-ring': 'phone-ring 1.3s ease-in-out infinite',
 			}
 		}
 	},

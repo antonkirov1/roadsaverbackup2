@@ -9,9 +9,9 @@ import {
   Phone, 
   AlertTriangle,
   Mail,
-  Disc3, // Added for flat-tyre
-  BatteryCharging, // Added for car-battery
-  Truck // Added for tow-truck
+  Disc3,
+  BatteryCharging,
+  Truck
 } from 'lucide-react';
 import { useApp } from '@/contexts/AppContext';
 import { useTranslation } from '@/utils/translations';
@@ -46,46 +46,55 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ type, onClick }) => {
   
   const getIconAndTitle = () => {
     const iconSizeClass = "h-8 w-8 sm:h-10 sm:w-10";
+    let animationClass = "";
+
     switch (type) {
       case 'flat-tyre':
+        animationClass = "animate-deflate-pulse";
         return { 
-          icon: <Disc3 className={iconSizeClass} />, 
+          icon: <Disc3 className={`${iconSizeClass} ${animationClass}`} />, 
           title: t('flat-tyre'),
           description: t('flat-tyre-desc')
         };
       case 'out-of-fuel':
+        animationClass = "animate-fuel-flicker";
         return { 
-          icon: <Fuel className={iconSizeClass} />, 
+          icon: <Fuel className={`${iconSizeClass} ${animationClass}`} />, 
           title: t('out-of-fuel'),
           description: t('out-of-fuel-desc')
         };
       case 'other-car-problems':
+        animationClass = "animate-wrench-turn";
         return { 
-          icon: <Wrench className={iconSizeClass} />, 
+          icon: <Wrench className={`${iconSizeClass} ${animationClass}`} />, 
           title: t('other-car-problems'),
           description: t('other-car-problems-desc')
         };
       case 'car-battery':
+        animationClass = "animate-battery-flash-red";
         return { 
-          icon: <BatteryCharging className={iconSizeClass} />,
+          icon: <BatteryCharging className={`${iconSizeClass} ${animationClass}`} />,
           title: t('car-battery'),
           description: t('car-battery-desc')
         };
       case 'tow-truck':
+        animationClass = "animate-truck-rumble";
         return { 
-          icon: <Truck className={iconSizeClass} />, 
+          icon: <Truck className={`${iconSizeClass} ${animationClass}`} />, 
           title: t('tow-truck'),
           description: t('tow-truck-desc')
         };
       case 'emergency':
+        animationClass = "animate-pulse"; // Using standard pulse for emergency
         return { 
-          icon: <AlertTriangle className={iconSizeClass} />, 
+          icon: <AlertTriangle className={`${iconSizeClass} ${animationClass} text-red-500`} />, // Added text-red-500 for emergency icon
           title: t('emergency'),
           description: t('emergency-desc')
         };
       case 'support':
+        animationClass = "animate-phone-ring";
         return { 
-          icon: <Phone className={iconSizeClass} />, 
+          icon: <Phone className={`${iconSizeClass} ${animationClass}`} />, 
           title: t('support'),
           description: t('support-desc')
         };
@@ -103,10 +112,10 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ type, onClick }) => {
   return (
     <>
       <Card 
-        className="group p-3 sm:p-4 hover:bg-secondary/70 transition-colors cursor-pointer flex flex-col items-center min-h-[120px] sm:min-h-[140px]" // Added 'group'
+        className="group p-3 sm:p-4 hover:bg-secondary/70 transition-colors cursor-pointer flex flex-col items-center justify-center min-h-[120px] sm:min-h-[140px]" // Added justify-center
         onClick={handleClick}
       >
-        <div className="bg-green-600/10 p-3 sm:p-4 rounded-full mb-2 sm:mb-3 text-green-600 transition-transform duration-200 group-hover:scale-110"> {/* Added animation classes */}
+        <div className="bg-green-600/10 p-3 sm:p-4 rounded-full mb-2 sm:mb-3 text-green-600 transition-transform duration-200 group-hover:scale-110">
           {icon}
         </div>
         <h3 className="text-sm sm:text-lg font-semibold mb-1 text-center leading-tight">{title}</h3>
