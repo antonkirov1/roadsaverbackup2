@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
@@ -62,7 +61,13 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
       onClose();
     }}>
       <DialogContent 
-        className="fixed inset-0 w-full h-full max-w-full max-h-full p-0 rounded-none border-none bg-background font-clash flex flex-col overflow-hidden translate-x-0 translate-y-0"
+        className={cn(
+          "fixed top-0 left-0 w-full h-full max-w-full max-h-full p-0", // Explicit top-0, left-0 and full screen
+          "rounded-none border-none bg-background font-clash",
+          "flex flex-col overflow-hidden",
+          "translate-x-0 translate-y-0", // Ensure no translation
+          "data-[state=open]:animate-none data-[state=closed]:animate-none" // Disable default shadcn animations
+        )}
       > 
         <DialogHeader className="text-left px-4 pt-4 pb-2 flex-shrink-0"> 
           <DialogTitle>{t('settings')}</DialogTitle>
@@ -82,7 +87,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
             <SettingsTabsNavigation t={t} />
           </div>
           
-          <div className="flex-grow overflow-y-auto px-4 pb-4"> {/* Changed overflow-hidden to overflow-y-auto */}
+          <div className="flex-grow overflow-y-auto px-4 pb-4">
             <TabsContent value="account" className="m-0 h-full">
               <AccountTabContent
                 t={t}
@@ -132,4 +137,3 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
 };
 
 export default SettingsMenu;
-
