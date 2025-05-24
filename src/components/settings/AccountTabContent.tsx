@@ -60,7 +60,7 @@ const AccountTabContent: React.FC<AccountTabContentProps> = ({
               <Button
                 size="sm"
                 onClick={onEditAccountInfo}
-                className="bg-green-600 hover:bg-green-700 text-primary-foreground"
+                className="bg-green-600 hover:bg-green-700 text-primary-foreground w-[60%]" // Made button 40% smaller by setting width to 60% of original
               >
                 {t('change-account-info')}
               </Button>

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { 
   Fuel, 
@@ -18,36 +19,29 @@ interface ServiceIconData {
   description: string;
 }
 
-// Keep this hook if background removal is still desired for the new icon,
-// otherwise, it can be simplified if the new icon is already processed.
-// For now, I'll assume the new icon might also benefit or need this structure.
 export const useTowTruckIcon = (processedTowTruckIconUrl: string | null) => {
-  // Filter to turn black image to green and increase contrast for sharpness
-  // This filter is specifically for making a black icon green.
-  // If the new user-uploaded icon is already green or colored, this filter might not be ideal.
-  // For now, we keep it, assuming it's a silhouette that needs coloring.
-  const colorizeAndSharpenFilter = 'brightness(0) saturate(100%) invert(37%) sepia(61%) saturate(1358%) hue-rotate(95deg) brightness(99%) contrast(115%)';
-  const combinedFilter = `drop-shadow(0px 0px 0.75px black) ${colorizeAndSharpenFilter}`;
+  // Improved filter to make the icon green and more visible
+  const colorizeAndSharpenFilter = 'brightness(0) saturate(100%) invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%)';
+  const combinedFilter = `drop-shadow(1px 1px 1px rgba(0,0,0,0.2)) ${colorizeAndSharpenFilter}`;
   const greenFilterStyle = { filter: combinedFilter };
   
-  // IMPORTANT: Replace '/lovable-uploads/user-tow-truck-icon.png' with the actual path of your uploaded icon.
-  const iconSrc = processedTowTruckIconUrl || '/lovable-uploads/user-tow-truck-icon.png'; 
+  // Use the correct path for the tow truck icon
+  const iconSrc = processedTowTruckIconUrl || '/lovable-uploads/2d14545a-f9c9-43ff-b59c-b7e1b3b6765e.png'; 
   
   return {
     iconSrc,
-    greenFilterStyle // This style makes the icon green.
+    greenFilterStyle
   };
 };
 
 export const processBackgroundRemoval = async (type: ServiceType, callback: (url: string | null) => void) => {
   if (type === 'tow-truck') {
-    // Use the new user-uploaded icon path
+    // Use the correct path for the tow truck icon
     const originalIconPath = '/lovable-uploads/2d14545a-f9c9-43ff-b59c-b7e1b3b6765e.png'; 
     callback(originalIconPath); // Show original immediately
 
     try {
       const imgElement = await loadImage(originalIconPath);
-      // Assuming background removal is still desired for consistency or if the new image has a background.
       const blob = await removeBackground(imgElement); 
       const objectUrl = URL.createObjectURL(blob);
       callback(objectUrl);
@@ -64,7 +58,7 @@ export const processBackgroundRemoval = async (type: ServiceType, callback: (url
 export const getServiceIconAndTitle = (
   type: ServiceType, 
   t: (key: string) => string, 
-  processedTowTruckIconUrl: string | null, // This will be the URL from processBackgroundRemoval or the direct path
+  processedTowTruckIconUrl: string | null,
   iconSizeClass: string
 ): ServiceIconData => {
   let animationClass = "";
@@ -91,28 +85,26 @@ export const getServiceIconAndTitle = (
         title: t('other-car-problems'),
         description: t('other-car-problems-desc')
       };
-    case 'car-battery': // Text is t('car-battery') which should resolve to "Car Battery Issues"
+    case 'car-battery': // Updated text to "Car Battery Issues"
       animationClass = "animate-battery-flash-red";
       return { 
         icon: <BatteryCharging className={`${iconSizeClass} ${animationClass}`} />,
         title: t('car-battery'), // This key points to "Car Battery Issues"
         description: t('car-battery-desc')
       };
-    case 'tow-truck': // Text is t('tow-truck') which should resolve to "I Need A Tow Truck"
+    case 'tow-truck': // Updated text to "I Need A Tow Truck"
       animationClass = "animate-truck-pull"; 
-      // The processedTowTruckIconUrl passed to this function should be the result of processBackgroundRemoval
-      // or the direct path to the new icon `/lovable-uploads/2d14545a-f9c9-43ff-b59c-b7e1b3b6765e.png` if processing fails/isn't used.
-      const { iconSrc, greenFilterStyle } = useTowTruckIcon(processedTowTruckIconUrl || '/lovable-uploads/2d14545a-f9c9-43ff-b59c-b7e1b3b6765e.png');
+      const { iconSrc, greenFilterStyle } = useTowTruckIcon(processedTowTruckIconUrl);
       
       return { 
         icon: <img 
                 src={iconSrc} 
                 alt={t('tow-truck')} 
                 className={`${iconSizeClass} ${animationClass}`} 
-                style={greenFilterStyle} // Apply the green filter style
+                style={greenFilterStyle}
                 onError={(e) => {
-                  console.error('Error loading tow truck image:', iconSrc);
-                  // Fallback for the image, ensuring it still tries to load the new icon path
+                  console.error('Error loading tow truck image:', e);
+                  // Fallback if the image fails to load
                   (e.target as HTMLImageElement).src = '/lovable-uploads/2d14545a-f9c9-43ff-b59c-b7e1b3b6765e.png';
                 }}
               />, 

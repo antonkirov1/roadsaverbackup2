@@ -19,13 +19,13 @@ const LanguageSwitcherControls: React.FC<LanguageSwitcherControlsProps> = ({
   };
 
   return (
-    // Changed from right-4 to left-4 and adjusted z-index
-    <div className="absolute top-3 left-4 flex items-center z-20"> 
+    // Changed from left-4 to right-12 to position before the X button
+    <div className="absolute top-3 right-12 flex items-center z-20"> 
       <Button
         variant="ghost"
         size="icon"
         onClick={handleToggleLanguage}
-        className="text-foreground hover:bg-accent/50 h-8 w-auto px-2 flex items-center gap-1"
+        className="text-foreground hover:bg-accent/50 h-8 w-auto px-2 flex items-center gap-1 bg-white/10 rounded-md"
         title={t('change-language')}
       >
         <Globe className="h-4 w-4 animate-globe-pulse" />
