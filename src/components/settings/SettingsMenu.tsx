@@ -1,14 +1,23 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "@/components/ui/use-toast";
-import { Settings, User, Flag, Phone, History, Euro, Info, Mail, MessageCircle } from 'lucide-react';
+import { Settings, User, Flag, Phone, History, Euro, Info, Mail, MessageCircle, CheckCircle2, Save } from 'lucide-react';
 import { useTranslation } from '@/utils/translations';
 import AvatarUpload from '@/components/ui/avatar-upload';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface SettingsMenuProps {
   open: boolean;
@@ -16,6 +25,13 @@ interface SettingsMenuProps {
   onLanguageChange: (language: 'en' | 'bg') => void;
   currentLanguage: 'en' | 'bg';
 }
+
+const simulatedUser = { // In a real app, this would come from context or props
+    username: 'user',
+    email: 'demo@roadsaver.com',
+    phoneNumber: '+359987654321',
+    currentPassword: 'password123' // For simulation
+};
 
 const SettingsMenu: React.FC<SettingsMenuProps> = ({ 
   open, 
@@ -26,14 +42,49 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
   const t = useTranslation(currentLanguage);
   const [userAvatar, setUserAvatar] = useState<string>('/lovable-uploads/0a354359-97fd-4c78-a387-7423f09f2554.png');
   const [showAccountEdit, setShowAccountEdit] = useState(false);
-  const [newUsername, setNewUsername] = useState('user');
-  const [newEmail, setNewEmail] = useState('demo@roadsaver.com');
-  const [newPassword, setNewPassword] = useState('');
-  const [newPhoneNumber, setNewPhoneNumber] = useState('+359987654321');
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [phoneError, setPhoneError] = useState('');
   
+  const [initialUsername, setInitialUsername] = useState(simulatedUser.username);
+  const [newUsername, setNewUsername] = useState(simulatedUser.username);
+  const [isUsernameChanged, setIsUsernameChanged] = useState(false);
+
+  const [initialEmail, setInitialEmail] = useState(simulatedUser.email);
+  const [newEmail, setNewEmail] = useState(simulatedUser.email);
+  const [isEmailChanged, setIsEmailChanged] = useState(false);
+  
+  const [initialPhoneNumber, setInitialPhoneNumber] = useState(simulatedUser.phoneNumber);
+  const [newPhoneNumber, setNewPhoneNumber] = useState(simulatedUser.phoneNumber);
+  const [isPhoneNumberChanged, setIsPhoneNumberChanged] = useState(false);
+  const [phoneError, setPhoneError] = useState('');
+
+  const [newPassword, setNewPassword] = useState('');
+  const [isNewPasswordChanged, setIsNewPasswordChanged] = useState(false);
+  // const [currentPassword, setCurrentPassword] = useState(''); // Removed as per request
+
+  const [showPasswordConfirmDialog, setShowPasswordConfirmDialog] = useState(false);
+  const [passwordToConfirm, setPasswordToConfirm] = useState('');
+  const [passwordConfirmError, setPasswordConfirmError] = useState('');
+  const [fieldToUpdate, setFieldToUpdate] = useState<string | null>(null);
+
+
+  useEffect(() => {
+    setIsUsernameChanged(newUsername !== initialUsername);
+  }, [newUsername, initialUsername]);
+
+  useEffect(() => {
+    setIsEmailChanged(newEmail !== initialEmail);
+  }, [newEmail, initialEmail]);
+  
+  useEffect(() => {
+    setIsPhoneNumberChanged(newPhoneNumber !== initialPhoneNumber);
+  }, [newPhoneNumber, initialPhoneNumber]);
+
+  useEffect(() => {
+    setIsNewPasswordChanged(newPassword !== '');
+  }, [newPassword]);
+
+
   const handleLogout = () => {
+    // ... keep existing code (handleLogout)
     toast({
       title: t('logged-out'),
       description: t('logged-out-msg')
@@ -42,14 +93,16 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
   };
 
   const handleAvatarChange = (file: File | null) => {
+    // ... keep existing code (handleAvatarChange)
     if (file) {
       console.log('Avatar file to upload:', file);
     }
   };
 
   const validatePhoneNumber = (phone: string) => {
+    // ... keep existing code (validatePhoneNumber)
     if (phone.length !== 13 || !phone.startsWith('+359')) {
-      setPhoneError('Phone number must be exactly 13 characters starting with +359');
+      setPhoneError(t('phone-invalid-format'));
       return false;
     }
     setPhoneError('');
@@ -57,11 +110,62 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // ... keep existing code (handlePhoneChange)
     const value = e.target.value;
     setNewPhoneNumber(value);
     validatePhoneNumber(value);
   };
 
+  const handleSaveAttempt = (field: string) => {
+    setFieldToUpdate(field);
+    setPasswordToConfirm('');
+    setPasswordConfirmError('');
+    setShowPasswordConfirmDialog(true);
+  };
+
+  const handleConfirmPasswordAndSave = () => {
+    if (passwordToConfirm !== simulatedUser.currentPassword) {
+      setPasswordConfirmError(t('incorrect-password-error'));
+      return;
+    }
+
+    // Proceed with saving the specific field
+    if (fieldToUpdate === 'username') {
+      setInitialUsername(newUsername); // Simulate save
+      toast({ title: t('update-success-title'), description: t('username-update-success') });
+    } else if (fieldToUpdate === 'email') {
+      // ... similar logic for email
+      setInitialEmail(newEmail);
+      toast({ title: t('update-success-title'), description: t('email-update-success') });
+    } else if (fieldToUpdate === 'phone') {
+      // ... similar logic for phone
+      setInitialPhoneNumber(newPhoneNumber);
+      toast({ title: t('update-success-title'), description: t('phone-update-success') });
+    } else if (fieldToUpdate === 'password') {
+        // Validate newPassword first (length, uppercase)
+        if (newPassword.length < 8 || !/[A-Z]/.test(newPassword)) {
+            toast({ title: t('password-error-title'), description: t('password-requirements'), variant: 'destructive' });
+            setShowPasswordConfirmDialog(false);
+            return;
+        }
+        // Simulate password change
+        simulatedUser.currentPassword = newPassword; // Update simulated password
+        setNewPassword(''); // Clear field
+        toast({ title: t('update-success-title'), description: t('password-update-success') });
+    }
+
+
+    setShowPasswordConfirmDialog(false);
+    setFieldToUpdate(null);
+    // Reset changed states
+    setIsUsernameChanged(false);
+    setIsEmailChanged(false);
+    setIsPhoneNumberChanged(false);
+    setIsNewPasswordChanged(false);
+  };
+
+
+  // ... keep existing code (requestHistory definition)
   const requestHistory = [
     { 
       id: 1, 
@@ -116,7 +220,12 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
   ];
   
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={(isOpen) => {
+      if (!isOpen) {
+        setShowAccountEdit(false); // Close edit modal if settings dialog closes
+      }
+      onClose();
+    }}>
       <DialogContent className="sm:max-w-md font-clash mx-4 max-h-[90vh] overflow-hidden">
         <DialogHeader>
           <DialogTitle>{t('settings')}</DialogTitle>
@@ -126,6 +235,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
         </DialogHeader>
         
         <Tabs defaultValue="account" className="w-full">
+          {/* ... keep existing code (TabsList definition) */}
           <TabsList className="grid grid-cols-4 mb-4 h-auto">
             <TabsTrigger value="account" className="flex flex-col items-center gap-1 p-2 text-xs">
               <User className="h-3 w-3" />
@@ -147,6 +257,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
           
           <div className="min-h-[350px]">
             <TabsContent value="account" className="space-y-4 mt-0">
+              {/* ... keep existing code (AvatarUpload and user info display) */}
               <div className="flex items-center justify-center py-4">
                 <AvatarUpload
                   currentAvatar={userAvatar}
@@ -160,13 +271,13 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
               <div className="space-y-2">
                 <h3 className="font-medium">{t('user-account')}</h3>
                 <p className="text-sm text-muted-foreground">
-                  {t('username')}: {newUsername}
+                  {t('username')}: {initialUsername}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {t('email')}: {newEmail}
+                  {t('email')}: {initialEmail}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {t('phone-number')} {newPhoneNumber}
+                  {t('phone-number-label')}: {initialPhoneNumber}
                 </p>
               </div>
               
@@ -174,11 +285,11 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
                 onClick={() => setShowAccountEdit(true)}
                 className="w-full bg-green-600 hover:bg-green-700"
               >
-                Change account information
+                {t('change-account-info')}
               </Button>
               
               <div className="space-y-2">
-                <h3 className="font-medium">{t('language')}</h3>
+                {/* Language text removed here */}
                 <div className="flex space-x-2">
                   <Button 
                     variant={currentLanguage === 'en' ? 'default' : 'outline'} 
@@ -209,6 +320,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
               </Button>
             </TabsContent>
             
+            {/* ... keep existing code (TabsContent for history, payment, about) */}
             <TabsContent value="history" className="mt-0">
               <div className="text-center py-4">
                 <History className="h-12 w-12 mx-auto text-green-600 mb-4" />
@@ -303,81 +415,127 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
           </div>
         </Tabs>
 
-        {/* Account Edit Dialog */}
+        {/* Account Edit Dialog (Modal) */}
         {showAccountEdit && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-            <div className="bg-background rounded-lg shadow-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
-              <h2 className="text-xl font-bold mb-4">Change Account Information</h2>
-              <div className="space-y-4">
+            <DialogContent className="bg-background rounded-lg shadow-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto !translate-x-0 !translate-y-0 !left-auto !top-auto relative" 
+              onClick={(e) => e.stopPropagation()} // Prevents closing settings dialog when clicking inside edit modal
+              onEscapeKeyDown={() => setShowAccountEdit(false)}
+              onInteractOutside={() => setShowAccountEdit(false)}
+            >
+              <DialogHeader>
+                <DialogTitle>{t('change-account-info')}</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4 mt-4">
                 <div>
-                  <label className="text-sm font-medium">Change username</label>
-                  <Input 
-                    value={newUsername} 
-                    onChange={(e) => setNewUsername(e.target.value)}
-                  />
+                  <Label className="text-sm font-medium">{t('change-username-colon')}</Label>
+                  <div className="flex items-center space-x-2">
+                    <Input 
+                      value={newUsername} 
+                      onChange={(e) => setNewUsername(e.target.value)}
+                    />
+                    <Button 
+                        size="sm" 
+                        className="bg-green-600 hover:bg-green-700" 
+                        disabled={!isUsernameChanged}
+                        onClick={() => handleSaveAttempt('username')}
+                    >
+                        <Save className="h-4 w-4 mr-1 sm:mr-2" /> <span className="hidden sm:inline">{t('save')}</span>
+                    </Button>
+                  </div>
                 </div>
                 <div>
-                  <label className="text-sm font-medium">Change email</label>
-                  <Input 
-                    value={newEmail} 
-                    onChange={(e) => setNewEmail(e.target.value)}
-                    type="email"
-                  />
+                  <Label className="text-sm font-medium">{t('change-email-colon')}</Label>
+                   <div className="flex items-center space-x-2">
+                    <Input 
+                      value={newEmail} 
+                      onChange={(e) => setNewEmail(e.target.value)}
+                      type="email"
+                    />
+                     <Button size="sm" className="bg-green-600 hover:bg-green-700" disabled={!isEmailChanged} onClick={() => handleSaveAttempt('email')}>
+                        <Save className="h-4 w-4 mr-1 sm:mr-2" /> <span className="hidden sm:inline">{t('save')}</span>
+                    </Button>
+                  </div>
                 </div>
                 <div>
-                  <label className="text-sm font-medium">Change phone number</label>
-                  <Input 
-                    value={newPhoneNumber} 
-                    onChange={handlePhoneChange}
-                    placeholder="+359XXXXXXXXX"
-                  />
+                  <Label className="text-sm font-medium">{t('change-phone-colon')}</Label>
+                   <div className="flex items-center space-x-2">
+                    <Input 
+                      value={newPhoneNumber} 
+                      onChange={handlePhoneChange}
+                      placeholder={t('phone-placeholder')}
+                    />
+                    <Button size="sm" className="bg-green-600 hover:bg-green-700" disabled={!isPhoneNumberChanged || !!phoneError} onClick={() => handleSaveAttempt('phone')}>
+                        <Save className="h-4 w-4 mr-1 sm:mr-2" /> <span className="hidden sm:inline">{t('save')}</span>
+                    </Button>
+                  </div>
                   {phoneError && <p className="text-red-500 text-xs mt-1">{phoneError}</p>}
                 </div>
                 <div>
-                  <label className="text-sm font-medium">Change password</label>
-                  <Input 
-                    value={newPassword} 
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    type="password"
-                    placeholder="New password"
-                  />
+                  <Label className="text-sm font-medium">{t('change-password-colon')}</Label>
+                  <div className="flex items-center space-x-2">
+                    <Input 
+                      value={newPassword} 
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      type="password"
+                      placeholder={t('new-password-placeholder')}
+                    />
+                    <Button size="sm" className="bg-green-600 hover:bg-green-700" disabled={!isNewPasswordChanged || newPassword.length < 8 || !/[A-Z]/.test(newPassword)} onClick={() => handleSaveAttempt('password')}>
+                        <Save className="h-4 w-4 mr-1 sm:mr-2" /> <span className="hidden sm:inline">{t('save')}</span>
+                    </Button>
+                  </div>
+                   <p className="text-xs text-muted-foreground mt-1">{t('password-requirements')}</p>
                 </div>
-                <div>
-                  <label className="text-sm font-medium">Current password</label>
-                  <Input 
-                    value={currentPassword} 
-                    onChange={(e) => setCurrentPassword(e.target.value)}
-                    type="password"
-                    placeholder="Enter current password"
-                  />
-                </div>
-                <div className="flex space-x-2">
+                {/* Current password field at bottom removed */}
+                <div className="flex space-x-2 pt-4">
                   <Button 
                     onClick={() => setShowAccountEdit(false)}
                     variant="outline"
                     className="flex-1"
                   >
-                    Cancel
+                    {t('cancel')}
                   </Button>
-                  <Button 
-                    disabled={phoneError !== '' || !currentPassword}
-                    className="flex-1 bg-green-600 hover:bg-green-700"
-                    onClick={() => {
-                      toast({
-                        title: 'Account Updated',
-                        description: 'Your account information has been updated successfully.'
-                      });
-                      setShowAccountEdit(false);
-                    }}
-                  >
-                    Save
-                  </Button>
+                  {/* Main save button removed, individual saves per field */}
                 </div>
               </div>
-            </div>
+            </DialogContent>
           </div>
         )}
       </DialogContent>
+      
+      {/* Password Confirmation Dialog */}
+      <AlertDialog open={showPasswordConfirmDialog} onOpenChange={setShowPasswordConfirmDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t('current-password-prompt-title')}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {t('current-password-prompt-desc')}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <div className="space-y-2">
+            <Input
+              type="password"
+              placeholder={t('enter-current-password')}
+              value={passwordToConfirm}
+              onChange={(e) => {
+                setPasswordToConfirm(e.target.value);
+                setPasswordConfirmError(''); // Clear error on typing
+              }}
+            />
+            {passwordConfirmError && <p className="text-red-500 text-sm">{passwordConfirmError}</p>}
+          </div>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setFieldToUpdate(null)}>{t('cancel')}</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleConfirmPasswordAndSave} 
+              disabled={!passwordToConfirm}
+              className="bg-green-600 hover:bg-green-700"
+            >
+              {t('save')}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Dialog>
   );
 };

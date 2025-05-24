@@ -20,7 +20,7 @@ const Auth: React.FC = () => {
     navigate('/user/dashboard');
     toast({
       title: t("login-successful"),
-      description: t("welcome-to-roadsaver") // Assuming 'welcome-to-roadsaver' is a valid key
+      description: t("welcome-to-roadsaver")
     });
   };
   
@@ -29,7 +29,7 @@ const Auth: React.FC = () => {
     navigate('/user/dashboard');
     toast({
       title: t("registration-successful"),
-      description: t("account-created-welcome") // Assuming 'account-created-welcome' is a valid key
+      description: t("account-created-welcome")
     });
   };
   
