@@ -1,12 +1,15 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card"; // Removed CardHeader, CardDescription, CardFooter
 import { toast } from "@/components/ui/use-toast";
 import { Globe, CheckCircle2, AlertCircle } from "lucide-react";
 import { useApp } from '@/contexts/AppContext';
 import { useTranslation } from '@/utils/translations';
 import RegisterFormFieldInput from './RegisterFormFieldInput';
 import RegisterGenderSelector from './RegisterGenderSelector';
+import RegisterFormHeader from './RegisterFormHeader'; // New import
+import RegisterFormActions from './RegisterFormActions'; // New import
 import {
   useUsernameValidation,
   useEmailValidation,
@@ -24,7 +27,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
   const { language, setLanguage } = useApp();
   const t = useTranslation(language);
   
-  // Use custom hooks for field validation
   const {
     value: username,
     setValue: setUsername,
@@ -67,7 +69,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Phone number is now required, so direct validation is needed.
     if (!isUsernameValid || !isEmailValid || !isPasswordValid || !isConfirmPasswordValid || !isPhoneValid || !gender) {
       toast({
         title: t("error-title"),
@@ -89,7 +90,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
         email, 
         password, 
         gender, 
-        phoneNumber: phoneNumber // Phone number is now required, pass directly
+        phoneNumber: phoneNumber
       });
       setIsLoading(false);
     }, 1500);
@@ -104,6 +105,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
   const handleToggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
+
+  const isOverallFormValid = isUsernameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid && isPhoneValid && !!gender;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-600/10 to-background font-clash">
@@ -126,12 +129,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
 
       <div className="flex items-center justify-center min-h-screen p-4">
         <Card className="w-full max-w-md mx-auto">
-          <CardHeader>
-            <CardTitle className="text-2xl font-bold">{t('create-account')}</CardTitle>
-            <CardDescription>
-              {t('join-roadsaver-desc')}
-            </CardDescription>
-          </CardHeader>
+          <RegisterFormHeader t={t} />
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
               <RegisterFormFieldInput
@@ -201,8 +199,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
                 currentShowPasswordState={showPassword}
                 t={t}
                 required
-                inputClassName="pr-10" // Space for the eye icon
-                validationIconContainerClassName="absolute inset-y-0 right-10 pr-1 flex items-center pointer-events-none" // Position validation icon next to eye
+                inputClassName="pr-10"
+                validationIconContainerClassName="absolute inset-y-0 right-10 pr-1 flex items-center pointer-events-none"
               />
               
               <RegisterFormFieldInput
@@ -216,29 +214,18 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
                 isValid={isConfirmPasswordValid}
                 renderValidationIcon={renderValidationIcon}
                 successMessage={t('confirm-password-valid')}
-                currentShowPasswordState={showPassword} // Uses the same state as the main password field for visibility
+                currentShowPasswordState={showPassword}
                 t={t}
                 required
               />
             </CardContent>
             
-            <CardFooter className="flex justify-between">
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={onCancel}
-                className="border-green-600 text-green-600 hover:bg-green-50"
-              >
-                {t('back-to-login')}
-              </Button>
-              <Button 
-                type="submit" 
-                className="bg-green-600 hover:bg-green-700"
-                disabled={isLoading || !isUsernameValid || !isEmailValid || !isPasswordValid || !isConfirmPasswordValid || !isPhoneValid}
-              >
-                {isLoading ? t('creating-account') : t('create-account')}
-              </Button>
-            </CardFooter>
+            <RegisterFormActions 
+              t={t}
+              onCancel={onCancel}
+              isLoading={isLoading}
+              isFormValid={isOverallFormValid}
+            />
           </form>
         </Card>
       </div>
