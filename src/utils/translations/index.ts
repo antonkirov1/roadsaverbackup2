@@ -1,4 +1,12 @@
-import { authTranslations } from './auth';
+
+import { authGeneralTranslations } from './authGeneral';
+import { authLoginTranslations } from './authLogin';
+import { authRegisterTranslations } from './authRegister';
+import { authPasswordTranslations } from './authPassword';
+import { authUsernameTranslations } from './authUsername';
+import { authEmailTranslations } from './authEmail';
+import { authPhoneTranslations } from './authPhone';
+import { authGenderTranslations } from './authGender';
 import { serviceTranslations } from './service';
 import { emergencyTranslations } from './emergency';
 import { statusTranslations } from './status';
@@ -8,7 +16,14 @@ import { uiTranslations } from './ui';
 
 // Combine all translation categories
 export const translations = {
-  ...authTranslations,
+  ...authGeneralTranslations,
+  ...authLoginTranslations,
+  ...authRegisterTranslations,
+  ...authPasswordTranslations,
+  ...authUsernameTranslations,
+  ...authEmailTranslations,
+  ...authPhoneTranslations,
+  ...authGenderTranslations,
   ...serviceTranslations,
   ...emergencyTranslations,
   ...statusTranslations,
@@ -27,3 +42,4 @@ export const useTranslation = (language: Language) => {
     return translation[language] || key;
   };
 };
+

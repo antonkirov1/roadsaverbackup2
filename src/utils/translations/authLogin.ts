@@ -1,0 +1,41 @@
+
+interface TranslationEntry {
+  en: string;
+  bg: string;
+}
+
+interface TranslationGroup {
+  [key: string]: TranslationEntry;
+}
+
+export const authLoginTranslations: TranslationGroup = {
+  'sign-in': {
+    en: 'Sign In',
+    bg: 'Вход'
+  },
+  'signing-in': {
+    en: 'Signing in...',
+    bg: 'Влизане...'
+  },
+  'back-to-login': {
+    en: 'Back to Login',
+    bg: 'Обратно към входа'
+  },
+  'invalid-username-password': {
+    en: 'Invalid username or password',
+    bg: 'Невалидно потребителско име или парола'
+  },
+  'please-enter-both': {
+    en: 'Please enter both username and password',
+    bg: 'Моля, въведете потребителско име и парола'
+  },
+  'login-successful': {
+    en: 'Login Successful',
+    bg: 'Успешен вход'
+  },
+  'welcome-to-roadsaver': {
+    en: 'Welcome to RoadSaver!',
+    bg: 'Добре дошли в RoadSaver!'
+  }
+};
+
