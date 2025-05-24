@@ -60,8 +60,17 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
       }
       onClose();
     }}>
-      <DialogContent className={`w-[calc(100%-${isMobile ? '1rem' : '2rem'})] sm:w-full sm:max-w-md mx-auto font-clash max-h-[90vh] overflow-hidden pt-${isMobile ? '10' : '12'} px-${isMobile ? '3' : '4'} pb-${isMobile ? '3' : '4'}`}> 
-        <DialogHeader className="text-left mb-4"> 
+      <DialogContent 
+        className={`
+          w-[calc(100%-${isMobile ? '1rem' : '2rem'})] sm:w-full sm:max-w-md 
+          mx-auto font-clash 
+          max-h-[90vh] h-full sm:h-auto flex flex-col
+          pt-${isMobile ? '10' : '12'} 
+          px-${isMobile ? '3' : '4'} 
+          pb-${isMobile ? '3' : '4'}
+        `}
+      > 
+        <DialogHeader className="text-left mb-4 flex-shrink-0"> 
           <DialogTitle>{t('settings')}</DialogTitle>
           <DialogDescription>
             {t('configure-preferences')}
@@ -74,10 +83,13 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
           t={t}
         />
         
-        <Tabs defaultValue="account" className="w-full">
-          <SettingsTabsNavigation t={t} />
+        <Tabs defaultValue="account" className="w-full flex flex-col flex-grow overflow-hidden">
+          <div className="flex-shrink-0"> {/* Wrapper for TabsList to prevent it from growing */}
+            <SettingsTabsNavigation t={t} />
+          </div>
           
-          <div className={`h-[${isMobile ? '350px' : '400px'}]`}> 
+          {/* This div will contain all TabsContent and will manage overflow for tab content area */}
+          <div className="flex-grow overflow-y-auto"> 
             <TabsContent value="account" className="mt-0 h-full">
               <AccountTabContent
                 t={t}
@@ -127,3 +139,4 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
 };
 
 export default SettingsMenu;
+
