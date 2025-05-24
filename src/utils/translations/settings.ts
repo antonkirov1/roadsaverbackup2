@@ -117,6 +117,10 @@ export const settingsTranslations: TranslationGroup = {
     en: 'Change Account Information',
     bg: 'Промяна на информация за акаунта'
   },
+  'account-information': { // Added new key
+    en: 'Account Information',
+    bg: 'Информация за акаунта'
+  },
   'completed-time': {
     en: 'Completed',
     bg: 'Завършено в'
