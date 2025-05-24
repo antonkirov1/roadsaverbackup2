@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -10,7 +9,7 @@ import { useApp } from '@/contexts/AppContext';
 import { useTranslation } from '@/utils/translations';
 import { toast } from '@/components/ui/use-toast';
 import MapInput from '@/components/MapInput';
-import { Settings, MapPin, Globe, Siren } from 'lucide-react'; // AlertTriangle removed, Siren kept
+import { Settings, MapPin, Globe, Siren } from 'lucide-react';
 
 type ServiceType = 'flat-tyre' | 'out-of-fuel' | 'other-car-problems' | 'tow-truck' | 'emergency' | 'support' | 'car-battery';
 
@@ -59,13 +58,14 @@ const Dashboard: React.FC = () => {
     <div className="min-h-screen bg-background pb-16 font-clash">
       {/* Header */}
       <header className="bg-green-600 text-white p-3 sm:p-4 flex justify-between items-center sticky top-0 z-10">
-        <h1 className="text-lg sm:text-xl font-bold">RoadSaver</h1>
+        {/* Changed h1 className to match SettingsMenu banner: text-xl font-semibold font-clash */}
+        <h1 className="text-xl font-semibold font-clash">RoadSaver</h1>
         <div className="flex gap-1 sm:gap-2">
           <Button 
             variant="ghost" 
             size="icon" 
             onClick={() => setShowEmergencyServices(true)}
-            className="text-white hover:bg-white/20 bg-red-600 hover:bg-red-700 h-8 w-8 sm:h-10 sm:w-10"
+            className="text-white hover:bg-white/20 h-8 w-8 sm:h-10 sm:w-10"
             title={t('emergency-services')}
           >
             <Siren className="h-4 w-4 sm:h-5 sm:w-5 animate-emergency-alert-flash" />
@@ -168,4 +168,3 @@ const Dashboard: React.FC = () => {
 };
 
 export default Dashboard;
-

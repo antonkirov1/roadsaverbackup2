@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -59,7 +58,7 @@ const AccountTabContent: React.FC<AccountTabContentProps> = ({
               <Button
                 size="sm"
                 onClick={onEditAccountInfo}
-                className="bg-green-600 hover:bg-green-700 text-primary-foreground w-[60%] text-xs" // Added text-xs
+                className="bg-green-600 hover:bg-green-700 text-primary-foreground text-xs whitespace-normal leading-tight px-3" 
               >
                 {t('change-account-info')}
               </Button>
