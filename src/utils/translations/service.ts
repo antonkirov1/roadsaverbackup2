@@ -1,3 +1,4 @@
+
 interface TranslationEntry {
   en: string;
   bg: string;
@@ -23,7 +24,7 @@ export const serviceTranslations: TranslationGroup = {
   },
   'car-battery': {
     en: 'Car Battery Issues',
-    bg: 'Проблеми с батерията'
+    bg: 'Проблеми с акумулатора'
   },
   'tow-truck': {
     en: 'I Need a Tow Truck',
@@ -50,8 +51,8 @@ export const serviceTranslations: TranslationGroup = {
     bg: 'Получете помощ за различни проблеми с колата'
   },
   'car-battery-desc': {
-    en: 'Get help with battery issues',
-    bg: 'Получете помощ за проблеми с батерията'
+    en: 'Get help with your car battery issues',
+    bg: 'Получете помощ за проблеми с акумулатора'
   },
   'tow-truck-desc': {
     en: 'Request towing service',
@@ -97,4 +98,24 @@ export const serviceTranslations: TranslationGroup = {
     en: 'From:',
     bg: 'От:'
   },
+  'write-email': {
+    en: 'Write us an email',
+    bg: 'Напишете ни имейл'
+  },
+  'give-call': {
+    en: 'Give us a call',
+    bg: 'Обадете ни се'
+  },
+  'contact-options': {
+    en: 'Contact Options',
+    bg: 'Опции за контакт'
+  },
+  'new-request': {
+    en: 'New Request',
+    bg: 'Нова заявка'
+  },
+  'outside-hours': {
+    en: 'For service requests outside of working hours, please contact support',
+    bg: 'За заявки за услуги извън работното време, моля свържете се с поддръжката'
+  }
 };

@@ -1,9 +1,11 @@
+
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
-import { Settings, User, Flag, Phone, History } from 'lucide-react';
+import { Settings, User, Flag, Phone, History, Euro, Info, Mail, MessageCircle } from 'lucide-react';
 import { useTranslation } from '@/utils/translations';
 import AvatarUpload from '@/components/ui/avatar-upload';
 
@@ -22,6 +24,13 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
 }) => {
   const t = useTranslation(currentLanguage);
   const [userAvatar, setUserAvatar] = useState<string>('/lovable-uploads/0a354359-97fd-4c78-a387-7423f09f2554.png');
+  const [showAccountEdit, setShowAccountEdit] = useState(false);
+  const [newUsername, setNewUsername] = useState('user');
+  const [newEmail, setNewEmail] = useState('demo@roadsaver.com');
+  const [newPassword, setNewPassword] = useState('');
+  const [newPhoneNumber, setNewPhoneNumber] = useState('+359987654321');
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [phoneError, setPhoneError] = useState('');
   
   const handleLogout = () => {
     toast({
@@ -37,15 +46,57 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
     }
   };
 
+  const validatePhoneNumber = (phone: string) => {
+    if (phone.length !== 13 || !phone.startsWith('+359')) {
+      setPhoneError('Phone number must be exactly 13 characters starting with +359');
+      return false;
+    }
+    setPhoneError('');
+    return true;
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setNewPhoneNumber(value);
+    validatePhoneNumber(value);
+  };
+
   const requestHistory = [
-    { id: 1, type: 'flat-tyre', date: '2024-01-15', status: 'completed' },
-    { id: 2, type: 'out-of-fuel', date: '2024-01-10', status: 'completed' },
-    { id: 3, type: 'car-battery', date: '2024-01-05', status: 'completed' }
+    { 
+      id: 1, 
+      type: 'flat-tyre', 
+      date: '2024-01-15', 
+      time: '14:30',
+      completedTime: '15:45',
+      status: 'completed',
+      user: 'John Doe',
+      employee: 'Mike Johnson'
+    },
+    { 
+      id: 2, 
+      type: 'out-of-fuel', 
+      date: '2024-01-10', 
+      time: '09:15',
+      completedTime: '10:30',
+      status: 'completed',
+      user: 'Jane Smith',
+      employee: 'Sarah Wilson'
+    },
+    { 
+      id: 3, 
+      type: 'car-battery', 
+      date: '2024-01-05', 
+      time: '16:20',
+      completedTime: '17:15',
+      status: 'completed',
+      user: 'Bob Brown',
+      employee: 'Tom Davis'
+    }
   ];
   
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md font-clash">
         <DialogHeader>
           <DialogTitle>{t('settings')}</DialogTitle>
           <DialogDescription>
@@ -55,10 +106,22 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
         
         <Tabs defaultValue="account" className="w-full">
           <TabsList className="grid grid-cols-4 mb-4">
-            <TabsTrigger value="account">{t('account')}</TabsTrigger>
-            <TabsTrigger value="history">{t('history')}</TabsTrigger>
-            <TabsTrigger value="payment">{t('payment')}</TabsTrigger>
-            <TabsTrigger value="about">About Us</TabsTrigger>
+            <TabsTrigger value="account" className="flex items-center gap-1">
+              <User className="h-3 w-3" />
+              {t('account')}
+            </TabsTrigger>
+            <TabsTrigger value="history" className="flex items-center gap-1">
+              <History className="h-3 w-3" />
+              {t('history')}
+            </TabsTrigger>
+            <TabsTrigger value="payment" className="flex items-center gap-1">
+              <Euro className="h-3 w-3" />
+              {t('payment')}
+            </TabsTrigger>
+            <TabsTrigger value="about" className="flex items-center gap-1">
+              <Info className="h-3 w-3" />
+              About Us
+            </TabsTrigger>
           </TabsList>
           
           <TabsContent value="account" className="space-y-4">
@@ -67,7 +130,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
                 currentAvatar={userAvatar}
                 onAvatarChange={handleAvatarChange}
                 defaultAvatar="/lovable-uploads/0a354359-97fd-4c78-a387-7423f09f2554.png"
-                size={48}
+                size={80}
                 variant="user"
               />
             </div>
@@ -75,12 +138,22 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
             <div className="space-y-2">
               <h3 className="font-medium">{t('user-account')}</h3>
               <p className="text-sm text-muted-foreground">
-                {t('username')}: user
+                {t('username')}: {newUsername}
               </p>
               <p className="text-sm text-muted-foreground">
-                {t('email')}: demo@roadsaver.com
+                {t('email')}: {newEmail}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Phone number: {newPhoneNumber}
               </p>
             </div>
+            
+            <Button 
+              onClick={() => setShowAccountEdit(true)}
+              className="w-full bg-green-600 hover:bg-green-700"
+            >
+              Change account information
+            </Button>
             
             <div className="space-y-2">
               <h3 className="font-medium">{t('language')}</h3>
@@ -91,7 +164,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
                   onClick={() => onLanguageChange('en')}
                   className={currentLanguage === 'en' ? 'bg-green-600 hover:bg-green-700' : ''}
                 >
-                  <Flag className="h-4 w-4 mr-2" /> {t('english')}
+                  🇬🇧 {t('english')}
                 </Button>
                 <Button 
                   variant={currentLanguage === 'bg' ? 'default' : 'outline'} 
@@ -99,7 +172,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
                   onClick={() => onLanguageChange('bg')}
                   className={currentLanguage === 'bg' ? 'bg-green-600 hover:bg-green-700' : ''}
                 >
-                  <Flag className="h-4 w-4 mr-2" /> {t('bulgarian')}
+                  🇧🇬 {t('bulgarian')}
                 </Button>
               </div>
             </div>
@@ -130,7 +203,10 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
                         <span className="font-medium">{t(request.type)}</span>
                         <span className="text-sm text-green-600">{t('completed')}</span>
                       </div>
-                      <p className="text-sm text-muted-foreground">{request.date}</p>
+                      <p className="text-sm text-muted-foreground">{request.date} - {request.time}</p>
+                      <p className="text-sm text-muted-foreground">Completed: {request.completedTime}</p>
+                      <p className="text-sm text-muted-foreground">User: {request.user}</p>
+                      <p className="text-sm text-muted-foreground">Employee: {request.employee}</p>
                     </div>
                   ))
                 ) : (
@@ -161,7 +237,13 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
               
               <div className="mt-4">
                 <p className="text-sm">
-                  Emergency road assistance service work hours: Mon - Friday from 09:00 - 17:00.
+                  Emergency road assistance service work hours:
+                </p>
+                <p className="text-sm">
+                  Mon - Friday from 09:00 - 17:00.
+                </p>
+                <p className="text-sm mt-2 text-orange-600">
+                  {t('outside-hours')}
                 </p>
               </div>
               
@@ -170,13 +252,103 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
                 <p className="text-sm text-muted-foreground">
                   {t('email')}: roadsaverapp@gmail.com
                 </p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground mb-4">
                   {t('phone')}: +359 888 123 456
                 </p>
+                
+                <div className="flex justify-center space-x-3">
+                  <Button variant="outline" size="sm" className="bg-blue-600 text-white hover:bg-blue-700">
+                    📘 Facebook
+                  </Button>
+                  <Button variant="outline" size="sm" className="bg-blue-500 text-white hover:bg-blue-600">
+                    💬 Messenger
+                  </Button>
+                  <Button variant="outline" size="sm" className="bg-green-500 text-white hover:bg-green-600">
+                    📱 WhatsApp
+                  </Button>
+                  <Button variant="outline" size="sm" className="bg-purple-600 text-white hover:bg-purple-700">
+                    📞 Viber
+                  </Button>
+                </div>
               </div>
             </div>
           </TabsContent>
         </Tabs>
+
+        {/* Account Edit Dialog */}
+        {showAccountEdit && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+            <div className="bg-background rounded-lg shadow-lg p-6 w-full max-w-md">
+              <h2 className="text-xl font-bold mb-4">Change Account Information</h2>
+              <div className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium">Change username</label>
+                  <Input 
+                    value={newUsername} 
+                    onChange={(e) => setNewUsername(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Change email</label>
+                  <Input 
+                    value={newEmail} 
+                    onChange={(e) => setNewEmail(e.target.value)}
+                    type="email"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Change phone number</label>
+                  <Input 
+                    value={newPhoneNumber} 
+                    onChange={handlePhoneChange}
+                    placeholder="+359XXXXXXXXX"
+                  />
+                  {phoneError && <p className="text-red-500 text-xs mt-1">{phoneError}</p>}
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Change password</label>
+                  <Input 
+                    value={newPassword} 
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    type="password"
+                    placeholder="New password"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Current password</label>
+                  <Input 
+                    value={currentPassword} 
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    type="password"
+                    placeholder="Enter current password"
+                  />
+                </div>
+                <div className="flex space-x-2">
+                  <Button 
+                    onClick={() => setShowAccountEdit(false)}
+                    variant="outline"
+                    className="flex-1"
+                  >
+                    Cancel
+                  </Button>
+                  <Button 
+                    disabled={phoneError !== '' || !currentPassword}
+                    className="flex-1 bg-green-600 hover:bg-green-700"
+                    onClick={() => {
+                      toast({
+                        title: 'Account Updated',
+                        description: 'Your account information has been updated successfully.'
+                      });
+                      setShowAccountEdit(false);
+                    }}
+                  >
+                    Save
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );

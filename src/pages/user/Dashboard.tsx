@@ -10,7 +10,7 @@ import { useApp } from '@/contexts/AppContext';
 import { useTranslation } from '@/utils/translations';
 import { toast } from '@/components/ui/use-toast';
 import MapInput from '@/components/MapInput';
-import { Settings, MapPin, AlertTriangle } from 'lucide-react';
+import { Settings, MapPin, AlertTriangle, Globe } from 'lucide-react';
 
 type ServiceType = 'flat-tyre' | 'out-of-fuel' | 'other-car-problems' | 'tow-truck' | 'emergency' | 'support' | 'car-battery';
 
@@ -35,14 +35,8 @@ const Dashboard: React.FC = () => {
     if (service === 'emergency') {
       setShowEmergencyServices(true);
     } else if (service === 'support') {
-      // Handle support call
-      toast({
-        title: t('call-support'),
-        description: t('connecting-support')
-      });
-      setTimeout(() => {
-        window.location.href = "tel:+15555555555";
-      }, 500);
+      // Contact support is now handled in ServiceCard
+      return;
     } else {
       setSelectedService(service);
     }
@@ -62,7 +56,7 @@ const Dashboard: React.FC = () => {
   };
   
   return (
-    <div className="min-h-screen bg-background pb-16">
+    <div className="min-h-screen bg-background pb-16 font-clash">
       {/* Header */}
       <header className="bg-green-600 text-white p-4 flex justify-between items-center sticky top-0 z-10">
         <h1 className="text-xl font-bold">RoadSaver</h1>
@@ -84,14 +78,19 @@ const Dashboard: React.FC = () => {
           >
             <MapPin className="h-5 w-5" />
           </Button>
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={() => setLanguage(language === 'en' ? 'bg' : 'en')}
-            className="text-white hover:bg-white/20"
-          >
-            {language === 'en' ? 'BG' : 'EN'}
-          </Button>
+          <div className="relative">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => setLanguage(language === 'en' ? 'bg' : 'en')}
+              className="text-white hover:bg-white/20"
+            >
+              <Globe className="h-4 w-4" />
+            </Button>
+            <span className="absolute -bottom-1 -right-1 text-xs bg-white text-green-600 px-1 rounded">
+              {language.toUpperCase()}
+            </span>
+          </div>
           <Button 
             variant="ghost" 
             size="icon" 
