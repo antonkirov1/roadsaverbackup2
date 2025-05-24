@@ -41,16 +41,13 @@ export const useTowTruckIcon = (processedTowTruckIconUrl: string | null) => {
 
 export const processBackgroundRemoval = async (type: ServiceType, callback: (url: string | null) => void) => {
   if (type === 'tow-truck') {
-    // IMPORTANT: Replace '/lovable-uploads/user-tow-truck-icon.png' with the actual path of your uploaded icon.
-    const originalIconPath = '/lovable-uploads/user-tow-truck-icon.png'; 
+    // Use the new user-uploaded icon path
+    const originalIconPath = '/lovable-uploads/2d14545a-f9c9-43ff-b59c-b7e1b3b6765e.png'; 
     callback(originalIconPath); // Show original immediately
 
-    // If your new icon is already transparent or doesn't need background removal,
-    // you can simplify this or remove the removeBackground call.
     try {
       const imgElement = await loadImage(originalIconPath);
       // Assuming background removal is still desired for consistency or if the new image has a background.
-      // If not, just use originalIconPath directly without processing.
       const blob = await removeBackground(imgElement); 
       const objectUrl = URL.createObjectURL(blob);
       callback(objectUrl);
@@ -94,18 +91,18 @@ export const getServiceIconAndTitle = (
         title: t('other-car-problems'),
         description: t('other-car-problems-desc')
       };
-    case 'car-battery': // Text changed via t('car-battery')
+    case 'car-battery': // Text is t('car-battery') which should resolve to "Car Battery Issues"
       animationClass = "animate-battery-flash-red";
       return { 
         icon: <BatteryCharging className={`${iconSizeClass} ${animationClass}`} />,
-        title: t('car-battery'),
+        title: t('car-battery'), // This key points to "Car Battery Issues"
         description: t('car-battery-desc')
       };
-    case 'tow-truck': // Text changed via t('tow-truck')
-      animationClass = "animate-truck-pull"; // Kept existing animation
-      // Use the hook to get the icon source and style
+    case 'tow-truck': // Text is t('tow-truck') which should resolve to "I Need A Tow Truck"
+      animationClass = "animate-truck-pull"; 
       // The processedTowTruckIconUrl passed to this function should be the result of processBackgroundRemoval
-      const { iconSrc, greenFilterStyle } = useTowTruckIcon(processedTowTruckIconUrl);
+      // or the direct path to the new icon `/lovable-uploads/2d14545a-f9c9-43ff-b59c-b7e1b3b6765e.png` if processing fails/isn't used.
+      const { iconSrc, greenFilterStyle } = useTowTruckIcon(processedTowTruckIconUrl || '/lovable-uploads/2d14545a-f9c9-43ff-b59c-b7e1b3b6765e.png');
       
       return { 
         icon: <img 
@@ -114,14 +111,12 @@ export const getServiceIconAndTitle = (
                 className={`${iconSizeClass} ${animationClass}`} 
                 style={greenFilterStyle} // Apply the green filter style
                 onError={(e) => {
-                  // Fallback if the image fails to load (e.g., path is incorrect)
-                  // Consider a more robust fallback, like a default Lucide icon.
                   console.error('Error loading tow truck image:', iconSrc);
-                  // Attempt to set a fallback or show error. For now, it will show broken image.
-                  // (e.target as HTMLImageElement).src = '/path/to/default/fallback/icon.png';
+                  // Fallback for the image, ensuring it still tries to load the new icon path
+                  (e.target as HTMLImageElement).src = '/lovable-uploads/2d14545a-f9c9-43ff-b59c-b7e1b3b6765e.png';
                 }}
               />, 
-        title: t('tow-truck'),
+        title: t('tow-truck'), // This key points to "I Need A Tow Truck"
         description: t('tow-truck-desc')
       };
     case 'emergency':

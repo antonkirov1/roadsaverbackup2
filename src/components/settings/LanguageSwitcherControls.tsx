@@ -1,9 +1,7 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Globe } from 'lucide-react';
-// Tooltip components are not used in this version as per the dashboard example for simplicity in settings
-// import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
-// import { useIsMobile } from '@/hooks/use-mobile'; // Not strictly needed for this specific control if we make it consistent
 
 interface LanguageSwitcherControlsProps {
   currentLanguage: 'en' | 'bg';
@@ -16,19 +14,18 @@ const LanguageSwitcherControls: React.FC<LanguageSwitcherControlsProps> = ({
   onLanguageChange,
   t,
 }) => {
-  // const isMobile = useIsMobile(); // Keeping it simple and consistent with dashboard header button
-
   const handleToggleLanguage = () => {
     onLanguageChange(currentLanguage === 'en' ? 'bg' : 'en');
   };
 
   return (
-    <div className="absolute top-3 right-4 flex items-center z-20"> {/* Adjusted top to align better, increased z-index */}
+    // Changed from right-4 to left-4 and adjusted z-index
+    <div className="absolute top-3 left-4 flex items-center z-20"> 
       <Button
         variant="ghost"
         size="icon"
         onClick={handleToggleLanguage}
-        className="text-foreground hover:bg-accent/50 h-8 w-auto px-2 flex items-center gap-1" // Adjusted for text
+        className="text-foreground hover:bg-accent/50 h-8 w-auto px-2 flex items-center gap-1"
         title={t('change-language')}
       >
         <Globe className="h-4 w-4 animate-globe-pulse" />
