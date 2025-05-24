@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { useApp } from '@/contexts/AppContext';
 import { useTranslation } from '@/utils/translations';
-import { loadImage, removeBackground } from '@/utils/imageProcessing'; // Import new utilities
+import { loadImage, removeBackground } from '@/utils/imageProcessing';
 
 interface ServiceCardProps {
   type: 'flat-tyre' | 'out-of-fuel' | 'other-car-problems' | 'tow-truck' | 'emergency' | 'support' | 'car-battery';
@@ -30,7 +30,8 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ type, onClick }) => {
     let objectUrlToRevoke: string | null = null;
 
     if (type === 'tow-truck') {
-      const originalIconPath = '/lovable-uploads/3b8bc326-78ae-4504-b286-f3cbf28a57f2.png';
+      // Update to the new image path provided by the user
+      const originalIconPath = '/lovable-uploads/14fd5d8b-cd3a-4614-b664-52f591fae6f6.png';
       setProcessedTowTruckIconUrl(originalIconPath); // Show original immediately
 
       const processImage = async () => {
@@ -108,7 +109,8 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ type, onClick }) => {
       case 'tow-truck':
         animationClass = "animate-truck-pull";
         const greenFilterStyle = { filter: 'brightness(0) saturate(100%) invert(37%) sepia(61%) saturate(1358%) hue-rotate(95deg) brightness(99%) contrast(91%)' };
-        const iconSrc = processedTowTruckIconUrl || '/lovable-uploads/3b8bc326-78ae-4504-b286-f3cbf28a57f2.png';
+        // Use the new image path as fallback if processing fails or hasn't completed
+        const iconSrc = processedTowTruckIconUrl || '/lovable-uploads/14fd5d8b-cd3a-4614-b664-52f591fae6f6.png';
         
         return { 
           icon: <img 
@@ -116,12 +118,21 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ type, onClick }) => {
                   alt={t('tow-truck')} 
                   className={`${iconSizeClass} ${animationClass}`} 
                   style={greenFilterStyle} 
+                  // Add object-contain to ensure the image fits within the bounds without being cropped,
+                  // especially if the aspect ratio of the processed image differs.
+                  onError={() => {
+                    // Fallback to original if the processed one fails to load for some reason
+                    // (though `processedTowTruckIconUrl` already handles this by starting with original)
+                    if (processedTowTruckIconUrl !== '/lovable-uploads/14fd5d8b-cd3a-4614-b664-52f591fae6f6.png') {
+                         setProcessedTowTruckIconUrl('/lovable-uploads/14fd5d8b-cd3a-4614-b664-52f591fae6f6.png');
+                    }
+                  }}
                 />, 
           title: t('tow-truck'),
           description: t('tow-truck-desc')
         };
       case 'emergency':
-        animationClass = "animate-emergency-alert-flash"; // Changed from animate-pulse to match dashboard more closely
+        animationClass = "animate-emergency-alert-flash";
         return { 
           icon: <AlertTriangle className={`${iconSizeClass} ${animationClass} text-red-500`} />,
           title: t('emergency'),
