@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
@@ -77,8 +78,11 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ type, onClick }) => {
         };
       case 'tow-truck':
         animationClass = "animate-truck-pull";
+        // This CSS filter attempts to turn black parts of the image to green (approx. Tailwind's green-600).
+        // Note: This filter will also affect the image's existing background.
+        const greenFilterStyle = { filter: 'brightness(0) saturate(100%) invert(37%) sepia(61%) saturate(1358%) hue-rotate(95deg) brightness(99%) contrast(91%)' };
         return { 
-          icon: <img src="/lovable-uploads/3b8bc326-78ae-4504-b286-f3cbf28a57f2.png" alt={t('tow-truck')} className={`${iconSizeClass} ${animationClass}`} />, 
+          icon: <img src="/lovable-uploads/3b8bc326-78ae-4504-b286-f3cbf28a57f2.png" alt={t('tow-truck')} className={`${iconSizeClass} ${animationClass}`} style={greenFilterStyle} />, 
           title: t('tow-truck'),
           description: t('tow-truck-desc')
         };
@@ -152,3 +156,4 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ type, onClick }) => {
 };
 
 export default ServiceCard;
+
