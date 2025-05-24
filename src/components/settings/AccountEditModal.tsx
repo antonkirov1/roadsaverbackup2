@@ -1,12 +1,13 @@
+
 import React, { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"; // Added Dialog
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "@/components/ui/use-toast"; // Ensure this path is correct based on your project structure for use-toast
 import { useTranslation } from '@/utils/translations';
-import { Save } from 'lucide-react';
+import AccountEditFormField from './form-fields/AccountEditFormField';
+import PasswordEditField from './form-fields/PasswordEditField';
+import PasswordConfirmDialog from './dialogs/PasswordConfirmDialog';
+// Save icon is now used within the sub-components
 
 interface AccountEditModalProps {
   open: boolean;
@@ -51,8 +52,6 @@ const AccountEditModal: React.FC<AccountEditModalProps> = ({
   const [isNewPasswordChanged, setIsNewPasswordChanged] = useState(false);
 
   const [showPasswordConfirmDialog, setShowPasswordConfirmDialog] = useState(false);
-  const [passwordToConfirm, setPasswordToConfirm] = useState('');
-  const [passwordConfirmError, setPasswordConfirmError] = useState('');
   const [fieldToUpdate, setFieldToUpdate] = useState<string | null>(null);
 
   useEffect(() => {
@@ -98,137 +97,105 @@ const AccountEditModal: React.FC<AccountEditModalProps> = ({
     validatePhoneNumber(value);
   };
 
+  const isPasswordValid = (password: string) => {
+    return password.length >= 8 && /[A-Z]/.test(password);
+  };
+
   const handleSaveAttempt = (field: string) => {
     if (field === 'phone' && !validatePhoneNumber(newPhoneNumber)) {
         toast({ title: t('phone-error-title'), description: t('phone-invalid-format'), variant: 'destructive' });
         return;
     }
-    if (field === 'password' && (newPassword.length < 8 || !/[A-Z]/.test(newPassword))) {
+    if (field === 'password' && !isPasswordValid(newPassword)) {
         toast({ title: t('password-error-title'), description: t('password-requirements'), variant: 'destructive' });
         return;
     }
     setFieldToUpdate(field);
-    setPasswordToConfirm('');
-    setPasswordConfirmError('');
     setShowPasswordConfirmDialog(true);
   };
 
-  const handleConfirmPasswordAndSave = () => {
-    if (passwordToConfirm !== currentPasswordForVerification) {
-      setPasswordConfirmError(t('incorrect-password-error'));
-      return;
-    }
-
+  const executeSave = () => {
     if (fieldToUpdate === 'username') {
       onUsernameSave(newUsername);
       toast({ title: t('update-success-title'), description: t('username-update-success') });
+      setIsUsernameChanged(false);
     } else if (fieldToUpdate === 'email') {
       onEmailSave(newEmail);
       toast({ title: t('update-success-title'), description: t('email-update-success') });
+      setIsEmailChanged(false);
     } else if (fieldToUpdate === 'phone') {
-      if (!validatePhoneNumber(newPhoneNumber)) return; // Re-validate before saving
+      if (!validatePhoneNumber(newPhoneNumber)) return; // Re-validate
       onPhoneNumberSave(newPhoneNumber);
       toast({ title: t('update-success-title'), description: t('phone-update-success') });
+      setIsPhoneNumberChanged(false);
     } else if (fieldToUpdate === 'password') {
-      if (newPassword.length < 8 || !/[A-Z]/.test(newPassword)) {
+      if (!isPasswordValid(newPassword)) { // Re-validate
           toast({ title: t('password-error-title'), description: t('password-requirements'), variant: 'destructive' });
-          setShowPasswordConfirmDialog(false); // Close confirm dialog as validation failed earlier than expected here
           return;
       }
       onPasswordSave(newPassword);
-      setNewPassword(''); // Clear field
+      setNewPassword(''); 
       toast({ title: t('update-success-title'), description: t('password-update-success') });
+      setIsNewPasswordChanged(false);
     }
-
     setShowPasswordConfirmDialog(false);
     setFieldToUpdate(null);
-    // Reset relevant changed states after successful save, parent will update initialData prop which triggers useEffect
-    if (fieldToUpdate === 'username') setIsUsernameChanged(false);
-    if (fieldToUpdate === 'email') setIsEmailChanged(false);
-    if (fieldToUpdate === 'phone') setIsPhoneNumberChanged(false);
-    if (fieldToUpdate === 'password') setIsNewPasswordChanged(false);
   };
-
-  // The `if (!open) return null;` check is handled by the Dialog component's open prop.
-  // The Dialog component itself will not render if `open` is false.
+  
+  const handlePasswordDialogCancel = () => {
+    setShowPasswordConfirmDialog(false);
+    setFieldToUpdate(null);
+  }
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => { if (!isOpen) onClose(); }}>
-      <DialogContent
-        className="bg-background rounded-lg shadow-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto"
-        // Removed manual positioning overrides and event handlers like onClick, onEscapeKeyDown, onInteractOutside
-        // as the Dialog component and its DialogContent will manage these.
-      >
+      <DialogContent className="bg-background rounded-lg shadow-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{t('change-account-info')}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4 mt-4">
-          <div>
-            <Label htmlFor="usernameEdit" className="text-sm font-medium">{t('change-username-colon')}</Label>
-            <div className="flex items-center space-x-2">
-              <Input
-                id="usernameEdit"
-                value={newUsername}
-                onChange={(e) => setNewUsername(e.target.value)}
-              />
-              <Button
-                size="sm"
-                className="bg-green-600 hover:bg-green-700"
-                disabled={!isUsernameChanged}
-                onClick={() => handleSaveAttempt('username')}
-              >
-                <Save className="h-4 w-4 mr-1 sm:mr-2" /> <span className="hidden sm:inline">{t('save')}</span>
-              </Button>
-            </div>
-          </div>
-          <div>
-            <Label htmlFor="emailEdit" className="text-sm font-medium">{t('change-email-colon')}</Label>
-            <div className="flex items-center space-x-2">
-              <Input
-                id="emailEdit"
-                value={newEmail}
-                onChange={(e) => setNewEmail(e.target.value)}
-                type="email"
-              />
-              <Button size="sm" className="bg-green-600 hover:bg-green-700" disabled={!isEmailChanged} onClick={() => handleSaveAttempt('email')}>
-                <Save className="h-4 w-4 mr-1 sm:mr-2" /> <span className="hidden sm:inline">{t('save')}</span>
-              </Button>
-            </div>
-          </div>
-          <div>
-            <Label htmlFor="phoneEdit" className="text-sm font-medium">{t('change-phone-colon')}</Label>
-            <div className="flex items-center space-x-2">
-              <Input
-                id="phoneEdit"
-                value={newPhoneNumber}
-                onChange={handlePhoneChange}
-                placeholder={t('phone-placeholder')}
-              />
-              <Button size="sm" className="bg-green-600 hover:bg-green-700" disabled={!isPhoneNumberChanged || !!phoneError} onClick={() => handleSaveAttempt('phone')}>
-                <Save className="h-4 w-4 mr-1 sm:mr-2" /> <span className="hidden sm:inline">{t('save')}</span>
-              </Button>
-            </div>
-            {phoneError && <p className="text-red-500 text-xs mt-1">{phoneError}</p>}
-          </div>
-          <div>
-            <Label htmlFor="passwordEdit" className="text-sm font-medium">{t('change-password-colon')}</Label>
-            <div className="flex items-center space-x-2">
-              <Input
-                id="passwordEdit"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                type="password"
-                placeholder={t('new-password-placeholder')}
-              />
-              <Button size="sm" className="bg-green-600 hover:bg-green-700" disabled={!isNewPasswordChanged || newPassword.length < 8 || !/[A-Z]/.test(newPassword)} onClick={() => handleSaveAttempt('password')}>
-                <Save className="h-4 w-4 mr-1 sm:mr-2" /> <span className="hidden sm:inline">{t('save')}</span>
-              </Button>
-            </div>
-            <p className="text-xs text-muted-foreground mt-1">{t('password-requirements')}</p>
-          </div>
+          <AccountEditFormField
+            id="usernameEdit"
+            label={t('change-username-colon')}
+            value={newUsername}
+            onChange={(e) => setNewUsername(e.target.value)}
+            onSave={() => handleSaveAttempt('username')}
+            isChanged={isUsernameChanged}
+            t={t}
+          />
+          <AccountEditFormField
+            id="emailEdit"
+            label={t('change-email-colon')}
+            value={newEmail}
+            onChange={(e) => setNewEmail(e.target.value)}
+            onSave={() => handleSaveAttempt('email')}
+            isChanged={isEmailChanged}
+            type="email"
+            t={t}
+          />
+          <AccountEditFormField
+            id="phoneEdit"
+            label={t('change-phone-colon')}
+            value={newPhoneNumber}
+            onChange={handlePhoneChange}
+            onSave={() => handleSaveAttempt('phone')}
+            isChanged={isPhoneNumberChanged}
+            saveButtonDisabled={!!phoneError}
+            placeholder={t('phone-placeholder')}
+            error={phoneError}
+            t={t}
+          />
+          <PasswordEditField
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            onSave={() => handleSaveAttempt('password')}
+            isChanged={isNewPasswordChanged}
+            isValid={isPasswordValid(newPassword)}
+            t={t}
+          />
           <div className="flex space-x-2 pt-4">
             <Button
-              onClick={onClose} // This still correctly calls setShowAccountEdit(false) from SettingsMenu
+              onClick={onClose}
               variant="outline"
               className="flex-1"
             >
@@ -238,41 +205,17 @@ const AccountEditModal: React.FC<AccountEditModalProps> = ({
         </div>
       </DialogContent>
 
-      {/* The AlertDialog for password confirmation remains, it's a separate dialog flow. */}
-      <AlertDialog open={showPasswordConfirmDialog} onOpenChange={setShowPasswordConfirmDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>{t('current-password-prompt-title')}</AlertDialogTitle>
-            <AlertDialogDescription>
-              {t('current-password-prompt-desc')}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <div className="space-y-2">
-            <Input
-              type="password"
-              placeholder={t('enter-current-password')}
-              value={passwordToConfirm}
-              onChange={(e) => {
-                setPasswordToConfirm(e.target.value);
-                setPasswordConfirmError('');
-              }}
-            />
-            {passwordConfirmError && <p className="text-red-500 text-sm">{passwordConfirmError}</p>}
-          </div>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setFieldToUpdate(null)}>{t('cancel')}</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleConfirmPasswordAndSave}
-              disabled={!passwordToConfirm}
-              className="bg-green-600 hover:bg-green-700"
-            >
-              {t('save')}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <PasswordConfirmDialog
+        open={showPasswordConfirmDialog}
+        onOpenChange={setShowPasswordConfirmDialog}
+        t={t}
+        currentPasswordForVerification={currentPasswordForVerification}
+        onConfirm={executeSave}
+        onCancel={handlePasswordDialogCancel}
+      />
     </Dialog>
   );
 };
 
 export default AccountEditModal;
+
