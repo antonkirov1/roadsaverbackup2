@@ -22,7 +22,7 @@ const Auth: React.FC = () => {
     });
   };
   
-  const handleRegister = (userData: { username: string; email: string; password: string; gender?: string }) => {
+  const handleRegister = (userData: { username: string; email: string; password: string; gender?: string; phoneNumber?: string }) => {
     login({ username: userData.username, email: userData.email });
     navigate('/user/dashboard');
     toast({
@@ -31,25 +31,27 @@ const Auth: React.FC = () => {
     });
   };
   
+  if (showRegister) {
+    return (
+      <RegisterForm 
+        onRegister={handleRegister} 
+        onCancel={() => setShowRegister(false)} 
+      />
+    );
+  }
+  
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-b from-green-600/10 to-background p-4">
+    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-b from-green-600/10 to-background p-4 font-clash">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
           <h1 className="text-4xl font-bold mb-2">RoadSaver</h1>
           <p className="text-muted-foreground">Emergency Road Assistance</p>
         </div>
         
-        {!showRegister ? (
-          <LoginForm 
-            onLogin={handleLogin} 
-            onCreateAccount={() => setShowRegister(true)} 
-          />
-        ) : (
-          <RegisterForm 
-            onRegister={handleRegister} 
-            onCancel={() => setShowRegister(false)} 
-          />
-        )}
+        <LoginForm 
+          onLogin={handleLogin} 
+          onCreateAccount={() => setShowRegister(true)} 
+        />
       </div>
     </div>
   );

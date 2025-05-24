@@ -58,55 +58,55 @@ const Dashboard: React.FC = () => {
   return (
     <div className="min-h-screen bg-background pb-16 font-clash">
       {/* Header */}
-      <header className="bg-green-600 text-white p-4 flex justify-between items-center sticky top-0 z-10">
-        <h1 className="text-xl font-bold">RoadSaver</h1>
-        <div className="flex gap-2">
+      <header className="bg-green-600 text-white p-3 sm:p-4 flex justify-between items-center sticky top-0 z-10">
+        <h1 className="text-lg sm:text-xl font-bold">RoadSaver</h1>
+        <div className="flex gap-1 sm:gap-2">
           <Button 
             variant="ghost" 
             size="icon" 
             onClick={() => setShowEmergencyServices(true)}
-            className="text-white hover:bg-white/20 bg-red-600 hover:bg-red-700"
+            className="text-white hover:bg-white/20 bg-red-600 hover:bg-red-700 h-8 w-8 sm:h-10 sm:w-10"
             title="Emergency"
           >
-            <AlertTriangle className="h-5 w-5" />
+            <AlertTriangle className="h-4 w-4 sm:h-5 sm:w-5" />
           </Button>
           <Button 
             variant="ghost" 
             size="icon" 
             onClick={() => setShowLocationPicker(true)}
-            className="text-white hover:bg-white/20"
+            className="text-white hover:bg-white/20 h-8 w-8 sm:h-10 sm:w-10"
           >
-            <MapPin className="h-5 w-5" />
+            <MapPin className="h-4 w-4 sm:h-5 sm:w-5" />
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={() => setShowSettings(true)}
+            className="text-white hover:bg-white/20 h-8 w-8 sm:h-10 sm:w-10"
+          >
+            <Settings className="h-4 w-4 sm:h-5 sm:w-5" />
           </Button>
           <div className="relative">
             <Button 
               variant="ghost" 
               size="icon" 
               onClick={() => setLanguage(language === 'en' ? 'bg' : 'en')}
-              className="text-white hover:bg-white/20"
+              className="text-white hover:bg-white/20 h-8 w-8 sm:h-10 sm:w-10"
             >
-              <Globe className="h-4 w-4" />
+              <Globe className="h-3 w-3 sm:h-4 sm:w-4" />
             </Button>
             <span className="absolute -bottom-1 -right-1 text-xs bg-white text-green-600 px-1 rounded">
               {language.toUpperCase()}
             </span>
           </div>
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={() => setShowSettings(true)}
-            className="text-white hover:bg-white/20"
-          >
-            <Settings className="h-5 w-5" />
-          </Button>
         </div>
       </header>
       
       {/* Main Content */}
-      <main className="container px-4 py-6">
-        <h2 className="text-2xl font-bold mb-6">{t('services')}</h2>
+      <main className="container max-w-md mx-auto px-4 py-4 sm:py-6">
+        <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">{t('services')}</h2>
         
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4">
           <ServiceCard type="flat-tyre" onClick={() => handleServiceSelect('flat-tyre')} />
           <ServiceCard type="out-of-fuel" onClick={() => handleServiceSelect('out-of-fuel')} />
           <ServiceCard type="car-battery" onClick={() => handleServiceSelect('car-battery')} />

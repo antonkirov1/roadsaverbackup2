@@ -1,3 +1,4 @@
+
 interface TranslationEntry {
   en: string;
   bg: string;
@@ -22,7 +23,7 @@ export const settingsTranslations: TranslationGroup = {
     bg: 'Акаунт'
   },
   'about': {
-    en: 'About',
+    en: 'About us',
     bg: 'За нас'
   },
   'payment': {
@@ -104,5 +105,9 @@ export const settingsTranslations: TranslationGroup = {
   'requests-desc': {
     en: 'View all your previous service requests',
     bg: 'Вижте всички ваши предишни заявки за услуги'
+  },
+  'phone-number': {
+    en: 'Phone number:',
+    bg: 'Телефонен номер:'
   }
 };

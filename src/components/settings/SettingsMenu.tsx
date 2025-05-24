@@ -96,7 +96,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
   
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md font-clash">
+      <DialogContent className="sm:max-w-md font-clash mx-4 max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{t('settings')}</DialogTitle>
           <DialogDescription>
@@ -105,26 +105,26 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
         </DialogHeader>
         
         <Tabs defaultValue="account" className="w-full">
-          <TabsList className="grid grid-cols-4 mb-4">
-            <TabsTrigger value="account" className="flex items-center gap-1">
+          <TabsList className="grid grid-cols-4 mb-4 h-auto">
+            <TabsTrigger value="account" className="flex flex-col items-center gap-1 p-2 text-xs">
               <User className="h-3 w-3" />
-              {t('account')}
+              <span className="leading-tight">{t('account')}</span>
             </TabsTrigger>
-            <TabsTrigger value="history" className="flex items-center gap-1">
+            <TabsTrigger value="history" className="flex flex-col items-center gap-1 p-2 text-xs">
               <History className="h-3 w-3" />
-              {t('history')}
+              <span className="leading-tight">{t('history')}</span>
             </TabsTrigger>
-            <TabsTrigger value="payment" className="flex items-center gap-1">
+            <TabsTrigger value="payment" className="flex flex-col items-center gap-1 p-2 text-xs">
               <Euro className="h-3 w-3" />
-              {t('payment')}
+              <span className="leading-tight">{t('payment')}</span>
             </TabsTrigger>
-            <TabsTrigger value="about" className="flex items-center gap-1">
+            <TabsTrigger value="about" className="flex flex-col items-center gap-1 p-2 text-xs">
               <Info className="h-3 w-3" />
-              About Us
+              <span className="leading-tight">{t('about')}</span>
             </TabsTrigger>
           </TabsList>
           
-          <TabsContent value="account" className="space-y-4">
+          <TabsContent value="account" className="space-y-4 min-h-[300px]">
             <div className="flex items-center justify-center py-4">
               <AvatarUpload
                 currentAvatar={userAvatar}
@@ -144,7 +144,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
                 {t('email')}: {newEmail}
               </p>
               <p className="text-sm text-muted-foreground">
-                Phone number: {newPhoneNumber}
+                {t('phone-number')} {newPhoneNumber}
               </p>
             </div>
             
@@ -187,7 +187,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
             </Button>
           </TabsContent>
           
-          <TabsContent value="history" className="space-y-4">
+          <TabsContent value="history" className="space-y-4 min-h-[300px]">
             <div className="text-center py-4">
               <History className="h-12 w-12 mx-auto text-green-600 mb-4" />
               <h3 className="text-lg font-medium mb-2">{t('request-history')}</h3>
@@ -216,7 +216,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
             </div>
           </TabsContent>
           
-          <TabsContent value="payment" className="space-y-4">
+          <TabsContent value="payment" className="space-y-4 min-h-[300px]">
             <div className="py-8 text-center">
               <Settings className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
               <h3 className="text-lg font-medium mb-2">{t('payment-options')}</h3>
@@ -230,7 +230,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
             </div>
           </TabsContent>
           
-          <TabsContent value="about" className="space-y-4">
+          <TabsContent value="about" className="space-y-4 min-h-[300px]">
             <div className="space-y-2 text-center py-4">
               <h2 className="text-xl font-bold">RoadSaver</h2>
               <p className="text-sm text-muted-foreground">{t('version')} 1.0.0</p>
@@ -242,8 +242,8 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
                 <p className="text-sm">
                   Mon - Friday from 09:00 - 17:00.
                 </p>
-                <p className="text-sm mt-2 text-orange-600">
-                  {t('outside-hours')}
+                <p className="text-sm mt-2 text-orange-600 px-2 leading-relaxed">
+                  For service requests outside of working hours, please contact support
                 </p>
               </div>
               
@@ -256,17 +256,17 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
                   {t('phone')}: +359 888 123 456
                 </p>
                 
-                <div className="flex justify-center space-x-3">
-                  <Button variant="outline" size="sm" className="bg-blue-600 text-white hover:bg-blue-700">
+                <div className="grid grid-cols-2 gap-2">
+                  <Button variant="outline" size="sm" className="bg-blue-600 text-white hover:bg-blue-700 text-xs">
                     📘 Facebook
                   </Button>
-                  <Button variant="outline" size="sm" className="bg-blue-500 text-white hover:bg-blue-600">
+                  <Button variant="outline" size="sm" className="bg-blue-500 text-white hover:bg-blue-600 text-xs">
                     💬 Messenger
                   </Button>
-                  <Button variant="outline" size="sm" className="bg-green-500 text-white hover:bg-green-600">
+                  <Button variant="outline" size="sm" className="bg-green-500 text-white hover:bg-green-600 text-xs">
                     📱 WhatsApp
                   </Button>
-                  <Button variant="outline" size="sm" className="bg-purple-600 text-white hover:bg-purple-700">
+                  <Button variant="outline" size="sm" className="bg-purple-600 text-white hover:bg-purple-700 text-xs">
                     📞 Viber
                   </Button>
                 </div>
@@ -278,7 +278,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
         {/* Account Edit Dialog */}
         {showAccountEdit && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-            <div className="bg-background rounded-lg shadow-lg p-6 w-full max-w-md">
+            <div className="bg-background rounded-lg shadow-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
               <h2 className="text-xl font-bold mb-4">Change Account Information</h2>
               <div className="space-y-4">
                 <div>

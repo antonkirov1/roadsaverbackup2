@@ -15,7 +15,7 @@ export const serviceTranslations: TranslationGroup = {
     bg: 'Спукана гума'
   },
   'out-of-fuel': {
-    en: 'Out of Fuel',
+    en: 'Out Of Fuel',
     bg: 'Без гориво'
   },
   'other-car-problems': {
@@ -27,7 +27,7 @@ export const serviceTranslations: TranslationGroup = {
     bg: 'Проблеми с акумулатора'
   },
   'tow-truck': {
-    en: 'I Need a Tow Truck',
+    en: 'I Need A Tow Truck',
     bg: 'Нужен ми е влекач'
   },
   'emergency': {
@@ -117,5 +117,9 @@ export const serviceTranslations: TranslationGroup = {
   'outside-hours': {
     en: 'For service requests outside of working hours, please contact support',
     bg: 'За заявки за услуги извън работното време, моля свържете се с поддръжката'
+  },
+  'phone-number': {
+    en: 'Phone number:',
+    bg: 'Телефонен номер:'
   }
 };

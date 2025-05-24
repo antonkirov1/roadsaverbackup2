@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { User, Car } from 'lucide-react';
+import { User, Car, Globe } from 'lucide-react';
 import { useApp } from '@/contexts/AppContext';
 import { useTranslation } from '@/utils/translations';
 
@@ -12,20 +12,28 @@ const Index = () => {
   const t = useTranslation(language);
   
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-green-600/20 to-background p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-green-600/20 to-background p-4 font-clash">
+      {/* Language Toggle */}
+      <div className="absolute top-4 right-4 z-10">
+        <div className="relative">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={() => setLanguage(language === 'en' ? 'bg' : 'en')}
+            className="h-10 w-10 bg-green-600 text-white hover:bg-green-700"
+          >
+            <Globe className="h-4 w-4" />
+          </Button>
+          <span className="absolute -bottom-1 -right-1 text-xs bg-white text-green-600 px-1 rounded">
+            {language.toUpperCase()}
+          </span>
+        </div>
+      </div>
+
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-2">RoadSaver</h1>
           <p className="text-muted-foreground">Emergency Road Assistance Services</p>
-          <div className="flex justify-center mt-2">
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={() => setLanguage(language === 'en' ? 'bg' : 'en')}
-            >
-              {language === 'en' ? 'BG' : 'EN'}
-            </Button>
-          </div>
         </div>
         
         <div className="space-y-4">
