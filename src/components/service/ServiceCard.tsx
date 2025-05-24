@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -14,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useApp } from '@/contexts/AppContext';
 import { useTranslation } from '@/utils/translations';
+import { loadImage, removeBackground } from '@/utils/imageProcessing'; // Import new utilities
 
 interface ServiceCardProps {
   type: 'flat-tyre' | 'out-of-fuel' | 'other-car-problems' | 'tow-truck' | 'emergency' | 'support' | 'car-battery';
@@ -24,6 +24,35 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ type, onClick }) => {
   const { language } = useApp();
   const t = useTranslation(language);
   const [showContactDialog, setShowContactDialog] = useState(false);
+  const [processedTowTruckIconUrl, setProcessedTowTruckIconUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    let objectUrlToRevoke: string | null = null;
+
+    if (type === 'tow-truck') {
+      const originalIconPath = '/lovable-uploads/3b8bc326-78ae-4504-b286-f3cbf28a57f2.png';
+      setProcessedTowTruckIconUrl(originalIconPath); // Show original immediately
+
+      const processImage = async () => {
+        try {
+          const imgElement = await loadImage(originalIconPath);
+          const blob = await removeBackground(imgElement);
+          objectUrlToRevoke = URL.createObjectURL(blob);
+          setProcessedTowTruckIconUrl(objectUrlToRevoke);
+        } catch (error) {
+          console.error('Failed to process tow truck icon, using original:', error);
+          // Already set to original, so no change needed on error if we want to keep showing original
+        }
+      };
+      processImage();
+    }
+
+    return () => {
+      if (objectUrlToRevoke) {
+        URL.revokeObjectURL(objectUrlToRevoke);
+      }
+    };
+  }, [type]);
   
   const handleClick = () => {
     if (type === 'support') {
@@ -78,16 +107,21 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ type, onClick }) => {
         };
       case 'tow-truck':
         animationClass = "animate-truck-pull";
-        // This CSS filter attempts to turn black parts of the image to green (approx. Tailwind's green-600).
-        // Note: This filter will also affect the image's existing background.
         const greenFilterStyle = { filter: 'brightness(0) saturate(100%) invert(37%) sepia(61%) saturate(1358%) hue-rotate(95deg) brightness(99%) contrast(91%)' };
+        const iconSrc = processedTowTruckIconUrl || '/lovable-uploads/3b8bc326-78ae-4504-b286-f3cbf28a57f2.png';
+        
         return { 
-          icon: <img src="/lovable-uploads/3b8bc326-78ae-4504-b286-f3cbf28a57f2.png" alt={t('tow-truck')} className={`${iconSizeClass} ${animationClass}`} style={greenFilterStyle} />, 
+          icon: <img 
+                  src={iconSrc} 
+                  alt={t('tow-truck')} 
+                  className={`${iconSizeClass} ${animationClass}`} 
+                  style={greenFilterStyle} 
+                />, 
           title: t('tow-truck'),
           description: t('tow-truck-desc')
         };
       case 'emergency':
-        animationClass = "animate-pulse"; // This should be 'animate-emergency-alert-flash' as per dashboard but keeping it as it was in this file.
+        animationClass = "animate-emergency-alert-flash"; // Changed from animate-pulse to match dashboard more closely
         return { 
           icon: <AlertTriangle className={`${iconSizeClass} ${animationClass} text-red-500`} />,
           title: t('emergency'),
@@ -156,4 +190,3 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ type, onClick }) => {
 };
 
 export default ServiceCard;
-
