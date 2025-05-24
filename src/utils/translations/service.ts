@@ -1,4 +1,3 @@
-
 interface TranslationEntry {
   en: string;
   bg: string;
@@ -40,23 +39,23 @@ export const serviceTranslations: TranslationGroup = {
   },
   'flat-tyre-desc': {
     en: 'Get help changing a flat tyre',
-    bg: 'Получете помощ за смяна на спукана гума'
+    bg: 'Помощ за смяна на гума'
   },
   'out-of-fuel-desc': {
     en: 'Request fuel delivery',
-    bg: 'Заявка за доставка на гориво'
+    bg: 'Доставка на гориво'
   },
   'other-car-problems-desc': {
     en: 'Get help with various car problems',
-    bg: 'Получете помощ за различни проблеми с колата'
+    bg: 'Помощ за други проблеми'
   },
   'car-battery-desc': {
     en: 'Get help with your car battery issues',
-    bg: 'Получете помощ за проблеми с акумулатора'
+    bg: 'Помощ за акумулатора'
   },
   'tow-truck-desc': {
     en: 'Request towing service',
-    bg: 'Заявка за услуга с влекач'
+    bg: 'Заявка за влекач'
   },
   'emergency-desc': {
     en: 'Contact emergency services',

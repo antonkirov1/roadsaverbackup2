@@ -1,8 +1,9 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
-import { useIsMobile } from '@/hooks/use-mobile';
+import { Globe } from 'lucide-react';
+// Tooltip components are not used in this version as per the dashboard example for simplicity in settings
+// import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
+// import { useIsMobile } from '@/hooks/use-mobile'; // Not strictly needed for this specific control if we make it consistent
 
 interface LanguageSwitcherControlsProps {
   currentLanguage: 'en' | 'bg';
@@ -15,72 +16,27 @@ const LanguageSwitcherControls: React.FC<LanguageSwitcherControlsProps> = ({
   onLanguageChange,
   t,
 }) => {
-  const isMobile = useIsMobile();
-  
-  // On mobile, a simpler version without tooltips
-  if (isMobile) {
-    return (
-      <div className="absolute top-4 right-12 flex space-x-1 z-10">
-        <Button
-          variant={currentLanguage === 'en' ? 'secondary' : 'ghost'}
-          size="icon"
-          onClick={() => onLanguageChange('en')}
-          className="h-8 w-8"
-          aria-label={t('english')}
-        >
-          <span role="img" aria-label="British Flag">🇬🇧</span>
-        </Button>
-        <Button
-          variant={currentLanguage === 'bg' ? 'secondary' : 'ghost'}
-          size="icon"
-          onClick={() => onLanguageChange('bg')}
-          className="h-8 w-8"
-          aria-label={t('bulgarian')}
-        >
-          <span role="img" aria-label="Bulgarian Flag">🇧🇬</span>
-        </Button>
-      </div>
-    );
-  }
-  
-  // Desktop version with tooltips
+  // const isMobile = useIsMobile(); // Keeping it simple and consistent with dashboard header button
+
+  const handleToggleLanguage = () => {
+    onLanguageChange(currentLanguage === 'en' ? 'bg' : 'en');
+  };
+
   return (
-    <TooltipProvider delayDuration={300}>
-      <div className="absolute top-4 right-12 flex space-x-1 z-10">
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant={currentLanguage === 'en' ? 'secondary' : 'ghost'}
-              size="icon"
-              onClick={() => onLanguageChange('en')}
-              className="h-8 w-8"
-              aria-label={t('english')}
-            >
-              <span role="img" aria-label="British Flag">🇬🇧</span>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>{t('english')}</p>
-          </TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant={currentLanguage === 'bg' ? 'secondary' : 'ghost'}
-              size="icon"
-              onClick={() => onLanguageChange('bg')}
-              className="h-8 w-8"
-              aria-label={t('bulgarian')}
-            >
-              <span role="img" aria-label="Bulgarian Flag">🇧🇬</span>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>{t('bulgarian')}</p>
-          </TooltipContent>
-        </Tooltip>
-      </div>
-    </TooltipProvider>
+    <div className="absolute top-3 right-4 flex items-center z-20"> {/* Adjusted top to align better, increased z-index */}
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={handleToggleLanguage}
+        className="text-foreground hover:bg-accent/50 h-8 w-auto px-2 flex items-center gap-1" // Adjusted for text
+        title={t('change-language')}
+      >
+        <Globe className="h-4 w-4 animate-globe-pulse" />
+        <span className="text-xs font-medium">
+          {currentLanguage.toUpperCase()}
+        </span>
+      </Button>
+    </div>
   );
 };
 

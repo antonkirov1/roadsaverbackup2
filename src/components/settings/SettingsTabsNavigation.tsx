@@ -8,22 +8,24 @@ interface SettingsTabsNavigationProps {
 }
 
 const SettingsTabsNavigation: React.FC<SettingsTabsNavigationProps> = ({ t }) => {
+  const iconAnimation = "transition-transform group-hover:scale-110 group-data-[state=active]:scale-110";
+
   return (
-    <TabsList className="grid grid-cols-4 mb-2 -mt-2 h-auto"> {/* Adjusted margins: mb-4 to mb-2, added -mt-2 */}
-      <TabsTrigger value="account" className="flex flex-col items-center gap-1 p-2 text-xs">
-        <User className="h-3 w-3" />
+    <TabsList className="grid grid-cols-4 mb-2 -mt-2 h-auto">
+      <TabsTrigger value="account" className="group flex flex-col items-center gap-1 p-2 text-xs data-[state=active]:py-[7px] data-[state=active]:px-2"> {/* Adjusted padding for active state */}
+        <User className={`h-3 w-3 ${iconAnimation}`} />
         <span className="leading-tight">{t('account')}</span>
       </TabsTrigger>
-      <TabsTrigger value="history" className="flex flex-col items-center gap-1 p-2 text-xs">
-        <History className="h-3 w-3" />
+      <TabsTrigger value="history" className="group flex flex-col items-center gap-1 p-2 text-xs data-[state=active]:py-[7px] data-[state=active]:px-2">
+        <History className={`h-3 w-3 ${iconAnimation}`} />
         <span className="leading-tight">{t('history')}</span>
       </TabsTrigger>
-      <TabsTrigger value="payment" className="flex flex-col items-center gap-1 p-2 text-xs">
-        <Euro className="h-3 w-3" />
+      <TabsTrigger value="payment" className="group flex flex-col items-center gap-1 p-2 text-xs data-[state=active]:py-[7px] data-[state=active]:px-2">
+        <Euro className={`h-3 w-3 ${iconAnimation}`} />
         <span className="leading-tight">{t('payment')}</span>
       </TabsTrigger>
-      <TabsTrigger value="about" className="flex flex-col items-center gap-1 p-2 text-xs">
-        <Info className="h-3 w-3" />
+      <TabsTrigger value="about" className="group flex flex-col items-center gap-1 p-2 text-xs data-[state=active]:py-[7px] data-[state=active]:px-2">
+        <Info className={`h-3 w-3 ${iconAnimation}`} />
         <span className="leading-tight">{t('about')}</span>
       </TabsTrigger>
     </TabsList>
