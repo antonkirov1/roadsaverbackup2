@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -9,7 +10,7 @@ import { useApp } from '@/contexts/AppContext';
 import { useTranslation } from '@/utils/translations';
 import { toast } from '@/components/ui/use-toast';
 import MapInput from '@/components/MapInput';
-import { Settings, MapPin, AlertTriangle, Globe, Siren } from 'lucide-react';
+import { Settings, MapPin, Globe, Siren } from 'lucide-react'; // AlertTriangle removed, Siren kept
 
 type ServiceType = 'flat-tyre' | 'out-of-fuel' | 'other-car-problems' | 'tow-truck' | 'emergency' | 'support' | 'car-battery';
 
@@ -67,7 +68,7 @@ const Dashboard: React.FC = () => {
             className="text-white hover:bg-white/20 bg-red-600 hover:bg-red-700 h-8 w-8 sm:h-10 sm:w-10"
             title={t('emergency-services')}
           >
-            <AlertTriangle className="h-4 w-4 sm:h-5 sm:w-5 animate-emergency-alert-flash" />
+            <Siren className="h-4 w-4 sm:h-5 sm:w-5 animate-emergency-alert-flash" />
           </Button>
           <Button 
             variant="ghost" 
@@ -167,3 +168,4 @@ const Dashboard: React.FC = () => {
 };
 
 export default Dashboard;
+
