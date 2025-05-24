@@ -10,8 +10,8 @@ import HistoryTabContent from './HistoryTabContent';
 import PaymentTabContent from './PaymentTabContent';
 import AboutTabContent from './AboutTabContent';
 import SettingsTabsNavigation from './SettingsTabsNavigation';
+import LanguageSwitcherControls from './LanguageSwitcherControls'; // Added import
 import { useAccountSettings } from '@/hooks/useAccountSettings';
-// Removed: useQuery, fetchRequestHistory, RequestHistoryItem as they are now in HistoryTabContent
 
 interface SettingsMenuProps {
   open: boolean;
@@ -43,8 +43,6 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
     handlePasswordSave,
   } = useAccountSettings();
   
-  // Removed useQuery for requestHistory here
-
   const handleLogout = () => {
     toast({
       title: t('logged-out'),
@@ -60,19 +58,26 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
       }
       onClose();
     }}>
-      <DialogContent className="sm:max-w-md font-clash mx-4 max-h-[90vh] overflow-hidden">
-        <DialogHeader>
+      <DialogContent className="sm:max-w-md font-clash mx-4 max-h-[90vh] overflow-hidden pt-12"> {/* Added pt-12 for space for language switcher */}
+        <DialogHeader className="text-left"> {/* Ensure header text is aligned left if needed */}
           <DialogTitle>{t('settings')}</DialogTitle>
           <DialogDescription>
             {t('configure-preferences')}
           </DialogDescription>
         </DialogHeader>
         
+        <LanguageSwitcherControls 
+          currentLanguage={currentLanguage}
+          onLanguageChange={onLanguageChange}
+          t={t}
+        />
+        
         <Tabs defaultValue="account" className="w-full">
           <SettingsTabsNavigation t={t} />
           
-          <div className="min-h-[350px]">
-            <TabsContent value="account" className="mt-0">
+          {/* Changed min-h-[350px] to h-[400px] to better accommodate consistent ScrollArea height */}
+          <div className="h-[400px]"> 
+            <TabsContent value="account" className="mt-0 h-full">
               <AccountTabContent
                 t={t}
                 userAvatar={userAvatar}
@@ -81,23 +86,23 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
                 initialEmail={email}
                 initialPhoneNumber={phoneNumber}
                 onEditAccountInfo={() => setShowAccountEdit(true)}
-                currentLanguage={currentLanguage}
-                onLanguageChange={onLanguageChange}
+                // Language props removed as they are handled by LanguageSwitcherControls now
+                // currentLanguage={currentLanguage} 
+                // onLanguageChange={onLanguageChange}
                 onLogout={handleLogout}
                 defaultAvatar={defaultUserAvatar}
               />
             </TabsContent>
             
-            <TabsContent value="history" className="mt-0">
-              {/* Simplified props for HistoryTabContent */}
+            <TabsContent value="history" className="mt-0 h-full">
               <HistoryTabContent t={t} />
             </TabsContent>
             
-            <TabsContent value="payment" className="mt-0">
+            <TabsContent value="payment" className="mt-0 h-full">
               <PaymentTabContent t={t} />
             </TabsContent>
             
-            <TabsContent value="about" className="mt-0">
+            <TabsContent value="about" className="mt-0 h-full">
               <AboutTabContent t={t} />
             </TabsContent>
           </div>

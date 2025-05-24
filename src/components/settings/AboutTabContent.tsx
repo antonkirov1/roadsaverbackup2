@@ -2,58 +2,62 @@
 import React from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from '@/components/ui/button';
+import { Facebook, MessageSquare, Phone } from 'lucide-react'; // Using available icons
 
 interface AboutTabContentProps {
   t: (key: string) => string;
 }
 
 const AboutTabContent: React.FC<AboutTabContentProps> = ({ t }) => {
+  // Note: The lucide-react icons "instagram", "twitter", "youtube" were in the allowed list,
+  // but Messenger, WhatsApp, Viber specific icons are not.
+  // Using Facebook icon as allowed. For others, using generic representative icons.
+  // If specific brand icons are strictly needed and not available in lucide-react or allowed list,
+  // they might require custom SVG integration.
+
   return (
-    <div className="mt-0">
-      <ScrollArea className="h-[350px] w-full">
-        <div className="space-y-2 text-center py-4 px-2">
+    <ScrollArea className="h-full w-full pr-3"> {/* Changed to h-full */}
+      <div className="space-y-4 text-center py-4 px-2">
+        <div>
           <h2 className="text-xl font-bold">RoadSaver</h2>
           <p className="text-sm text-muted-foreground">{t('version')} 1.0.0</p>
+        </div>
+        
+        <div className="text-sm">
+          <p>{t('work-hours-line1')}</p>
+          <p>{t('work-hours-line2')}</p>
+          <p className="mt-2 text-orange-600 px-2 leading-relaxed">
+            {t('outside-hours-contact')}
+          </p>
+        </div>
+        
+        <div>
+          <h3 className="font-medium mb-2">{t('contact-information')}</h3>
+          <p className="text-sm text-muted-foreground">
+            {t('email')}: roadsaverapp@gmail.com
+          </p>
+          <p className="text-sm text-muted-foreground mb-4">
+            {t('phone')}: +359 888 123 456
+          </p>
           
-          <div className="mt-4">
-            <p className="text-sm">
-              {t('work-hours-line1')}
-            </p>
-            <p className="text-sm">
-              {t('work-hours-line2')}
-            </p>
-            <p className="text-sm mt-2 text-orange-600 px-2 leading-relaxed">
-              {t('outside-hours-contact')}
-            </p>
-          </div>
-          
-          <div className="mt-6">
-            <h3 className="font-medium mb-2">{t('contact-information')}</h3>
-            <p className="text-sm text-muted-foreground">
-              {t('email')}: roadsaverapp@gmail.com
-            </p>
-            <p className="text-sm text-muted-foreground mb-4">
-              {t('phone')}: +359 888 123 456
-            </p>
-            
-            <div className="grid grid-cols-2 gap-2">
-              <Button variant="outline" size="sm" className="bg-blue-600 text-white hover:bg-blue-700 text-xs">
-                📘 Facebook
-              </Button>
-              <Button variant="outline" size="sm" className="bg-blue-500 text-white hover:bg-blue-600 text-xs">
-                💬 Messenger
-              </Button>
-              <Button variant="outline" size="sm" className="bg-green-500 text-white hover:bg-green-600 text-xs">
-                📱 WhatsApp
-              </Button>
-              <Button variant="outline" size="sm" className="bg-purple-600 text-white hover:bg-purple-700 text-xs">
-                📞 Viber
-              </Button>
-            </div>
+          <div className="grid grid-cols-2 gap-2">
+            <Button variant="outline" size="sm" className="text-xs flex items-center justify-center gap-1.5">
+              <Facebook className="h-3.5 w-3.5" /> Facebook
+            </Button>
+            {/* For Messenger, WhatsApp, Viber, using generic icons or text as specific logos might be restricted/unavailable */}
+            <Button variant="outline" size="sm" className="text-xs flex items-center justify-center gap-1.5">
+              <MessageSquare className="h-3.5 w-3.5" /> Messenger
+            </Button>
+            <Button variant="outline" size="sm" className="text-xs flex items-center justify-center gap-1.5">
+              <Phone className="h-3.5 w-3.5" /> WhatsApp
+            </Button>
+            <Button variant="outline" size="sm" className="text-xs flex items-center justify-center gap-1.5">
+              <Phone className="h-3.5 w-3.5" /> Viber
+            </Button>
           </div>
         </div>
-      </ScrollArea>
-    </div>
+      </div>
+    </ScrollArea>
   );
 };
 

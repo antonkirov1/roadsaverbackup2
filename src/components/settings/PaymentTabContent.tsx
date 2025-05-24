@@ -1,7 +1,8 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Settings } from 'lucide-react'; // Icon for the heading
+import { Settings } from 'lucide-react'; 
+import { ScrollArea } from "@/components/ui/scroll-area"; // Added import
 
 interface PaymentTabContentProps {
   t: (key: string) => string;
@@ -9,7 +10,7 @@ interface PaymentTabContentProps {
 
 const PaymentTabContent: React.FC<PaymentTabContentProps> = ({ t }) => {
   return (
-    <div className="mt-0">
+    <ScrollArea className="h-full w-full pr-3"> {/* Changed to h-full */}
       <div className="py-8 text-center">
         <Settings className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
         <h3 className="text-lg font-medium mb-2">{t('payment-options')}</h3>
@@ -21,7 +22,7 @@ const PaymentTabContent: React.FC<PaymentTabContentProps> = ({ t }) => {
           {t('add-payment-method')}
         </Button>
       </div>
-    </div>
+    </ScrollArea>
   );
 };
 
