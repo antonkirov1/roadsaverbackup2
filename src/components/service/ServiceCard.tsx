@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
@@ -57,7 +56,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ type, onClick }) => {
           description: t('flat-tyre-desc')
         };
       case 'out-of-fuel':
-        animationClass = "animate-fuel-flicker";
+        animationClass = "animate-fuel-empty-flash";
         return { 
           icon: <Fuel className={`${iconSizeClass} ${animationClass}`} />, 
           title: t('out-of-fuel'),
@@ -85,9 +84,9 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ type, onClick }) => {
           description: t('tow-truck-desc')
         };
       case 'emergency':
-        animationClass = "animate-pulse"; // Using standard pulse for emergency
+        animationClass = "animate-pulse";
         return { 
-          icon: <AlertTriangle className={`${iconSizeClass} ${animationClass} text-red-500`} />, // Added text-red-500 for emergency icon
+          icon: <AlertTriangle className={`${iconSizeClass} ${animationClass} text-red-500`} />,
           title: t('emergency'),
           description: t('emergency-desc')
         };
@@ -112,7 +111,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ type, onClick }) => {
   return (
     <>
       <Card 
-        className="group p-3 sm:p-4 hover:bg-secondary/70 transition-colors cursor-pointer flex flex-col items-center justify-center min-h-[120px] sm:min-h-[140px]" // Added justify-center
+        className="group p-3 sm:p-4 hover:bg-secondary/70 transition-colors cursor-pointer flex flex-col items-center justify-center min-h-[120px] sm:min-h-[140px]"
         onClick={handleClick}
       >
         <div className="bg-green-600/10 p-3 sm:p-4 rounded-full mb-2 sm:mb-3 text-green-600 transition-transform duration-200 group-hover:scale-110">

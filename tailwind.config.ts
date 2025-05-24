@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -107,9 +106,13 @@ export default {
           '25%, 75%': { opacity: '0.6' },
           '50%': { opacity: '0.8' },
         },
+        'fuel-empty-flash': {
+          '0%, 100%': { color: 'currentColor', opacity: '1' },
+          '50%': { color: 'theme("colors.roadsaver.red")', opacity: '0.7' },
+        },
         'battery-flash-red': {
-          '0%, 100%': { color: 'currentColor' }, // Assuming icon inherits color from parent (text-green-600)
-          '50%': { color: 'theme("colors.roadsaver.red")' }, // Using theme('colors.red.500') or a custom red
+          '0%, 100%': { color: 'currentColor' },
+          '50%': { color: 'theme("colors.roadsaver.red")' },
         },
         'wrench-turn': {
           '0%, 100%': { transform: 'rotate(0deg)' },
@@ -132,7 +135,8 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'pulse-subtle': 'pulse-subtle 2s ease-in-out infinite',
         'deflate-pulse': 'deflate-pulse 1.8s ease-in-out infinite',
-        'fuel-flicker': 'fuel-flicker 1.2s ease-in-out infinite',
+        'fuel-flicker': 'fuel-flicker 1.2s ease-in-out infinite', // Kept old one
+        'fuel-empty-flash': 'fuel-empty-flash 1.5s ease-in-out infinite', // New animation utility
         'battery-flash-red': 'battery-flash-red 1.5s ease-in-out infinite',
         'wrench-turn': 'wrench-turn 2.5s ease-in-out infinite alternate',
         'truck-rumble': 'truck-rumble 0.6s linear infinite alternate',
