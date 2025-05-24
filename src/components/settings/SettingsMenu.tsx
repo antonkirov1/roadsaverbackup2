@@ -7,7 +7,7 @@ import { toast } from "@/components/ui/use-toast";
 import { Settings, User, Flag, Phone, History, Euro, Info, Mail, MessageCircle, CheckCircle2, Save } from 'lucide-react';
 import { useTranslation } from '@/utils/translations';
 import AvatarUpload from '@/components/ui/avatar-upload';
-import { Label } from "@/components/ui/label";
+import { Label } from "@/components/ui/label"; // Added this import
 import AccountEditModal from './AccountEditModal';
 
 interface SettingsMenuProps {
@@ -43,7 +43,6 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
   // States related to editing (newUsername, newEmail, etc.) are moved to AccountEditModal
 
   const handleLogout = () => {
-    // ... keep existing code (handleLogout)
     toast({
       title: t('logged-out'),
       description: t('logged-out-msg')
@@ -52,7 +51,6 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
   };
 
   const handleAvatarChange = (file: File | null) => {
-    // ... keep existing code (handleAvatarChange)
     if (file) {
       console.log('Avatar file to upload:', file);
       const reader = new FileReader();
@@ -86,8 +84,6 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
     // Note: The new password input field itself is cleared within AccountEditModal
   };
 
-
-  // ... keep existing code (requestHistory definition)
   const requestHistory = [
     { 
       id: 1, 
@@ -157,7 +153,6 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
         </DialogHeader>
         
         <Tabs defaultValue="account" className="w-full">
-          {/* ... keep existing code (TabsList definition) */}
           <TabsList className="grid grid-cols-4 mb-4 h-auto">
             <TabsTrigger value="account" className="flex flex-col items-center gap-1 p-2 text-xs">
               <User className="h-3 w-3" />
@@ -240,7 +235,6 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
               </Button>
             </TabsContent>
             
-            {/* ... keep existing code (TabsContent for history, payment, about) */}
             <TabsContent value="history" className="mt-0">
               <div className="text-center py-4">
                 <History className="h-12 w-12 mx-auto text-green-600 mb-4" />
