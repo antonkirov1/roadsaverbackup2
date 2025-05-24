@@ -1,4 +1,3 @@
-
 interface TranslationEntry {
   en: string;
   bg: string;
@@ -109,5 +108,43 @@ export const settingsTranslations: TranslationGroup = {
   'phone-number': {
     en: 'Phone number:',
     bg: 'Телефонен номер:'
+  },
+  'phone-number-label': {
+    en: 'Phone Number',
+    bg: 'Телефонен номер'
+  },
+  'change-account-info': {
+    en: 'Change Account Information',
+    bg: 'Промяна на информация за акаунта'
+  },
+  'completed-time': {
+    en: 'Completed',
+    bg: 'Завършено в'
+  },
+  'user': {
+    en: 'User',
+    bg: 'Потребител'
+  },
+  'employee': {
+    en: 'Employee',
+    bg: 'Служител'
+  },
+  'flat-tyre': { en: 'Flat Tyre', bg: 'Спукана гума' },
+  'out-of-fuel': { en: 'Out of Fuel', bg: 'Без гориво' },
+  'car-battery': { en: 'Car Battery', bg: 'Акумулатор' },
+  'tow-truck': { en: 'Tow Truck', bg: 'Пътна помощ (влекач)' },
+  'other-car-problems': { en: 'Other Car Problems', bg: 'Други проблеми с автомобила' },
+  'completed': { en: 'Completed', bg: 'Завършена' },
+  'work-hours-line1': {
+    en: 'Emergency road assistance service work hours:',
+    bg: 'Работно време на спешна пътна помощ:'
+  },
+  'work-hours-line2': {
+    en: 'Mon - Friday from 09:00 - 17:00.',
+    bg: 'Пон - Петък от 09:00 - 17:00.'
+  },
+  'outside-hours-contact': {
+    en: 'For service requests outside of working hours,\nplease contact support',
+    bg: 'За заявки за услуги извън работно време,\nмоля, свържете се с поддръжката'
   }
 };
