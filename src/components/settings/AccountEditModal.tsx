@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"; // Added Dialog
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -66,7 +65,7 @@ const AccountEditModal: React.FC<AccountEditModalProps> = ({
     setIsPhoneNumberChanged(false);
     setIsNewPasswordChanged(false);
     setPhoneError('');
-  }, [initialData, open]); // Reset fields when modal is opened or initialData changes
+  }, [initialData, open]);
 
   useEffect(() => {
     setIsUsernameChanged(newUsername !== initialData.username);
@@ -150,99 +149,96 @@ const AccountEditModal: React.FC<AccountEditModalProps> = ({
     if (fieldToUpdate === 'password') setIsNewPasswordChanged(false);
   };
 
-  if (!open) {
-    return null;
-  }
+  // The `if (!open) return null;` check is handled by the Dialog component's open prop.
+  // The Dialog component itself will not render if `open` is false.
 
   return (
-    <>
-      <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-        <DialogContent 
-          className="bg-background rounded-lg shadow-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto !translate-x-0 !translate-y-0 !left-auto !top-auto relative"
-          onClick={(e) => e.stopPropagation()}
-          onEscapeKeyDown={onClose}
-          onInteractOutside={onClose}
-        >
-          <DialogHeader>
-            <DialogTitle>{t('change-account-info')}</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4 mt-4">
-            <div>
-              <Label htmlFor="usernameEdit" className="text-sm font-medium">{t('change-username-colon')}</Label>
-              <div className="flex items-center space-x-2">
-                <Input
-                  id="usernameEdit"
-                  value={newUsername}
-                  onChange={(e) => setNewUsername(e.target.value)}
-                />
-                <Button
-                  size="sm"
-                  className="bg-green-600 hover:bg-green-700"
-                  disabled={!isUsernameChanged}
-                  onClick={() => handleSaveAttempt('username')}
-                >
-                  <Save className="h-4 w-4 mr-1 sm:mr-2" /> <span className="hidden sm:inline">{t('save')}</span>
-                </Button>
-              </div>
-            </div>
-            <div>
-              <Label htmlFor="emailEdit" className="text-sm font-medium">{t('change-email-colon')}</Label>
-              <div className="flex items-center space-x-2">
-                <Input
-                  id="emailEdit"
-                  value={newEmail}
-                  onChange={(e) => setNewEmail(e.target.value)}
-                  type="email"
-                />
-                <Button size="sm" className="bg-green-600 hover:bg-green-700" disabled={!isEmailChanged} onClick={() => handleSaveAttempt('email')}>
-                  <Save className="h-4 w-4 mr-1 sm:mr-2" /> <span className="hidden sm:inline">{t('save')}</span>
-                </Button>
-              </div>
-            </div>
-            <div>
-              <Label htmlFor="phoneEdit" className="text-sm font-medium">{t('change-phone-colon')}</Label>
-              <div className="flex items-center space-x-2">
-                <Input
-                  id="phoneEdit"
-                  value={newPhoneNumber}
-                  onChange={handlePhoneChange}
-                  placeholder={t('phone-placeholder')}
-                />
-                <Button size="sm" className="bg-green-600 hover:bg-green-700" disabled={!isPhoneNumberChanged || !!phoneError} onClick={() => handleSaveAttempt('phone')}>
-                  <Save className="h-4 w-4 mr-1 sm:mr-2" /> <span className="hidden sm:inline">{t('save')}</span>
-                </Button>
-              </div>
-              {phoneError && <p className="text-red-500 text-xs mt-1">{phoneError}</p>}
-            </div>
-            <div>
-              <Label htmlFor="passwordEdit" className="text-sm font-medium">{t('change-password-colon')}</Label>
-              <div className="flex items-center space-x-2">
-                <Input
-                  id="passwordEdit"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  type="password"
-                  placeholder={t('new-password-placeholder')}
-                />
-                <Button size="sm" className="bg-green-600 hover:bg-green-700" disabled={!isNewPasswordChanged || newPassword.length < 8 || !/[A-Z]/.test(newPassword)} onClick={() => handleSaveAttempt('password')}>
-                  <Save className="h-4 w-4 mr-1 sm:mr-2" /> <span className="hidden sm:inline">{t('save')}</span>
-                </Button>
-              </div>
-              <p className="text-xs text-muted-foreground mt-1">{t('password-requirements')}</p>
-            </div>
-            <div className="flex space-x-2 pt-4">
+    <Dialog open={open} onOpenChange={(isOpen) => { if (!isOpen) onClose(); }}>
+      <DialogContent
+        className="bg-background rounded-lg shadow-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto"
+        // Removed manual positioning overrides and event handlers like onClick, onEscapeKeyDown, onInteractOutside
+        // as the Dialog component and its DialogContent will manage these.
+      >
+        <DialogHeader>
+          <DialogTitle>{t('change-account-info')}</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4 mt-4">
+          <div>
+            <Label htmlFor="usernameEdit" className="text-sm font-medium">{t('change-username-colon')}</Label>
+            <div className="flex items-center space-x-2">
+              <Input
+                id="usernameEdit"
+                value={newUsername}
+                onChange={(e) => setNewUsername(e.target.value)}
+              />
               <Button
-                onClick={onClose}
-                variant="outline"
-                className="flex-1"
+                size="sm"
+                className="bg-green-600 hover:bg-green-700"
+                disabled={!isUsernameChanged}
+                onClick={() => handleSaveAttempt('username')}
               >
-                {t('cancel')}
+                <Save className="h-4 w-4 mr-1 sm:mr-2" /> <span className="hidden sm:inline">{t('save')}</span>
               </Button>
             </div>
           </div>
-        </DialogContent>
-      </div>
+          <div>
+            <Label htmlFor="emailEdit" className="text-sm font-medium">{t('change-email-colon')}</Label>
+            <div className="flex items-center space-x-2">
+              <Input
+                id="emailEdit"
+                value={newEmail}
+                onChange={(e) => setNewEmail(e.target.value)}
+                type="email"
+              />
+              <Button size="sm" className="bg-green-600 hover:bg-green-700" disabled={!isEmailChanged} onClick={() => handleSaveAttempt('email')}>
+                <Save className="h-4 w-4 mr-1 sm:mr-2" /> <span className="hidden sm:inline">{t('save')}</span>
+              </Button>
+            </div>
+          </div>
+          <div>
+            <Label htmlFor="phoneEdit" className="text-sm font-medium">{t('change-phone-colon')}</Label>
+            <div className="flex items-center space-x-2">
+              <Input
+                id="phoneEdit"
+                value={newPhoneNumber}
+                onChange={handlePhoneChange}
+                placeholder={t('phone-placeholder')}
+              />
+              <Button size="sm" className="bg-green-600 hover:bg-green-700" disabled={!isPhoneNumberChanged || !!phoneError} onClick={() => handleSaveAttempt('phone')}>
+                <Save className="h-4 w-4 mr-1 sm:mr-2" /> <span className="hidden sm:inline">{t('save')}</span>
+              </Button>
+            </div>
+            {phoneError && <p className="text-red-500 text-xs mt-1">{phoneError}</p>}
+          </div>
+          <div>
+            <Label htmlFor="passwordEdit" className="text-sm font-medium">{t('change-password-colon')}</Label>
+            <div className="flex items-center space-x-2">
+              <Input
+                id="passwordEdit"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                type="password"
+                placeholder={t('new-password-placeholder')}
+              />
+              <Button size="sm" className="bg-green-600 hover:bg-green-700" disabled={!isNewPasswordChanged || newPassword.length < 8 || !/[A-Z]/.test(newPassword)} onClick={() => handleSaveAttempt('password')}>
+                <Save className="h-4 w-4 mr-1 sm:mr-2" /> <span className="hidden sm:inline">{t('save')}</span>
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">{t('password-requirements')}</p>
+          </div>
+          <div className="flex space-x-2 pt-4">
+            <Button
+              onClick={onClose} // This still correctly calls setShowAccountEdit(false) from SettingsMenu
+              variant="outline"
+              className="flex-1"
+            >
+              {t('cancel')}
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
 
+      {/* The AlertDialog for password confirmation remains, it's a separate dialog flow. */}
       <AlertDialog open={showPasswordConfirmDialog} onOpenChange={setShowPasswordConfirmDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -275,9 +271,8 @@ const AccountEditModal: React.FC<AccountEditModalProps> = ({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </>
+    </Dialog>
   );
 };
 
 export default AccountEditModal;
-
