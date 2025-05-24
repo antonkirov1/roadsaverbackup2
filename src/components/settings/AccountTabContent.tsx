@@ -50,7 +50,6 @@ const AccountTabContent: React.FC<AccountTabContentProps> = ({
               onAvatarChange={handleAvatarChange}
               defaultAvatar={defaultAvatar}
               size={100}
-              // Removed className="animate-pulse" from here
             />
           </div>
 
@@ -60,7 +59,7 @@ const AccountTabContent: React.FC<AccountTabContentProps> = ({
               <Button
                 size="sm"
                 onClick={onEditAccountInfo}
-                className="bg-green-600 hover:bg-green-700 text-primary-foreground w-[60%]" // Made button 40% smaller by setting width to 60% of original
+                className="bg-green-600 hover:bg-green-700 text-primary-foreground w-[60%] text-xs" // Added text-xs
               >
                 {t('change-account-info')}
               </Button>

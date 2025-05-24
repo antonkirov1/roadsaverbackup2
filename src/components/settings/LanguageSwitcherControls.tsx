@@ -7,25 +7,29 @@ interface LanguageSwitcherControlsProps {
   currentLanguage: 'en' | 'bg';
   onLanguageChange: (language: 'en' | 'bg') => void;
   t: (key: string) => string;
+  className?: string; // Allow passing custom className for the wrapper
 }
 
 const LanguageSwitcherControls: React.FC<LanguageSwitcherControlsProps> = ({
   currentLanguage,
   onLanguageChange,
   t,
+  className,
 }) => {
   const handleToggleLanguage = () => {
     onLanguageChange(currentLanguage === 'en' ? 'bg' : 'en');
   };
 
   return (
-    // Changed from left-4 to right-12 to position before the X button
-    <div className="absolute top-3 right-12 flex items-center z-20"> 
+    // Removed absolute positioning, parent will control layout. Added className prop.
+    <div className={className}> 
       <Button
         variant="ghost"
         size="icon"
         onClick={handleToggleLanguage}
-        className="text-foreground hover:bg-accent/50 h-8 w-auto px-2 flex items-center gap-1 bg-white/10 rounded-md"
+        // Adjusted classes for better adaptability on different backgrounds
+        // text-current will inherit color, hover:bg-black/20 provides subtle hover on dark/colored bg
+        className="text-current hover:bg-black/20 h-8 w-auto px-2 flex items-center gap-1 rounded-md"
         title={t('change-language')}
       >
         <Globe className="h-4 w-4 animate-globe-pulse" />

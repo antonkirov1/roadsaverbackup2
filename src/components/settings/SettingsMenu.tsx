@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
@@ -11,8 +12,8 @@ import AboutTabContent from './AboutTabContent';
 import SettingsTabsNavigation from './SettingsTabsNavigation';
 import LanguageSwitcherControls from './LanguageSwitcherControls';
 import { useAccountSettings } from '@/hooks/useAccountSettings';
-// ... import useIsMobile removed as it's not used directly here, cn is used by DialogContent
 import { cn } from '@/lib/utils';
+import { MapPin, Settings as SettingsIconLucide, AlertTriangle } from 'lucide-react'; // Added icons
 
 interface SettingsMenuProps {
   open: boolean;
@@ -29,7 +30,6 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
 }) => {
   const t = useTranslation(currentLanguage);
   const [showAccountEdit, setShowAccountEdit] = useState(false);
-  // const isMobile = useIsMobile(); // Not directly used for DialogContent classes here
 
   const {
     userAvatar,
@@ -62,27 +62,38 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
     }}>
       <DialogContent 
         className={cn(
-          "fixed top-0 left-0 w-full h-full max-w-full max-h-full p-0",
+          "fixed top-0 left-0 w-full h-full max-w-full max-h-full p-0", // p-0 is important
           "rounded-none border-none bg-background font-clash",
           "flex flex-col overflow-hidden",
           "translate-x-0 translate-y-0", 
           "data-[state=open]:animate-none data-[state=closed]:animate-none",
-          // Add these to neutralize slide-in effects from base dialog styles
           "data-[state=open]:slide-in-from-left-0 data-[state=open]:slide-in-from-top-0" 
         )}
       > 
+        {/* New Banner */}
+        <div className="bg-primary text-primary-foreground p-3 flex justify-between items-center flex-shrink-0 shadow-md">
+          <h1 className="text-xl font-semibold font-clash">RoadSaver</h1>
+          <div className="flex items-center space-x-3"> {/* Increased space-x for clarity */}
+            <AlertTriangle className="h-5 w-5" />
+            <MapPin className="h-5 w-5" />
+            <SettingsIconLucide className="h-5 w-5" />
+            <LanguageSwitcherControls 
+              currentLanguage={currentLanguage}
+              onLanguageChange={onLanguageChange}
+              t={t}
+              // className is not needed here as LanguageSwitcherControls's root div is now relative
+            />
+          </div>
+        </div>
+
         <DialogHeader className="text-left px-4 pt-4 pb-2 flex-shrink-0"> 
           <DialogTitle>{t('settings')}</DialogTitle>
           <DialogDescription>
-            {t('configure-preferences')}
+            {t('configure-preferences')} 
           </DialogDescription>
         </DialogHeader>
         
-        <LanguageSwitcherControls 
-          currentLanguage={currentLanguage}
-          onLanguageChange={onLanguageChange}
-          t={t}
-        />
+        {/* LanguageSwitcherControls removed from here as it's moved to the banner */}
         
         <Tabs defaultValue="account" className="w-full flex flex-col flex-grow overflow-hidden">
           <div className="flex-shrink-0 px-4"> 

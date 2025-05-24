@@ -14,8 +14,8 @@ export const settingsTranslations: TranslationGroup = {
     bg: 'Настройки'
   },
   'configure-preferences': {
-    en: 'Configure your preferences and account settings',
-    bg: 'Конфигурирайте вашите предпочитания и настройки на акаунта'
+    en: 'Configure your preferences',
+    bg: 'Конфигурирайте вашите предпочитания'
   },
   'account': {
     en: 'Account',
@@ -117,7 +117,7 @@ export const settingsTranslations: TranslationGroup = {
     en: 'Change Account Information',
     bg: 'Промяна на информация за акаунта'
   },
-  'account-information': { // Added new key
+  'account-information': { 
     en: 'Account Information',
     bg: 'Информация за акаунта'
   },
