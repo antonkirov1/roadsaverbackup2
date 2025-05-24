@@ -4,15 +4,23 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton"; // For loading state
 import { AlertCircle, History } from 'lucide-react';
 import { RequestHistoryItem } from '@/types/history';
+import { useQuery } from '@tanstack/react-query';
+import { fetchRequestHistory } from '@/utils/api';
 
 interface HistoryTabContentProps {
   t: (key: string) => string;
-  requestHistory?: RequestHistoryItem[];
-  isLoading: boolean;
-  error: Error | null;
 }
 
-const HistoryTabContent: React.FC<HistoryTabContentProps> = ({ t, requestHistory, isLoading, error }) => {
+const HistoryTabContent: React.FC<HistoryTabContentProps> = ({ t }) => {
+  const { 
+    data: requestHistory, 
+    isLoading, 
+    error 
+  } = useQuery<RequestHistoryItem[], Error>({
+    queryKey: ['requestHistory'], 
+    queryFn: fetchRequestHistory
+  });
+
   return (
     <div className="mt-0">
       <div className="text-center py-4">

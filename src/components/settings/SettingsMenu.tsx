@@ -2,9 +2,6 @@
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
-// Button and ScrollArea might not be directly used here anymore, but kept if sub-components might need context from them
-// For now, they are not used directly in this refactored SettingsMenu.
-// Removed: Button, ScrollArea from direct imports if not used. toast is used in the hook.
 import { toast } from "@/components/ui/use-toast";
 import { useTranslation } from '@/utils/translations';
 import AccountEditModal from './AccountEditModal';
@@ -12,11 +9,9 @@ import AccountTabContent from './AccountTabContent';
 import HistoryTabContent from './HistoryTabContent';
 import PaymentTabContent from './PaymentTabContent';
 import AboutTabContent from './AboutTabContent';
-import SettingsTabsNavigation from './SettingsTabsNavigation'; // New import
-import { useAccountSettings } from '@/hooks/useAccountSettings'; // New import
-import { useQuery } from '@tanstack/react-query';
-import { fetchRequestHistory } from '@/utils/api';
-import { RequestHistoryItem } from '@/types/history';
+import SettingsTabsNavigation from './SettingsTabsNavigation';
+import { useAccountSettings } from '@/hooks/useAccountSettings';
+// Removed: useQuery, fetchRequestHistory, RequestHistoryItem as they are now in HistoryTabContent
 
 interface SettingsMenuProps {
   open: boolean;
@@ -48,14 +43,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
     handlePasswordSave,
   } = useAccountSettings();
   
-  const { 
-    data: requestHistory, 
-    isLoading: isLoadingHistory, 
-    error: historyError 
-  } = useQuery<RequestHistoryItem[], Error>({
-    queryKey: ['requestHistory'], 
-    queryFn: fetchRequestHistory
-  });
+  // Removed useQuery for requestHistory here
 
   const handleLogout = () => {
     toast({
@@ -101,12 +89,8 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
             </TabsContent>
             
             <TabsContent value="history" className="mt-0">
-              <HistoryTabContent 
-                t={t} 
-                requestHistory={requestHistory} 
-                isLoading={isLoadingHistory}
-                error={historyError}
-              />
+              {/* Simplified props for HistoryTabContent */}
+              <HistoryTabContent t={t} />
             </TabsContent>
             
             <TabsContent value="payment" className="mt-0">
@@ -140,4 +124,3 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
 };
 
 export default SettingsMenu;
-
