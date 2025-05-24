@@ -4,14 +4,14 @@ import { Card } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { 
-  CarFront,
   Fuel, 
   Wrench, 
-  Car, 
   Phone, 
   AlertTriangle,
   Mail,
-  Globe
+  Disc3, // Added for flat-tyre
+  BatteryCharging, // Added for car-battery
+  Truck // Added for tow-truck
 } from 'lucide-react';
 import { useApp } from '@/contexts/AppContext';
 import { useTranslation } from '@/utils/translations';
@@ -45,86 +45,53 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ type, onClick }) => {
   };
   
   const getIconAndTitle = () => {
+    const iconSizeClass = "h-8 w-8 sm:h-10 sm:w-10";
     switch (type) {
       case 'flat-tyre':
         return { 
-          icon: (
-            <svg className="h-8 w-8 sm:h-10 sm:w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-              <circle cx="12" cy="12" r="8"/>
-              <path d="M12 6v12"/>
-              <path d="M6 12h12"/>
-              <path d="M16 8l-8 8"/>
-              <path d="M8 8l8 8"/>
-            </svg>
-          ), 
+          icon: <Disc3 className={iconSizeClass} />, 
           title: t('flat-tyre'),
           description: t('flat-tyre-desc')
         };
       case 'out-of-fuel':
         return { 
-          icon: <Fuel className="h-8 w-8 sm:h-10 sm:w-10" />, 
+          icon: <Fuel className={iconSizeClass} />, 
           title: t('out-of-fuel'),
           description: t('out-of-fuel-desc')
         };
       case 'other-car-problems':
         return { 
-          icon: <Wrench className="h-8 w-8 sm:h-10 sm:w-10" />, 
+          icon: <Wrench className={iconSizeClass} />, 
           title: t('other-car-problems'),
           description: t('other-car-problems-desc')
         };
       case 'car-battery':
         return { 
-          icon: (
-            <svg
-              className="h-8 w-8 sm:h-10 sm:w-10"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              viewBox="0 0 24 24"
-            >
-              <rect x="3" y="8" width="18" height="12" rx="2" />
-              <line x1="7" y1="8" x2="7" y2="6" />
-              <line x1="17" y1="8" x2="17" y2="6" />
-              <line x1="7" y1="12" x2="17" y2="12" />
-              <line x1="7" y1="16" x2="17" y2="16" />
-            </svg>
-          ),
+          icon: <BatteryCharging className={iconSizeClass} />,
           title: t('car-battery'),
           description: t('car-battery-desc')
         };
       case 'tow-truck':
         return { 
-          icon: (
-            <svg className="h-8 w-8 sm:h-10 sm:w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-              <rect x="1" y="8" width="12" height="8" rx="1"/>
-              <circle cx="5" cy="18" r="2"/>
-              <circle cx="19" cy="18" r="2"/>
-              <path d="M15 8v8h4l2-3v-3h-2"/>
-              <path d="M1 11h12"/>
-              <rect x="13" y="6" width="8" height="4"/>
-              <path d="M13 10h8"/>
-            </svg>
-          ), 
+          icon: <Truck className={iconSizeClass} />, 
           title: t('tow-truck'),
           description: t('tow-truck-desc')
         };
       case 'emergency':
         return { 
-          icon: <AlertTriangle className="h-8 w-8 sm:h-10 sm:w-10" />, 
+          icon: <AlertTriangle className={iconSizeClass} />, 
           title: t('emergency'),
           description: t('emergency-desc')
         };
       case 'support':
         return { 
-          icon: <Phone className="h-8 w-8 sm:h-10 sm:w-10" />, 
+          icon: <Phone className={iconSizeClass} />, 
           title: t('support'),
           description: t('support-desc')
         };
       default:
         return { 
-          icon: <Wrench className="h-8 w-8 sm:h-10 sm:w-10" />, 
+          icon: <Wrench className={iconSizeClass} />, 
           title: t('service'),
           description: t('service-desc')
         };
@@ -136,10 +103,10 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ type, onClick }) => {
   return (
     <>
       <Card 
-        className="p-3 sm:p-4 hover:bg-secondary/70 transition-colors cursor-pointer flex flex-col items-center min-h-[120px] sm:min-h-[140px]"
+        className="group p-3 sm:p-4 hover:bg-secondary/70 transition-colors cursor-pointer flex flex-col items-center min-h-[120px] sm:min-h-[140px]" // Added 'group'
         onClick={handleClick}
       >
-        <div className="bg-green-600/10 p-3 sm:p-4 rounded-full mb-2 sm:mb-3 text-green-600">
+        <div className="bg-green-600/10 p-3 sm:p-4 rounded-full mb-2 sm:mb-3 text-green-600 transition-transform duration-200 group-hover:scale-110"> {/* Added animation classes */}
           {icon}
         </div>
         <h3 className="text-sm sm:text-lg font-semibold mb-1 text-center leading-tight">{title}</h3>

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
@@ -58,8 +57,8 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
       }
       onClose();
     }}>
-      <DialogContent className="sm:max-w-md font-clash mx-4 max-h-[90vh] overflow-hidden pt-12"> {/* Added pt-12 for space for language switcher */}
-        <DialogHeader className="text-left"> {/* Ensure header text is aligned left if needed */}
+      <DialogContent className="w-[calc(100%-2rem)] sm:w-full sm:max-w-md mx-auto font-clash max-h-[90vh] overflow-hidden pt-12 px-4 pb-4"> {/* Adjusted for alignment: width, mx-auto, and padding */}
+        <DialogHeader className="text-left mb-4"> {/* Added mb-4 for spacing under header */}
           <DialogTitle>{t('settings')}</DialogTitle>
           <DialogDescription>
             {t('configure-preferences')}
@@ -86,9 +85,6 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
                 initialEmail={email}
                 initialPhoneNumber={phoneNumber}
                 onEditAccountInfo={() => setShowAccountEdit(true)}
-                // Language props removed as they are handled by LanguageSwitcherControls now
-                // currentLanguage={currentLanguage} 
-                // onLanguageChange={onLanguageChange}
                 onLogout={handleLogout}
                 defaultAvatar={defaultUserAvatar}
               />
