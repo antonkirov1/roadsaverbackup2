@@ -50,7 +50,7 @@ const AccountTabContent: React.FC<AccountTabContentProps> = ({
               currentAvatar={userAvatar}
               onAvatarChange={handleAvatarChange}
               defaultAvatar={defaultAvatar}
-              size={25} // Changed from 24 to 25 for ~100px (h-25 w-25)
+              size={100} // Changed from 25 to 100 for 100px
             />
           </div>
 

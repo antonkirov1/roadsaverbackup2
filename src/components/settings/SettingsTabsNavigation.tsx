@@ -9,7 +9,7 @@ interface SettingsTabsNavigationProps {
 
 const SettingsTabsNavigation: React.FC<SettingsTabsNavigationProps> = ({ t }) => {
   return (
-    <TabsList className="grid grid-cols-4 mb-4 h-auto">
+    <TabsList className="grid grid-cols-4 mb-2 -mt-2 h-auto"> {/* Adjusted margins: mb-4 to mb-2, added -mt-2 */}
       <TabsTrigger value="account" className="flex flex-col items-center gap-1 p-2 text-xs">
         <User className="h-3 w-3" />
         <span className="leading-tight">{t('account')}</span>
@@ -31,4 +31,3 @@ const SettingsTabsNavigation: React.FC<SettingsTabsNavigationProps> = ({ t }) =>
 };
 
 export default SettingsTabsNavigation;
-
