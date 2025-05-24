@@ -108,10 +108,10 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ type, onClick }) => {
         };
       case 'tow-truck':
         animationClass = "animate-truck-pull";
-        // Original filter to turn black image to green
-        const colorizeFilter = 'brightness(0) saturate(100%) invert(37%) sepia(61%) saturate(1358%) hue-rotate(95deg) brightness(99%) contrast(91%)';
-        // Prepend a drop-shadow filter to simulate thicker lines. The shadow is black so it gets colorized.
-        const combinedFilter = `drop-shadow(0px 0px 0.5px black) ${colorizeFilter}`;
+        // Filter to turn black image to green and increase contrast for sharpness
+        const colorizeAndSharpenFilter = 'brightness(0) saturate(100%) invert(37%) sepia(61%) saturate(1358%) hue-rotate(95deg) brightness(99%) contrast(115%)';
+        // Prepend a drop-shadow filter with increased spread for thicker lines.
+        const combinedFilter = `drop-shadow(0px 0px 0.75px black) ${colorizeAndSharpenFilter}`;
         const greenFilterStyle = { filter: combinedFilter };
         
         const iconSrc = processedTowTruckIconUrl || '/lovable-uploads/14fd5d8b-cd3a-4614-b664-52f591fae6f6.png';
