@@ -1,0 +1,138 @@
+
+import React, { useState } from 'react';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { toast } from "@/components/ui/use-toast";
+import { Eye, EyeOff } from "lucide-react";
+
+interface LoginFormProps {
+  onLogin: (credentials: { username: string; password: string }) => void;
+  onCreateAccount?: () => void;
+  isEmployee?: boolean;
+}
+
+const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onCreateAccount, isEmployee = false }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!username || !password) {
+      toast({
+        title: "Error",
+        description: "Please enter both username and password",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    
+    // For demo purposes, we'll simulate authentication
+    setTimeout(() => {
+      // Check for test accounts
+      if (isEmployee && username === 'admin' && password === 'Admin1') {
+        onLogin({ username, password });
+      } else if (!isEmployee && username === 'user' && password === 'Useruser1') {
+        onLogin({ username, password });
+      } else {
+        toast({
+          title: "Authentication Failed",
+          description: "Invalid username or password",
+          variant: "destructive",
+        });
+      }
+      setIsLoading(false);
+    }, 1000);
+  };
+
+  const primaryColor = isEmployee ? 'blue' : 'green';
+  const focusClasses = isEmployee 
+    ? 'focus:ring-blue-600 focus:border-blue-600' 
+    : 'focus:ring-green-600 focus:border-green-600';
+  const buttonClasses = isEmployee 
+    ? 'bg-blue-600 hover:bg-blue-700' 
+    : 'bg-green-600 hover:bg-green-700';
+  const outlineClasses = isEmployee 
+    ? 'border-blue-600 text-blue-600 hover:bg-blue-50' 
+    : 'border-green-600 text-green-600 hover:bg-green-50';
+
+  return (
+    <Card className="w-full max-w-md mx-auto">
+      <CardHeader>
+        <CardTitle className="text-2xl font-bold">Sign In</CardTitle>
+        <CardDescription>
+          {isEmployee ? 'Access your employee dashboard' : 'Welcome back to RoadSaver'}
+        </CardDescription>
+      </CardHeader>
+      <form onSubmit={handleSubmit}>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="username">Username</Label>
+            <Input
+              id="username"
+              placeholder="Enter your username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              autoComplete="username"
+              className={`border-2 ${focusClasses}`}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
+            <div className="relative">
+              <Input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                autoComplete="current-password"
+                className={`border-2 pr-10 ${focusClasses}`}
+              />
+              <button
+                type="button"
+                className="absolute inset-y-0 right-0 flex items-center px-3"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <EyeOff size={18} className="text-gray-500" />
+                ) : (
+                  <Eye size={18} className="text-gray-500" />
+                )}
+              </button>
+            </div>
+          </div>
+        </CardContent>
+        <CardFooter className={`flex ${onCreateAccount ? 'justify-between' : 'justify-end'}`}>
+          {onCreateAccount && (
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={onCreateAccount}
+              className={outlineClasses}
+            >
+              Create Account
+            </Button>
+          )}
+          <Button 
+            type="submit" 
+            className={buttonClasses}
+            disabled={isLoading}
+          >
+            {isLoading ? "Signing in..." : "Sign In"}
+          </Button>
+        </CardFooter>
+      </form>
+    </Card>
+  );
+};
+
+export default LoginForm;
