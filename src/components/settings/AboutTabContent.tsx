@@ -1,23 +1,16 @@
 
 import React from 'react';
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from '@/components/ui/button';
-import { Facebook, MessageSquare, Phone } from 'lucide-react'; // Using available icons
+import { Facebook, MessageSquare, Phone } from 'lucide-react';
 
 interface AboutTabContentProps {
   t: (key: string) => string;
 }
 
 const AboutTabContent: React.FC<AboutTabContentProps> = ({ t }) => {
-  // Note: The lucide-react icons "instagram", "twitter", "youtube" were in the allowed list,
-  // but Messenger, WhatsApp, Viber specific icons are not.
-  // Using Facebook icon as allowed. For others, using generic representative icons.
-  // If specific brand icons are strictly needed and not available in lucide-react or allowed list,
-  // they might require custom SVG integration.
-
   return (
-    <ScrollArea className="h-full w-full pr-3"> {/* Changed to h-full */}
-      <div className="space-y-4 text-center py-4 px-2">
+    <div className="h-full flex flex-col overflow-y-auto py-4 px-2">
+      <div className="space-y-4 text-center">
         <div>
           <h2 className="text-xl font-bold">RoadSaver</h2>
           <p className="text-sm text-muted-foreground">{t('version')} 1.0.0</p>
@@ -44,7 +37,6 @@ const AboutTabContent: React.FC<AboutTabContentProps> = ({ t }) => {
             <Button variant="outline" size="sm" className="text-xs flex items-center justify-center gap-1.5">
               <Facebook className="h-3.5 w-3.5" /> Facebook
             </Button>
-            {/* For Messenger, WhatsApp, Viber, using generic icons or text as specific logos might be restricted/unavailable */}
             <Button variant="outline" size="sm" className="text-xs flex items-center justify-center gap-1.5">
               <MessageSquare className="h-3.5 w-3.5" /> Messenger
             </Button>
@@ -57,7 +49,7 @@ const AboutTabContent: React.FC<AboutTabContentProps> = ({ t }) => {
           </div>
         </div>
       </div>
-    </ScrollArea>
+    </div>
   );
 };
 

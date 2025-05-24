@@ -2,7 +2,7 @@
 import React from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton"; 
-import { AlertCircle, History as HistoryIcon } from 'lucide-react'; // Renamed History to HistoryIcon
+import { AlertCircle, History as HistoryIcon } from 'lucide-react';
 import { RequestHistoryItem } from '@/types/history';
 import { useQuery } from '@tanstack/react-query';
 import { fetchRequestHistory } from '@/utils/api';
@@ -22,16 +22,17 @@ const HistoryTabContent: React.FC<HistoryTabContentProps> = ({ t }) => {
   });
 
   return (
-    <ScrollArea className="h-full w-full pr-3"> {/* Changed to h-full */}
-      <div className="text-center py-4">
-        <HistoryIcon className="h-12 w-12 mx-auto text-green-600 mb-4" />
-        <h3 className="text-lg font-medium mb-2">{t('request-history')}</h3>
-        <p className="text-sm text-muted-foreground mb-4">
+    <div className="h-full flex flex-col overflow-hidden">
+      <div className="text-center py-4 flex-shrink-0">
+        <HistoryIcon className="h-12 w-12 mx-auto text-green-600 mb-2" />
+        <h3 className="text-lg font-medium mb-1">{t('request-history')}</h3>
+        <p className="text-sm text-muted-foreground mb-2">
           {t('requests-desc')}
         </p>
-        
-        {/* Inner ScrollArea removed, parent ScrollArea handles scrolling */}
-        <div className="space-y-2 text-left px-2">
+      </div>
+      
+      <ScrollArea className="flex-grow">
+        <div className="space-y-2 px-2 pb-4">
           {isLoading && (
             Array.from({ length: 3 }).map((_, index) => (
               <div key={index} className="p-3 bg-secondary rounded-lg space-y-2">
@@ -69,8 +70,8 @@ const HistoryTabContent: React.FC<HistoryTabContentProps> = ({ t }) => {
             <p className="text-center text-muted-foreground">{t('no-requests')}</p>
           )}
         </div>
-      </div>
-    </ScrollArea>
+      </ScrollArea>
+    </div>
   );
 };
 

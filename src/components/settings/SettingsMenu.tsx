@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
@@ -61,17 +62,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
       onClose();
     }}>
       <DialogContent 
-        className={cn(
-          "font-clash flex flex-col", // Common base styles
-          // Mobile-first: full screen styles by default
-          "fixed inset-0 w-full h-full max-w-full max-h-full rounded-none border-0", 
-          // Tablet/Desktop: centered modal styles for 'sm' breakpoint and up
-          "sm:relative sm:left-[50%] sm:top-[50%] sm:w-full sm:max-w-md sm:h-auto sm:max-h-[90vh] sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-lg sm:border",
-          // Padding adjustments based on isMobile, or could be responsive prefixes too
-          `pt-${isMobile ? '10' : '6'} px-${isMobile ? '4' : '6'} pb-${isMobile ? '4' : '6'}`
-          // Note: The original `p-6` from `dialog.tsx` is overridden by the specific paddings above.
-          // The `shadow-lg` from `dialog.tsx` will apply for sm and up.
-        )}
+        className="fixed inset-0 w-full h-full max-w-full max-h-full p-4 sm:p-6 rounded-none border-none bg-background font-clash flex flex-col overflow-hidden"
       > 
         <DialogHeader className="text-left mb-4 flex-shrink-0"> 
           <DialogTitle>{t('settings')}</DialogTitle>
@@ -87,12 +78,11 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
         />
         
         <Tabs defaultValue="account" className="w-full flex flex-col flex-grow overflow-hidden">
-          <div className="flex-shrink-0"> {/* Wrapper for TabsList to prevent it from growing */}
+          <div className="flex-shrink-0"> 
             <SettingsTabsNavigation t={t} />
           </div>
           
-          {/* This div will contain all TabsContent and will manage overflow for tab content area */}
-          <div className="flex-grow overflow-y-auto"> 
+          <div className="flex-grow overflow-hidden"> 
             <TabsContent value="account" className="mt-0 h-full">
               <AccountTabContent
                 t={t}
