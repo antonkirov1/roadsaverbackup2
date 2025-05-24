@@ -1,3 +1,4 @@
+
 interface TranslationEntry {
   en: string;
   bg: string;
@@ -101,4 +102,17 @@ export const authTranslations: TranslationGroup = {
     en: 'Switch to English',
     bg: 'Превключи на английски'
   },
+  'login-successful': {
+    en: 'Login Successful',
+    bg: 'Успешен вход'
+  },
+  'welcome-to-roadsaver': {
+    en: 'Welcome to RoadSaver!',
+    bg: 'Добре дошли в RoadSaver!'
+  },
+  'account-created-welcome': {
+    en: 'Your account has been created. Welcome!',
+    bg: 'Акаунтът ви е създаден. Добре дошли!'
+  },
 };
+
