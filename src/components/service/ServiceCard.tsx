@@ -9,8 +9,7 @@ import {
   AlertTriangle,
   Mail,
   Disc3,
-  BatteryCharging,
-  Truck
+  BatteryCharging
 } from 'lucide-react';
 import { useApp } from '@/contexts/AppContext';
 import { useTranslation } from '@/utils/translations';
@@ -79,12 +78,12 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ type, onClick }) => {
       case 'tow-truck':
         animationClass = "animate-truck-pull";
         return { 
-          icon: <Truck className={`${iconSizeClass} ${animationClass}`} />, 
+          icon: <img src="/lovable-uploads/3b8bc326-78ae-4504-b286-f3cbf28a57f2.png" alt={t('tow-truck')} className={`${iconSizeClass} ${animationClass}`} />, 
           title: t('tow-truck'),
           description: t('tow-truck-desc')
         };
       case 'emergency':
-        animationClass = "animate-pulse";
+        animationClass = "animate-pulse"; // This should be 'animate-emergency-alert-flash' as per dashboard but keeping it as it was in this file.
         return { 
           icon: <AlertTriangle className={`${iconSizeClass} ${animationClass} text-red-500`} />,
           title: t('emergency'),
