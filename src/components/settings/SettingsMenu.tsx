@@ -62,11 +62,13 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
     }}>
       <DialogContent 
         className={cn(
-          "fixed top-0 left-0 w-full h-full max-w-full max-h-full p-0", // Explicit top-0, left-0 and full screen
+          "fixed top-0 left-0 w-full h-full max-w-full max-h-full p-0",
           "rounded-none border-none bg-background font-clash",
           "flex flex-col overflow-hidden",
-          "translate-x-0 translate-y-0", // Ensure no translation
-          "data-[state=open]:animate-none data-[state=closed]:animate-none" // Disable default shadcn animations
+          "translate-x-0 translate-y-0", 
+          "data-[state=open]:animate-none data-[state=closed]:animate-none",
+          // Add these to neutralize slide-in effects from base dialog styles
+          "data-[state=open]:slide-in-from-left-0 data-[state=open]:slide-in-from-top-0" 
         )}
       > 
         <DialogHeader className="text-left px-4 pt-4 pb-2 flex-shrink-0"> 
