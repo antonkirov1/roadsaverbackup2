@@ -16,11 +16,14 @@ const LanguageSwitcherControls: React.FC<LanguageSwitcherControlsProps> = ({
   t,
 }) => {
   const isMobile = useIsMobile();
+  const commonWrapperClass = "absolute top-4 flex space-x-1 z-10"; // Added z-10
+  const mobileWrapperClass = `${commonWrapperClass} right-14 sm:right-16`; // Adjusted right padding
+  const desktopWrapperClass = `${commonWrapperClass} right-16`; // Adjusted right for desktop too for consistency
 
   // On mobile, a simpler version without tooltips
   if (isMobile) {
     return (
-      <div className="absolute top-4 right-4 flex space-x-1">
+      <div className={mobileWrapperClass}>
         <Button
           variant={currentLanguage === 'en' ? 'secondary' : 'ghost'}
           size="icon"
@@ -46,7 +49,7 @@ const LanguageSwitcherControls: React.FC<LanguageSwitcherControlsProps> = ({
   // Desktop version with tooltips
   return (
     <TooltipProvider delayDuration={300}>
-      <div className="absolute top-4 right-4 flex space-x-1">
+      <div className={desktopWrapperClass}>
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
@@ -85,3 +88,4 @@ const LanguageSwitcherControls: React.FC<LanguageSwitcherControlsProps> = ({
 };
 
 export default LanguageSwitcherControls;
+

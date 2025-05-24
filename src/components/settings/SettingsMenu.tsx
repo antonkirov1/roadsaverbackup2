@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
@@ -13,6 +12,7 @@ import SettingsTabsNavigation from './SettingsTabsNavigation';
 import LanguageSwitcherControls from './LanguageSwitcherControls';
 import { useAccountSettings } from '@/hooks/useAccountSettings';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { cn } from '@/lib/utils';
 
 interface SettingsMenuProps {
   open: boolean;
@@ -61,14 +61,17 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
       onClose();
     }}>
       <DialogContent 
-        className={`
-          w-[calc(100%-${isMobile ? '1rem' : '2rem'})] sm:w-full sm:max-w-md 
-          mx-auto font-clash 
-          max-h-[90vh] h-full sm:h-auto flex flex-col
-          pt-${isMobile ? '10' : '12'} 
-          px-${isMobile ? '3' : '4'} 
-          pb-${isMobile ? '3' : '4'}
-        `}
+        className={cn(
+          "font-clash flex flex-col", // Common base styles
+          // Mobile-first: full screen styles by default
+          "fixed inset-0 w-full h-full max-w-full max-h-full rounded-none border-0", 
+          // Tablet/Desktop: centered modal styles for 'sm' breakpoint and up
+          "sm:relative sm:left-[50%] sm:top-[50%] sm:w-full sm:max-w-md sm:h-auto sm:max-h-[90vh] sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-lg sm:border",
+          // Padding adjustments based on isMobile, or could be responsive prefixes too
+          `pt-${isMobile ? '10' : '6'} px-${isMobile ? '4' : '6'} pb-${isMobile ? '4' : '6'}`
+          // Note: The original `p-6` from `dialog.tsx` is overridden by the specific paddings above.
+          // The `shadow-lg` from `dialog.tsx` will apply for sm and up.
+        )}
       > 
         <DialogHeader className="text-left mb-4 flex-shrink-0"> 
           <DialogTitle>{t('settings')}</DialogTitle>
@@ -139,4 +142,3 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
 };
 
 export default SettingsMenu;
-
