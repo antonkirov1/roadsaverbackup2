@@ -1,4 +1,3 @@
-
 interface TranslationEntry {
   en: string;
   bg: string;
@@ -89,5 +88,17 @@ export const authTranslations: TranslationGroup = {
   'user-account': {
     en: 'User Account',
     bg: 'Потребителски акаунт'
+  },
+  'auth-subtitle': {
+    en: 'Emergency road assistance.',
+    bg: 'Спешна пътна помощ.'
+  },
+  'switch-to-bulgarian': {
+    en: 'Switch to Bulgarian',
+    bg: 'Превключи на български'
+  },
+  'switch-to-english': {
+    en: 'Switch to English',
+    bg: 'Превключи на английски'
   },
 };

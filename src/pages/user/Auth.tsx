@@ -20,7 +20,7 @@ const Auth: React.FC = () => {
     navigate('/user/dashboard');
     toast({
       title: t("login-successful"),
-      description: t("welcome-to-roadsaver")
+      description: t("welcome-to-roadsaver") // Assuming 'welcome-to-roadsaver' is a valid key
     });
   };
   
@@ -29,7 +29,7 @@ const Auth: React.FC = () => {
     navigate('/user/dashboard');
     toast({
       title: t("registration-successful"),
-      description: t("account-created-welcome")
+      description: t("account-created-welcome") // Assuming 'account-created-welcome' is a valid key
     });
   };
   
@@ -65,7 +65,7 @@ const Auth: React.FC = () => {
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
           <h1 className="text-4xl font-bold mb-2">RoadSaver</h1>
-          <p className="text-muted-foreground">{t('emergency-road-assistance')}</p>
+          <p className="text-muted-foreground">{t('auth-subtitle')}</p>
         </div>
         
         <LoginForm 
@@ -78,4 +78,3 @@ const Auth: React.FC = () => {
 };
 
 export default Auth;
-
