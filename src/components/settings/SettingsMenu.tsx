@@ -12,7 +12,7 @@ import AboutTabContent from './AboutTabContent';
 import SettingsTabsNavigation from './SettingsTabsNavigation';
 import LanguageSwitcherControls from './LanguageSwitcherControls';
 import { useAccountSettings } from '@/hooks/useAccountSettings';
-import { useIsMobile } from '@/hooks/use-mobile';
+// ... import useIsMobile removed as it's not used directly here, cn is used by DialogContent
 import { cn } from '@/lib/utils';
 
 interface SettingsMenuProps {
@@ -30,7 +30,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
 }) => {
   const t = useTranslation(currentLanguage);
   const [showAccountEdit, setShowAccountEdit] = useState(false);
-  const isMobile = useIsMobile();
+  // const isMobile = useIsMobile(); // Not directly used for DialogContent classes here
 
   const {
     userAvatar,
@@ -62,7 +62,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
       onClose();
     }}>
       <DialogContent 
-        className="fixed inset-0 w-full h-full max-w-full max-h-full p-0 rounded-none border-none bg-background font-clash flex flex-col overflow-hidden"
+        className="fixed inset-0 w-full h-full max-w-full max-h-full p-0 rounded-none border-none bg-background font-clash flex flex-col overflow-hidden translate-x-0 translate-y-0"
       > 
         <DialogHeader className="text-left px-4 pt-4 pb-2 flex-shrink-0"> 
           <DialogTitle>{t('settings')}</DialogTitle>
@@ -82,7 +82,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
             <SettingsTabsNavigation t={t} />
           </div>
           
-          <div className="flex-grow overflow-hidden px-4 pb-4"> 
+          <div className="flex-grow overflow-y-auto px-4 pb-4"> {/* Changed overflow-hidden to overflow-y-auto */}
             <TabsContent value="account" className="m-0 h-full">
               <AccountTabContent
                 t={t}
@@ -132,3 +132,4 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
 };
 
 export default SettingsMenu;
+
