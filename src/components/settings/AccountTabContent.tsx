@@ -45,13 +45,12 @@ const AccountTabContent: React.FC<AccountTabContentProps> = ({
       <ScrollArea className="flex-grow">
         <div className="space-y-6 py-4">
           <div className="flex flex-col items-center">
-            {/* Added animate-pulse to make the AvatarUpload component (and thus its plus icon) pulse */}
             <AvatarUpload
               currentAvatar={userAvatar}
               onAvatarChange={handleAvatarChange}
               defaultAvatar={defaultAvatar}
               size={100}
-              className="animate-pulse" 
+              // Removed className="animate-pulse" from here
             />
           </div>
 

@@ -4,6 +4,7 @@ import { Button } from './button';
 import { Avatar, AvatarImage, AvatarFallback } from './avatar';
 import { Plus, Upload } from 'lucide-react';
 import { toast } from './use-toast';
+import { cn } from '@/lib/utils'; // Import cn utility
 
 interface AvatarUploadProps {
   currentAvatar?: string;
@@ -11,6 +12,7 @@ interface AvatarUploadProps {
   defaultAvatar: string;
   size?: number;
   variant?: 'user' | 'employee';
+  // className?: string; // Not needed if we apply animation internally
 }
 
 const AvatarUpload: React.FC<AvatarUploadProps> = ({
@@ -18,7 +20,8 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({
   onAvatarChange,
   defaultAvatar,
   size = 48,
-  variant = 'user'
+  variant = 'user',
+  // className, // Not needed if we apply animation internally
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState<string>(currentAvatar || defaultAvatar);
@@ -65,10 +68,11 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({
   };
 
   const circleColor = variant === 'user' ? 'bg-green-600' : 'bg-blue-600';
+  const hoverCircleColor = variant === 'user' ? 'hover:bg-green-700' : 'hover:bg-blue-700';
 
   return (
-    <div className="relative inline-block">
-      <div 
+    <div className={cn("relative inline-block"/*, className*/)}> {/* className from props could be added here if needed in future */}
+      <div
         className={`relative rounded-full overflow-hidden border-2 ${variant === 'user' ? 'border-green-600' : 'border-blue-600'}`}
         style={{ width: size, height: size }}
       >
@@ -83,7 +87,12 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({
       <Button
         size="icon"
         variant="default"
-        className={`absolute -bottom-1 -right-1 h-6 w-6 rounded-full ${circleColor} hover:${variant === 'user' ? 'bg-green-700' : 'bg-blue-700'} border-2 border-white`}
+        className={cn(
+          "absolute -bottom-1 -right-1 h-6 w-6 rounded-full border-2 border-white",
+          circleColor,
+          hoverCircleColor,
+          "animate-pulse" // Added pulse animation here
+        )}
         onClick={triggerFileSelect}
       >
         <Plus className="h-3 w-3" />
