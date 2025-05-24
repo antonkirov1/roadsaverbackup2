@@ -62,9 +62,9 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
       onClose();
     }}>
       <DialogContent 
-        className="fixed inset-0 w-full h-full max-w-full max-h-full p-4 sm:p-6 rounded-none border-none bg-background font-clash flex flex-col overflow-hidden"
+        className="fixed inset-0 w-full h-full max-w-full max-h-full p-0 rounded-none border-none bg-background font-clash flex flex-col overflow-hidden"
       > 
-        <DialogHeader className="text-left mb-4 flex-shrink-0"> 
+        <DialogHeader className="text-left px-4 pt-4 pb-2 flex-shrink-0"> 
           <DialogTitle>{t('settings')}</DialogTitle>
           <DialogDescription>
             {t('configure-preferences')}
@@ -78,12 +78,12 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
         />
         
         <Tabs defaultValue="account" className="w-full flex flex-col flex-grow overflow-hidden">
-          <div className="flex-shrink-0"> 
+          <div className="flex-shrink-0 px-4"> 
             <SettingsTabsNavigation t={t} />
           </div>
           
-          <div className="flex-grow overflow-hidden"> 
-            <TabsContent value="account" className="mt-0 h-full">
+          <div className="flex-grow overflow-hidden px-4 pb-4"> 
+            <TabsContent value="account" className="m-0 h-full">
               <AccountTabContent
                 t={t}
                 userAvatar={userAvatar}
@@ -97,15 +97,15 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
               />
             </TabsContent>
             
-            <TabsContent value="history" className="mt-0 h-full">
+            <TabsContent value="history" className="m-0 h-full">
               <HistoryTabContent t={t} />
             </TabsContent>
             
-            <TabsContent value="payment" className="mt-0 h-full">
+            <TabsContent value="payment" className="m-0 h-full">
               <PaymentTabContent t={t} />
             </TabsContent>
             
-            <TabsContent value="about" className="mt-0 h-full">
+            <TabsContent value="about" className="m-0 h-full">
               <AboutTabContent t={t} />
             </TabsContent>
           </div>

@@ -9,7 +9,7 @@ interface PaymentTabContentProps {
 
 const PaymentTabContent: React.FC<PaymentTabContentProps> = ({ t }) => {
   return (
-    <div className="h-full flex flex-col items-center justify-center p-4">
+    <div className="h-full flex flex-col items-center justify-center">
       <Settings className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
       <h3 className="text-lg font-medium mb-2">{t('payment-options')}</h3>
       <p className="text-sm text-muted-foreground text-center mb-4">

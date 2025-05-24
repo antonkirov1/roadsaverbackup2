@@ -32,7 +32,7 @@ const HistoryTabContent: React.FC<HistoryTabContentProps> = ({ t }) => {
       </div>
       
       <ScrollArea className="flex-grow">
-        <div className="space-y-2 px-2 pb-4">
+        <div className="space-y-2 pb-4">
           {isLoading && (
             Array.from({ length: 3 }).map((_, index) => (
               <div key={index} className="p-3 bg-secondary rounded-lg space-y-2">
