@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
+// Button and ScrollArea might not be directly used here anymore, but kept if sub-components might need context from them
+// For now, they are not used directly in this refactored SettingsMenu.
+// Removed: Button, ScrollArea from direct imports if not used. toast is used in the hook.
 import { toast } from "@/components/ui/use-toast";
-import { Settings, User, Flag, Phone, History, Euro, Info, Mail, MessageCircle, CheckCircle2, Save } from 'lucide-react';
 import { useTranslation } from '@/utils/translations';
 import AccountEditModal from './AccountEditModal';
 import AccountTabContent from './AccountTabContent';
 import HistoryTabContent from './HistoryTabContent';
 import PaymentTabContent from './PaymentTabContent';
 import AboutTabContent from './AboutTabContent';
+import SettingsTabsNavigation from './SettingsTabsNavigation'; // New import
+import { useAccountSettings } from '@/hooks/useAccountSettings'; // New import
 import { useQuery } from '@tanstack/react-query';
 import { fetchRequestHistory } from '@/utils/api';
 import { RequestHistoryItem } from '@/types/history';
@@ -22,15 +25,6 @@ interface SettingsMenuProps {
   currentLanguage: 'en' | 'bg';
 }
 
-// In a real app, this would come from context or props, or a more robust state management.
-// For this refactor, we keep it as is, but its `currentPassword` can be mutated.
-const simulatedUser = { 
-    username: 'user',
-    email: 'demo@roadsaver.com',
-    phoneNumber: '+359987654321',
-    currentPassword: 'password123' 
-};
-
 const SettingsMenu: React.FC<SettingsMenuProps> = ({ 
   open, 
   onClose,
@@ -38,16 +32,22 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
   currentLanguage
 }) => {
   const t = useTranslation(currentLanguage);
-  const defaultUserAvatar = '/lovable-uploads/0a354359-97fd-4c78-a387-7423f09f2554.png';
-  const [userAvatar, setUserAvatar] = useState<string>(defaultUserAvatar);
   const [showAccountEdit, setShowAccountEdit] = useState(false);
-  
-  // These states will now reflect the "saved" values, updated by AccountEditModal callbacks
-  const [initialUsername, setInitialUsername] = useState(simulatedUser.username);
-  const [initialEmail, setInitialEmail] = useState(simulatedUser.email);
-  const [initialPhoneNumber, setInitialPhoneNumber] = useState(simulatedUser.phoneNumber);
 
-  // Fetch request history using TanStack Query
+  const {
+    userAvatar,
+    defaultUserAvatar,
+    username,
+    email,
+    phoneNumber,
+    currentPasswordForVerification,
+    handleAvatarChange,
+    handleUsernameSave,
+    handleEmailSave,
+    handlePhoneNumberSave,
+    handlePasswordSave,
+  } = useAccountSettings();
+  
   const { 
     data: requestHistory, 
     isLoading: isLoadingHistory, 
@@ -63,35 +63,6 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
       description: t('logged-out-msg')
     });
     window.location.reload();
-  };
-
-  const handleAvatarChange = (file: File | null) => {
-    if (file) {
-      console.log('Avatar file to upload:', file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setUserAvatar(reader.result as string);
-        toast({ title: "Avatar Updated", description: "Your avatar has been changed."});
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  // Callbacks for AccountEditModal
-  const handleUsernameSave = (newUsernameValue: string) => {
-    setInitialUsername(newUsernameValue);
-  };
-
-  const handleEmailSave = (newEmailValue: string) => {
-    setInitialEmail(newEmailValue);
-  };
-
-  const handlePhoneNumberSave = (newPhoneNumberValue: string) => {
-    setInitialPhoneNumber(newPhoneNumberValue);
-  };
-
-  const handlePasswordSave = (newPasswordValue: string) => {
-    simulatedUser.currentPassword = newPasswordValue;
   };
 
   return (
@@ -110,24 +81,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
         </DialogHeader>
         
         <Tabs defaultValue="account" className="w-full">
-          <TabsList className="grid grid-cols-4 mb-4 h-auto">
-            <TabsTrigger value="account" className="flex flex-col items-center gap-1 p-2 text-xs">
-              <User className="h-3 w-3" />
-              <span className="leading-tight">{t('account')}</span>
-            </TabsTrigger>
-            <TabsTrigger value="history" className="flex flex-col items-center gap-1 p-2 text-xs">
-              <History className="h-3 w-3" />
-              <span className="leading-tight">{t('history')}</span>
-            </TabsTrigger>
-            <TabsTrigger value="payment" className="flex flex-col items-center gap-1 p-2 text-xs">
-              <Euro className="h-3 w-3" />
-              <span className="leading-tight">{t('payment')}</span>
-            </TabsTrigger>
-            <TabsTrigger value="about" className="flex flex-col items-center gap-1 p-2 text-xs">
-              <Info className="h-3 w-3" />
-              <span className="leading-tight">{t('about')}</span>
-            </TabsTrigger>
-          </TabsList>
+          <SettingsTabsNavigation t={t} />
           
           <div className="min-h-[350px]">
             <TabsContent value="account" className="mt-0">
@@ -135,9 +89,9 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
                 t={t}
                 userAvatar={userAvatar}
                 handleAvatarChange={handleAvatarChange}
-                initialUsername={initialUsername}
-                initialEmail={initialEmail}
-                initialPhoneNumber={initialPhoneNumber}
+                initialUsername={username}
+                initialEmail={email}
+                initialPhoneNumber={phoneNumber}
                 onEditAccountInfo={() => setShowAccountEdit(true)}
                 currentLanguage={currentLanguage}
                 onLanguageChange={onLanguageChange}
@@ -170,11 +124,11 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
           onClose={() => setShowAccountEdit(false)}
           currentLanguage={currentLanguage}
           initialData={{
-            username: initialUsername,
-            email: initialEmail,
-            phoneNumber: initialPhoneNumber,
+            username: username,
+            email: email,
+            phoneNumber: phoneNumber,
           }}
-          currentPasswordForVerification={simulatedUser.currentPassword}
+          currentPasswordForVerification={currentPasswordForVerification}
           onUsernameSave={handleUsernameSave}
           onEmailSave={handleEmailSave}
           onPhoneNumberSave={handlePhoneNumberSave}
@@ -186,3 +140,4 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
 };
 
 export default SettingsMenu;
+
