@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -10,7 +9,7 @@ import { useApp } from '@/contexts/AppContext';
 import { useTranslation } from '@/utils/translations';
 import { toast } from '@/components/ui/use-toast';
 import MapInput from '@/components/MapInput';
-import { Settings, MapPin, AlertTriangle, Globe } from 'lucide-react';
+import { Settings, MapPin, AlertTriangle, Globe, Siren } from 'lucide-react';
 
 type ServiceType = 'flat-tyre' | 'out-of-fuel' | 'other-car-problems' | 'tow-truck' | 'emergency' | 'support' | 'car-battery';
 
@@ -66,25 +65,27 @@ const Dashboard: React.FC = () => {
             size="icon" 
             onClick={() => setShowEmergencyServices(true)}
             className="text-white hover:bg-white/20 bg-red-600 hover:bg-red-700 h-8 w-8 sm:h-10 sm:w-10"
-            title="Emergency"
+            title={t('emergency-services')}
           >
-            <AlertTriangle className="h-4 w-4 sm:h-5 sm:w-5" />
+            <AlertTriangle className="h-4 w-4 sm:h-5 sm:w-5 animate-emergency-alert-flash" />
           </Button>
           <Button 
             variant="ghost" 
             size="icon" 
             onClick={() => setShowLocationPicker(true)}
             className="text-white hover:bg-white/20 h-8 w-8 sm:h-10 sm:w-10"
+            title={t('update-location')}
           >
-            <MapPin className="h-4 w-4 sm:h-5 sm:w-5" />
+            <MapPin className="h-4 w-4 sm:h-5 sm:w-5 animate-map-pin-bob" />
           </Button>
           <Button 
             variant="ghost" 
             size="icon" 
             onClick={() => setShowSettings(true)}
             className="text-white hover:bg-white/20 h-8 w-8 sm:h-10 sm:w-10"
+            title={t('settings')}
           >
-            <Settings className="h-4 w-4 sm:h-5 sm:w-5" />
+            <Settings className="h-4 w-4 sm:h-5 sm:w-5 animate-settings-gear-turn" />
           </Button>
           <div className="relative">
             <Button 
@@ -92,8 +93,9 @@ const Dashboard: React.FC = () => {
               size="icon" 
               onClick={() => setLanguage(language === 'en' ? 'bg' : 'en')}
               className="text-white hover:bg-white/20 h-8 w-8 sm:h-10 sm:w-10"
+              title={t('change-language')}
             >
-              <Globe className="h-3 w-3 sm:h-4 sm:w-4" />
+              <Globe className="h-3 w-3 sm:h-4 sm:w-4 animate-globe-pulse" />
             </Button>
             <span className="absolute -bottom-1 -right-1 text-xs bg-white text-green-600 px-1 rounded">
               {language.toUpperCase()}
@@ -145,7 +147,7 @@ const Dashboard: React.FC = () => {
       {showLocationPicker && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
           <div className="bg-background rounded-lg shadow-lg p-4 w-full max-w-md">
-            <h2 className="text-xl font-bold mb-4">Update Your Location</h2>
+            <h2 className="text-xl font-bold mb-4">{t('update-location')}</h2>
             <MapInput 
               onLocationSelect={handleLocationChange} 
               initialLocation={userLocation} 
@@ -155,7 +157,7 @@ const Dashboard: React.FC = () => {
               onClick={() => setShowLocationPicker(false)}
               className="mt-4 w-full"
             >
-              Cancel
+              {t('cancel')}
             </Button>
           </div>
         </div>

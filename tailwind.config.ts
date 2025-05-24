@@ -78,38 +78,30 @@ export default {
 			},
 			keyframes: {
 				'accordion-down': {
-					from: {
-						height: '0'
-					},
-					to: {
-						height: 'var(--radix-accordion-content-height)'
-					}
+					from: { height: '0' },
+					to: { height: 'var(--radix-accordion-content-height)' }
 				},
 				'accordion-up': {
-					from: {
-						height: 'var(--radix-accordion-content-height)'
-					},
-					to: {
-						height: '0'
-					}
+					from: { height: 'var(--radix-accordion-content-height)' },
+					to: { height: '0' }
 				},
 				'pulse-subtle': {
 					'0%, 100%': { opacity: '1' },
 					'50%': { opacity: '0.7' }
 				},
-        'deflate-wobble': { // New animation for flat-tyre
+        'deflate-wobble': {
           '0%': { transform: 'scale(1) rotate(0deg)' },
           '25%': { transform: 'scale(0.9) rotate(3deg)' },
           '50%': { transform: 'scale(0.8) rotate(-3deg)' },
           '75%': { transform: 'scale(0.85) rotate(1deg)' },
           '100%': { transform: 'scale(1) rotate(0deg)' }
         },
-        'fuel-flicker': { // Kept old one if used elsewhere, though not in ServiceCard
+        'fuel-flicker': {
           '0%, 100%': { opacity: '1' },
           '25%, 75%': { opacity: '0.6' },
           '50%': { opacity: '0.8' },
         },
-        'fuel-sputter-flash': { // New animation for out-of-fuel
+        'fuel-sputter-flash': {
           '0%, 100%': { transform: 'translateX(0) rotate(0deg)', color: 'currentColor', opacity: '1' },
           '20%': { transform: 'translateX(-2px) rotate(-3deg)' },
           '40%': { transform: 'translateX(2px) rotate(3deg)' },
@@ -124,7 +116,7 @@ export default {
           '0%, 100%': { transform: 'rotate(0deg)' },
           '50%': { transform: 'rotate(20deg)' },
         },
-        'truck-pull': { // New animation for tow-truck
+        'truck-pull': {
           '0%, 100%': { transform: 'translateX(0px)' },
           '30%': { transform: 'translateX(3px)' },
           '60%': { transform: 'translateX(2.5px)' },
@@ -135,18 +127,38 @@ export default {
           '10%, 30%, 50%, 70%, 90%': { transform: 'rotate(-10deg)' },
           '20%, 40%, 60%, 80%': { transform: 'rotate(10deg)' },
         },
+        'emergency-alert-flash': {
+          '0%, 100%': { transform: 'scale(1)', color: 'currentColor' },
+          '50%': { transform: 'scale(1.1)', color: 'theme("colors.red.400")' }
+        },
+        'map-pin-bob': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-2px)' }
+        },
+        'settings-gear-turn': {
+          '0%, 100%': { transform: 'rotate(0deg)' },
+          '50%': { transform: 'rotate(15deg)' }
+        },
+        'globe-pulse': {
+          '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+          '50%': { transform: 'scale(1.05)', opacity: '0.8' }
+        }
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'pulse-subtle': 'pulse-subtle 2s ease-in-out infinite',
-        'deflate-wobble': 'deflate-wobble 2s ease-in-out infinite', // New
-        'fuel-flicker': 'fuel-flicker 1.2s ease-in-out infinite', // Kept old one
-        'fuel-sputter-flash': 'fuel-sputter-flash 1.8s ease-in-out infinite', // New
+        'deflate-wobble': 'deflate-wobble 2s ease-in-out infinite',
+        'fuel-flicker': 'fuel-flicker 1.2s ease-in-out infinite',
+        'fuel-sputter-flash': 'fuel-sputter-flash 1.8s ease-in-out infinite',
         'battery-flash-red': 'battery-flash-red 1.5s ease-in-out infinite',
         'wrench-turn': 'wrench-turn 2.5s ease-in-out infinite alternate',
-        'truck-pull': 'truck-pull 2.2s ease-in-out infinite', // New
+        'truck-pull': 'truck-pull 2.2s ease-in-out infinite',
         'phone-ring': 'phone-ring 1.3s ease-in-out infinite',
+        'emergency-alert-flash': 'emergency-alert-flash 1s ease-in-out infinite',
+        'map-pin-bob': 'map-pin-bob 1.5s ease-in-out infinite alternate',
+        'settings-gear-turn': 'settings-gear-turn 2.5s ease-in-out infinite alternate',
+        'globe-pulse': 'globe-pulse 2s ease-in-out infinite',
 			}
 		}
 	},
