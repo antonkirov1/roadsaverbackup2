@@ -1,3 +1,5 @@
+
+// Add missing translations for settings menu
 interface TranslationEntry {
   en: string;
   bg: string;
@@ -7,83 +9,11 @@ interface TranslationGroup {
   [key: string]: TranslationEntry;
 }
 
-// General and location related translations
+// General translations that don't fit in other categories
 export const generalTranslations: TranslationGroup = {
-  'welcome': {
-    en: 'Welcome to RoadSaver',
-    bg: 'Добре дошли в RoadSaver'
-  },
-  'welcome-back': {
-    en: 'Welcome back to RoadSaver',
-    bg: 'Добре дошли отново в RoadSaver'
-  },
-  'app-subtitle': { // New key for the main app subtitle
-    en: 'Road Assistance Services',
-    bg: 'Услуги за пътна помощ'
-  },
-  'update-location': {
-    en: 'Update Your Location',
-    bg: 'Актуализирайте местоположението си'
-  },
-  'location-updated': {
-    en: 'Location Updated',
-    bg: 'Местоположението е актуализирано'
-  },
-  'location-updated-msg': {
-    en: 'Your location has been updated successfully.',
-    bg: 'Местоположението ви беше актуализирано успешно.'
-  },
-  'customer-location': {
-    en: 'Customer Location',
-    bg: 'Местоположение на клиента'
-  },
-  'call-support': {
-    en: 'Calling Support',
-    bg: 'Свързване с поддръжка'
-  },
-  'connecting-support': {
-    en: 'Connecting you to our support team...',
-    bg: 'Свързване с екипа за поддръжка...'
-  },
-  'contact-support': {
-    en: 'Contact Support',
-    bg: 'Свържете се с поддръжка'
-  },
-  'return-home': {
-    en: 'Return to Home',
-    bg: 'Върнете се към началото'
-  },
-  'page-not-found': {
-    en: 'Oops! Page not found',
-    bg: 'Упс! Страницата не е намерена'
-  },
-  'location-access-denied': {
-    en: 'Location Access Denied',
-    bg: 'Отказан достъп до местоположение'
-  },
-  'location-access-message': {
-    en: 'Using default location. For a better experience, please enable location services.',
-    bg: 'Използване на местоположение по подразбиране. За по-добро преживяване, моля активирайте услугите за местоположение.'
-  },
-  '404': {
-    en: '404',
-    bg: '404'
-  },
-  'employee-dashboard': {
-    en: 'RoadSaver Employee',
-    bg: 'RoadSaver Служител'
-  },
-  'access-dashboard': {
-    en: 'Access your employee dashboard',
-    bg: 'Достъп до вашето служителско табло'
-  },
-  'open-user-app': {
-    en: 'Open User App',
-    bg: 'Отвори потребителско приложение'
-  },
-  'open-employee-app': {
-    en: 'Open Employee App',
-    bg: 'Отвори приложение за служители'
+  'app-subtitle': {
+    en: 'Road assistance services for every need',
+    bg: 'Услуги за пътна помощ за всяка нужда'
   },
   'user-app': {
     en: 'User App',
@@ -94,31 +24,51 @@ export const generalTranslations: TranslationGroup = {
     bg: 'Приложение за служители'
   },
   'for-customers': {
-    en: 'For customers needing roadside assistance',
+    en: 'For customers needing road assistance',
     bg: 'За клиенти, нуждаещи се от пътна помощ'
   },
   'for-service-providers': {
-    en: 'For service providers and staff',
-    bg: 'За доставчици на услуги и персонал'
+    en: 'For service providers and employees',
+    bg: 'За доставчици на услуги и служители'
   },
-  'demo-accounts': {
-    en: 'Demo Accounts:',
-    bg: 'Демо акаунти:'
+  'open-user-app': {
+    en: 'Open User App',
+    bg: 'Отвори потребителско приложение'
   },
-  'new': {
-    en: 'New',
-    bg: 'Нов'
+  'open-employee-app': {
+    en: 'Open Employee App',
+    bg: 'Отвори приложение за служители'
   },
-  'minimum': {
-    en: 'minimum',
-    bg: 'минимум'
+  'language': {
+    en: 'Language',
+    bg: 'Език'
   },
-  'employee-login-successful': {
-    en: 'Employee Login Successful',
-    bg: 'Успешен вход на служител'
+  'english': {
+    en: 'English',
+    bg: 'Английски'
   },
-  'welcome-employee-dashboard': {
-    en: 'Welcome to the RoadSaver employee dashboard!',
-    bg: 'Добре дошли в служителското табло на RoadSaver!'
+  'bulgarian': {
+    en: 'Bulgarian',
+    bg: 'Български'
   },
+  'change-language': {
+    en: 'Change Language',
+    bg: 'Промяна на езика'
+  },
+  'location-updated': {
+    en: 'Location Updated',
+    bg: 'Местоположението е актуализирано'
+  },
+  'location-updated-msg': {
+    en: 'Your location has been updated successfully',
+    bg: 'Вашето местоположение беше актуализирано успешно'
+  },
+  'current-phone': {
+    en: 'Current phone number:',
+    bg: 'Текущ телефонен номер:'
+  },
+  'account-info': {
+    en: 'Account information',
+    bg: 'Информация за акаунта'
+  }
 };

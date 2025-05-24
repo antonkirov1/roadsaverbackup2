@@ -36,6 +36,29 @@ export const authLoginTranslations: TranslationGroup = {
   'welcome-to-roadsaver': {
     en: 'Welcome to RoadSaver!',
     bg: 'Добре дошли в RoadSaver!'
+  },
+  'welcome-back': {
+    en: 'Welcome back to RoadSaver',
+    bg: 'Добре дошли отново в RoadSaver'
+  },
+  'username': {
+    en: 'Username',
+    bg: 'Потребителско име'
+  },
+  'password': {
+    en: 'Password',
+    bg: 'Парола'
+  },
+  'enter-username-placeholder': {
+    en: 'Enter your username',
+    bg: 'Въведете вашето потребителско име'
+  },
+  'enter-password-placeholder': {
+    en: 'Enter your password',
+    bg: 'Въведете вашата парола'
+  },
+  'create-account': {
+    en: 'Create Account',
+    bg: 'Създаване на акаунт'
   }
 };
-

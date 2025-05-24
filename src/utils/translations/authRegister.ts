@@ -36,6 +36,9 @@ export const authRegisterTranslations: TranslationGroup = {
   'fill-all-fields': {
     en: 'Please fill in all required fields',
     bg: 'Моля, попълнете всички задължителни полета'
+  },
+  'password-requirements': {
+    en: 'Must be at least 8 characters with 1 uppercase letter',
+    bg: 'Трябва да е поне 8 символа с 1 главна буква'
   }
 };
-

@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
 import { Eye, EyeOff } from "lucide-react";
+import { useApp } from '@/contexts/AppContext';
+import { useTranslation } from '@/utils/translations';
 
 interface LoginFormProps {
   onLogin: (credentials: { username: string; password: string }) => void;
@@ -14,6 +16,8 @@ interface LoginFormProps {
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onCreateAccount, isEmployee = false }) => {
+  const { language } = useApp();
+  const t = useTranslation(language);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -24,8 +28,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onCreateAccount, isEmplo
     
     if (!username || !password) {
       toast({
-        title: "Error",
-        description: "Please enter both username and password",
+        title: t("error-title"),
+        description: t("please-enter-both"),
         variant: "destructive",
       });
       return;
@@ -42,8 +46,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onCreateAccount, isEmplo
         onLogin({ username, password });
       } else {
         toast({
-          title: "Authentication Failed",
-          description: "Invalid username or password",
+          title: t("auth-error"),
+          description: t("invalid-username-password"),
           variant: "destructive",
         });
       }
@@ -65,18 +69,18 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onCreateAccount, isEmplo
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold">Sign In</CardTitle>
+        <CardTitle className="text-2xl font-bold">{t('sign-in')}</CardTitle>
         <CardDescription>
-          {isEmployee ? 'Access your employee dashboard' : 'Welcome back to RoadSaver'}
+          {isEmployee ? t('employee-login-desc') : t('welcome-back')}
         </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="username">Username</Label>
+            <Label htmlFor="username">{t('username')}</Label>
             <Input
               id="username"
-              placeholder="Enter your username"
+              placeholder={t('enter-username-placeholder')}
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
@@ -85,12 +89,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onCreateAccount, isEmplo
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">{t('password')}</Label>
             <div className="relative">
               <Input
                 id="password"
                 type={showPassword ? 'text' : 'password'}
-                placeholder="Enter your password"
+                placeholder={t('enter-password-placeholder')}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -111,7 +115,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onCreateAccount, isEmplo
             </div>
           </div>
         </CardContent>
-        <CardFooter className={`flex ${onCreateAccount ? 'justify-between' : 'justify-end'}`}>
+        <CardFooter className={`flex ${onCreateAccount ? 'justify-between' : 'justify-end'} flex-wrap gap-2`}>
           {onCreateAccount && (
             <Button 
               type="button" 
@@ -119,7 +123,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onCreateAccount, isEmplo
               onClick={onCreateAccount}
               className={outlineClasses}
             >
-              Create Account
+              {t('create-account')}
             </Button>
           )}
           <Button 
@@ -127,7 +131,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onCreateAccount, isEmplo
             className={buttonClasses}
             disabled={isLoading}
           >
-            {isLoading ? "Signing in..." : "Sign In"}
+            {isLoading ? t('signing-in') : t('sign-in')}
           </Button>
         </CardFooter>
       </form>

@@ -8,12 +8,14 @@ import { useTranslation } from '@/utils/translations';
 import { toast } from '@/components/ui/use-toast';
 import { Button } from "@/components/ui/button";
 import { Globe } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Auth: React.FC = () => {
   const [showRegister, setShowRegister] = useState(false);
   const navigate = useNavigate();
   const { login, language, setLanguage } = useApp();
   const t = useTranslation(language);
+  const isMobile = useIsMobile();
   
   const handleLogin = (credentials: { username: string; password: string }) => {
     login({ username: credentials.username });
@@ -43,7 +45,7 @@ const Auth: React.FC = () => {
   }
   
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-b from-green-600/10 to-background p-4 font-clash relative">
+    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-b from-green-600/10 to-background px-4 py-8 font-clash relative">
       
       <div className="absolute top-4 right-4 z-10">
         <div className="relative">
@@ -62,9 +64,9 @@ const Auth: React.FC = () => {
         </div>
       </div>
 
-      <div className="w-full max-w-md">
-        <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold mb-2">RoadSaver</h1>
+      <div className="w-full max-w-md mb-4">
+        <div className="mb-6 text-center">
+          <h1 className="text-3xl sm:text-4xl font-bold mb-2">RoadSaver</h1>
           <p className="text-muted-foreground">{t('auth-subtitle')}</p>
         </div>
         

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
@@ -9,8 +10,9 @@ import HistoryTabContent from './HistoryTabContent';
 import PaymentTabContent from './PaymentTabContent';
 import AboutTabContent from './AboutTabContent';
 import SettingsTabsNavigation from './SettingsTabsNavigation';
-import LanguageSwitcherControls from './LanguageSwitcherControls'; // Added import
+import LanguageSwitcherControls from './LanguageSwitcherControls';
 import { useAccountSettings } from '@/hooks/useAccountSettings';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface SettingsMenuProps {
   open: boolean;
@@ -27,6 +29,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
 }) => {
   const t = useTranslation(currentLanguage);
   const [showAccountEdit, setShowAccountEdit] = useState(false);
+  const isMobile = useIsMobile();
 
   const {
     userAvatar,
@@ -57,8 +60,8 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
       }
       onClose();
     }}>
-      <DialogContent className="w-[calc(100%-2rem)] sm:w-full sm:max-w-md mx-auto font-clash max-h-[90vh] overflow-hidden pt-12 px-4 pb-4"> {/* Adjusted for alignment: width, mx-auto, and padding */}
-        <DialogHeader className="text-left mb-4"> {/* Added mb-4 for spacing under header */}
+      <DialogContent className={`w-[calc(100%-${isMobile ? '1rem' : '2rem'})] sm:w-full sm:max-w-md mx-auto font-clash max-h-[90vh] overflow-hidden pt-${isMobile ? '10' : '12'} px-${isMobile ? '3' : '4'} pb-${isMobile ? '3' : '4'}`}> 
+        <DialogHeader className="text-left mb-4"> 
           <DialogTitle>{t('settings')}</DialogTitle>
           <DialogDescription>
             {t('configure-preferences')}
@@ -74,8 +77,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
         <Tabs defaultValue="account" className="w-full">
           <SettingsTabsNavigation t={t} />
           
-          {/* Changed min-h-[350px] to h-[400px] to better accommodate consistent ScrollArea height */}
-          <div className="h-[400px]"> 
+          <div className={`h-[${isMobile ? '350px' : '400px'}]`}> 
             <TabsContent value="account" className="mt-0 h-full">
               <AccountTabContent
                 t={t}
