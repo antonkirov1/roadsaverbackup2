@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import ServiceRequestDialog from './ServiceRequestDialog';
 import ServiceRequestForm from './ServiceRequestForm';
@@ -42,7 +41,8 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
   const [showCancelConfirmDialog, setShowCancelConfirmDialog] = useState(false);
 
   const handleAttemptClose = () => {
-    if (status === 'pending' || status === 'accepted' || status === 'en-route') {
+    // Fixed condition: removed 'status === 'en-route''
+    if (status === 'pending' || status === 'accepted') {
       setShowCancelConfirmDialog(true);
     } else {
       onClose(); // Close directly if not in a state that needs confirmation
@@ -50,7 +50,11 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
   };
 
   const confirmCancelRequest = () => {
-    onClose();
+    // Reset relevant states when request is actually cancelled
+    // This might involve calling a reset function from useServiceRequest if available,
+    // or resetting parts of its state if onClose is expected to fully reset the flow.
+    // For now, just calling onClose as it was.
+    onClose(); 
     setShowCancelConfirmDialog(false);
   };
 
