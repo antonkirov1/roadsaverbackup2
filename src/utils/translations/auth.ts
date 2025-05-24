@@ -73,6 +73,10 @@ export const authTranslations: TranslationGroup = {
     en: 'Enter your username',
     bg: 'Въведете вашето потребителско име'
   },
+  'username-min-length-error': {
+    en: 'Username must be at least 3 characters',
+    bg: 'Потребителското име трябва да е поне 3 символа'
+  },
   'enter-password': {
     en: 'Enter your password',
     bg: 'Въведете вашата парола'
@@ -288,5 +292,17 @@ export const authTranslations: TranslationGroup = {
   'new-password-placeholder': {
     en: 'New password',
     bg: 'Нова парола'
+  },
+  'show-password': {
+    en: 'Show password',
+    bg: 'Покажи паролата'
+  },
+  'hide-password': {
+    en: 'Hide password',
+    bg: 'Скрий паролата'
+  },
+  'optional-field': {
+    en: 'optional',
+    bg: 'незадължително'
   }
 };

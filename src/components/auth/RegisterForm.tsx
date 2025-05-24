@@ -1,14 +1,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "@/components/ui/use-toast";
-import { Eye, EyeOff, Globe, CheckCircle2, AlertCircle } from "lucide-react";
+import { Globe, CheckCircle2, AlertCircle } from "lucide-react";
 import { useApp } from '@/contexts/AppContext';
 import { useTranslation } from '@/utils/translations';
+import RegisterFormFieldInput from './RegisterFormFieldInput';
+import RegisterGenderSelector from './RegisterGenderSelector';
 
 interface RegisterFormProps {
   onRegister: (userData: { username: string; email: string; password: string; gender?: string; phoneNumber?: string }) => void;
@@ -56,7 +55,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
       return;
     }
     if (username.length < 3) {
-      setUsernameError(t('username-min-length-error') || 'Username must be at least 3 characters'); // Add translation key if needed
+      setUsernameError(t('username-min-length-error') || 'Username must be at least 3 characters');
       setIsUsernameValid(false);
     } else if (simulatedExistingUsernames.includes(username.toLowerCase())) {
       setUsernameError(t('username-taken-error'));
@@ -95,11 +94,18 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
   
   // Phone number validation
   useEffect(() => {
-    if (!phoneNumber || phoneNumber === '+359') {
+    // Allow empty or default placeholder initially without error
+    if (!phoneNumber || phoneNumber === '+359' || phoneNumber.trim() === '+359') {
         setPhoneError('');
-        setIsPhoneValid(false);
+        // Consider if an empty optional field should be 'valid' or just 'not invalid'
+        // For submission, it will be checked if it's required and empty
+        setIsPhoneValid(phoneNumber.trim() !== '+359' && phoneNumber.trim() !== ''); // Valid if it's not the placeholder and not empty
+        if (phoneNumber.trim() === '+359' || phoneNumber.trim() === '') {
+            setIsPhoneValid(true); // Treat as valid if empty or placeholder, submission logic handles if truly required
+        }
         return;
     }
+    // Validate only if it's not empty and not the placeholder
     if (phoneNumber.length !== 13 || !phoneNumber.startsWith('+359')) {
       setPhoneError(t('phone-invalid-format'));
       setIsPhoneValid(false);
@@ -132,7 +138,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
   useEffect(() => {
     if (!confirmPassword && !password) {
         setConfirmPasswordError('');
-        setIsConfirmPasswordValid(false);
+        setIsConfirmPasswordValid(false); // Or true if an empty confirm is fine when password is empty
         return;
     }
     if (password && confirmPassword && password !== confirmPassword) {
@@ -141,16 +147,25 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
     } else if (password && confirmPassword && password === confirmPassword) {
       setConfirmPasswordError('');
       setIsConfirmPasswordValid(true);
-    } else {
-      setConfirmPasswordError('');
+    } else if (password && !confirmPassword) { // Password is typed but confirm is not
+      setConfirmPasswordError(t('passwords-do-not-match')); // Or a specific "please confirm password"
       setIsConfirmPasswordValid(false);
+    }
+    else {
+      setConfirmPasswordError('');
+       // If password is empty, confirm password validity depends on whether it's also empty
+      setIsConfirmPasswordValid(!password);
     }
   }, [password, confirmPassword, t]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!isUsernameValid || !isEmailValid || !isPasswordValid || !isConfirmPasswordValid || !isPhoneValid || !gender) {
+    // Re-check phone validity for submission, ensuring it's not just the placeholder if it's meant to be filled
+    const isActualPhoneValid = (phoneNumber.trim() === '' || phoneNumber.trim() === '+359') ? true : isPhoneValid;
+
+
+    if (!isUsernameValid || !isEmailValid || !isPasswordValid || !isConfirmPasswordValid || !isActualPhoneValid || !gender) {
       toast({
         title: t("error-title"),
         description: t("fill-all-fields"),
@@ -159,7 +174,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
       // Show specific errors if not already visible
       if (!isUsernameValid && !usernameError) setUsernameError(t('enter-username'));
       if (!isEmailValid && !emailError) setEmailError(t('email-invalid-format'));
-      if (!isPhoneValid && !phoneError) setPhoneError(t('phone-invalid-format'));
+      if (!isActualPhoneValid && !phoneError && phoneNumber.trim() !== '' && phoneNumber.trim() !== '+359') setPhoneError(t('phone-invalid-format'));
       if (!isPasswordValid && !passwordError) setPasswordError(t('password-requirements'));
       if (!isConfirmPasswordValid && !confirmPasswordError) setConfirmPasswordError(t('passwords-do-not-match'));
       return;
@@ -172,7 +187,13 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
         title: t("registration-successful"),
         description: t("account-created"),
       });
-      onRegister({ username, email, password, gender, phoneNumber });
+      onRegister({ 
+        username, 
+        email, 
+        password, 
+        gender, 
+        phoneNumber: (phoneNumber.trim() === '' || phoneNumber.trim() === '+359') ? undefined : phoneNumber 
+      });
       setIsLoading(false);
     }, 1500);
   };
@@ -181,6 +202,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
     if (error) return <AlertCircle className="h-5 w-5 text-red-500" />;
     if (isValid) return <CheckCircle2 className="h-5 w-5 text-green-500" />;
     return null;
+  };
+
+  const handleToggleShowPassword = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -212,139 +237,91 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
           </CardHeader>
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="register-username">{t('username')}</Label>
-                <div className="relative">
-                  <Input
-                    id="register-username"
-                    placeholder={t('enter-username')}
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                    className={`border-2 focus:ring-green-600 focus:border-green-600 ${usernameError ? 'border-red-500' : isUsernameValid ? 'border-green-500' : ''}`}
-                  />
-                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                    {renderValidationIcon(isUsernameValid, usernameError)}
-                  </div>
-                </div>
-                {usernameError && <p className="text-red-500 text-xs mt-1">{usernameError}</p>}
-                {!usernameError && isUsernameValid && <p className="text-green-500 text-xs mt-1">{t('username-valid')}</p>}
-              </div>
+              <RegisterFormFieldInput
+                id="register-username"
+                label={t('username')}
+                type="text"
+                placeholder={t('enter-username')}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                error={usernameError}
+                isValid={isUsernameValid}
+                renderValidationIcon={renderValidationIcon}
+                successMessage={t('username-valid')}
+                t={t}
+                required
+              />
               
-              <div className="space-y-2">
-                <Label htmlFor="register-email">{t('email')}</Label>
-                 <div className="relative">
-                    <Input
-                      id="register-email"
-                      type="email"
-                      placeholder={t('enter-email-placeholder')}
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      className={`border-2 focus:ring-green-600 focus:border-green-600 ${emailError ? 'border-red-500' : isEmailValid ? 'border-green-500' : ''}`}
-                    />
-                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                        {renderValidationIcon(isEmailValid, emailError)}
-                    </div>
-                </div>
-                {emailError && <p className="text-red-500 text-xs mt-1">{emailError}</p>}
-                {!emailError && isEmailValid && <p className="text-green-500 text-xs mt-1">{t('email-valid')}</p>}
-              </div>
+              <RegisterFormFieldInput
+                id="register-email"
+                label={t('email')}
+                type="email"
+                placeholder={t('enter-email-placeholder')}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                error={emailError}
+                isValid={isEmailValid}
+                renderValidationIcon={renderValidationIcon}
+                successMessage={t('email-valid')}
+                t={t}
+                required
+              />
 
-              <div className="space-y-2">
-                <Label htmlFor="register-phone">{t('phone-number-label')} *</Label>
-                <div className="relative">
-                    <Input
-                      id="register-phone"
-                      type="tel"
-                      placeholder={t('phone-placeholder')}
-                      value={phoneNumber}
-                      onChange={(e) => setPhoneNumber(e.target.value)}
-                      required
-                      className={`border-2 focus:ring-green-600 focus:border-green-600 ${phoneError ? 'border-red-500' : isPhoneValid ? 'border-green-500' : ''}`}
-                    />
-                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                        {renderValidationIcon(isPhoneValid, phoneError)}
-                    </div>
-                </div>
-                {phoneError && <p className="text-red-500 text-xs mt-1">{phoneError}</p>}
-                <p className="text-xs text-muted-foreground">{t('phone-helper-text')}</p>
-              </div>
-
-              <div className="space-y-2">
-                <Label>{t('gender-label')}</Label>
-                <RadioGroup value={gender} onValueChange={setGender} className="flex space-x-4">
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="man" id="man" />
-                    <Label htmlFor="man" className="text-sm">{t('man-label')}</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="woman" id="woman" />
-                    <Label htmlFor="woman" className="text-sm">{t('woman-label')}</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="not-specified" id="not-specified" />
-                    <Label htmlFor="not-specified" className="text-sm">{t('not-specified-label')}</Label>
-                  </div>
-                </RadioGroup>
-              </div>
+              <RegisterFormFieldInput
+                id="register-phone"
+                label={t('phone-number-label') + " (" + t('optional-field') + ")"}
+                type="tel"
+                placeholder={t('phone-placeholder')}
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                error={phoneError}
+                isValid={isPhoneValid}
+                renderValidationIcon={renderValidationIcon}
+                helperText={t('phone-helper-text')}
+                t={t}
+              />
               
-              <div className="space-y-2">
-                <Label htmlFor="register-password">
-                  {t('password')}
-                  <span className="block text-xs text-muted-foreground mt-1">
-                    {t('password-requirements')}
-                  </span>
-                </Label>
-                <div className="relative">
-                  <Input
-                    id="register-password"
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder={t('create-password-placeholder')}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    className={`border-2 pr-10 focus:ring-green-600 focus:border-green-600 ${passwordError ? 'border-red-500' : isPasswordValid ? 'border-green-500' : ''}`}
-                  />
-                  <button
-                    type="button"
-                    className="absolute inset-y-0 right-0 flex items-center px-3"
-                    onClick={() => setShowPassword(!showPassword)}
-                    style={{zIndex: 1}} // Ensure button is clickable
-                  >
-                    {showPassword ? (
-                      <EyeOff size={18} className="text-gray-500" />
-                    ) : (
-                      <Eye size={18} className="text-gray-500" />
-                    )}
-                  </button>
-                   <div className="absolute inset-y-0 right-10 pr-1 flex items-center pointer-events-none"> {/* Adjusted right padding for icon */}
-                        {renderValidationIcon(isPasswordValid, passwordError)}
-                    </div>
-                </div>
-                 {passwordError && <p className="text-red-500 text-xs mt-1">{passwordError}</p>}
-                 {!passwordError && isPasswordValid && <p className="text-green-500 text-xs mt-1">{t('password-valid')}</p>}
-              </div>
+              <RegisterGenderSelector
+                gender={gender}
+                onGenderChange={setGender}
+                t={t}
+              />
               
-              <div className="space-y-2">
-                <Label htmlFor="confirm-password">{t('confirm-password')}</Label>
-                 <div className="relative">
-                    <Input
-                      id="confirm-password"
-                      type={showPassword ? 'text' : 'password'}
-                      placeholder={t('confirm-password-placeholder')}
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      required
-                      className={`border-2 focus:ring-green-600 focus:border-green-600 ${confirmPasswordError ? 'border-red-500' : isConfirmPasswordValid ? 'border-green-500' : ''}`}
-                    />
-                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                        {renderValidationIcon(isConfirmPasswordValid, confirmPasswordError)}
-                    </div>
-                </div>
-                {confirmPasswordError && <p className="text-red-500 text-xs mt-1">{confirmPasswordError}</p>}
-                {!confirmPasswordError && isConfirmPasswordValid && <p className="text-green-500 text-xs mt-1">{t('confirm-password-valid')}</p>}
-              </div>
+              <RegisterFormFieldInput
+                id="register-password"
+                label={t('password')}
+                type="password"
+                placeholder={t('create-password-placeholder')}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                error={passwordError}
+                isValid={isPasswordValid}
+                renderValidationIcon={renderValidationIcon}
+                successMessage={t('password-valid')}
+                showPasswordToggle
+                onToggleShowPassword={handleToggleShowPassword}
+                currentShowPasswordState={showPassword}
+                t={t}
+                required
+                inputClassName="pr-10" // Space for the eye icon
+                validationIconContainerClassName="absolute inset-y-0 right-10 pr-1 flex items-center pointer-events-none" // Position validation icon next to eye
+              />
+              
+              <RegisterFormFieldInput
+                id="confirm-password"
+                label={t('confirm-password')}
+                type="password"
+                placeholder={t('confirm-password-placeholder')}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                error={confirmPasswordError}
+                isValid={isConfirmPasswordValid}
+                renderValidationIcon={renderValidationIcon}
+                successMessage={t('confirm-password-valid')}
+                currentShowPasswordState={showPassword} // Uses the same state as the main password field for visibility
+                t={t}
+                required
+              />
             </CardContent>
             
             <CardFooter className="flex justify-between">
@@ -359,7 +336,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
               <Button 
                 type="submit" 
                 className="bg-green-600 hover:bg-green-700"
-                disabled={isLoading || !isUsernameValid || !isEmailValid || !isPasswordValid || !isConfirmPasswordValid || !isPhoneValid}
+                disabled={isLoading || !isUsernameValid || !isEmailValid || !isPasswordValid || !isConfirmPasswordValid || (!isPhoneValid && phoneNumber !== '+359' && phoneNumber !== '')}
               >
                 {isLoading ? t('creating-account') : t('create-account')}
               </Button>
