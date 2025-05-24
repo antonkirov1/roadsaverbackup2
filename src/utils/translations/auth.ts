@@ -94,8 +94,8 @@ export const authTranslations: TranslationGroup = {
     bg: 'Потребителски акаунт'
   },
   'auth-subtitle': {
-    en: 'Emergency road assistance.',
-    bg: 'Спешна пътна помощ.'
+    en: 'Road assistance services for every need.',
+    bg: 'Услуги за пътна помощ за всяка нужда.'
   },
   'switch-to-bulgarian': {
     en: 'Switch to Bulgarian',
@@ -118,8 +118,8 @@ export const authTranslations: TranslationGroup = {
     bg: 'Акаунтът ви е създаден. Добре дошли!'
   },
   'join-roadsaver-desc': {
-    en: 'Join RoadSaver for emergency road assistance',
-    bg: 'Присъединете се към RoadSaver за спешна пътна помощ'
+    en: 'Join RoadSaver to get assistance with your problems on the road.',
+    bg: 'Присъединете се към RoadSaver, за да получите съдействие при проблеми на пътя.'
   },
   'enter-email-placeholder': {
     en: 'Enter your email address',

@@ -1,4 +1,3 @@
-
 interface TranslationEntry {
   en: string;
   bg: string;
@@ -17,6 +16,10 @@ export const generalTranslations: TranslationGroup = {
   'welcome-back': {
     en: 'Welcome back to RoadSaver',
     bg: 'Добре дошли отново в RoadSaver'
+  },
+  'app-subtitle': { // New key for the main app subtitle
+    en: 'Road Assistance Services',
+    bg: 'Услуги за пътна помощ'
   },
   'update-location': {
     en: 'Update Your Location',

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -68,10 +67,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Re-check phone validity for submission, ensuring it's not just the placeholder if it's meant to be filled
-    const isActualPhoneValid = (phoneNumber.trim() === '' || phoneNumber.trim() === '+359') ? true : isPhoneValid;
-
-    if (!isUsernameValid || !isEmailValid || !isPasswordValid || !isConfirmPasswordValid || !isActualPhoneValid || !gender) {
+    // Phone number is now required, so direct validation is needed.
+    if (!isUsernameValid || !isEmailValid || !isPasswordValid || !isConfirmPasswordValid || !isPhoneValid || !gender) {
       toast({
         title: t("error-title"),
         description: t("fill-all-fields"),
@@ -92,7 +89,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
         email, 
         password, 
         gender, 
-        phoneNumber: (phoneNumber.trim() === '' || phoneNumber.trim() === '+359') ? undefined : phoneNumber 
+        phoneNumber: phoneNumber // Phone number is now required, pass directly
       });
       setIsLoading(false);
     }, 1500);
@@ -109,7 +106,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
   };
 
   return (
-    <div className="min-h-screen bg-background font-clash">
+    <div className="min-h-screen bg-gradient-to-b from-green-600/10 to-background font-clash">
       <div className="absolute top-4 right-4 z-10">
         <div className="relative">
           <Button 
@@ -169,7 +166,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
 
               <RegisterFormFieldInput
                 id="register-phone"
-                label={t('phone-number-label') + " (" + t('optional-field') + ")"}
+                label={t('phone-number-label')}
                 type="tel"
                 placeholder={t('phone-placeholder')}
                 value={phoneNumber}
@@ -179,6 +176,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
                 renderValidationIcon={renderValidationIcon}
                 helperText={t('phone-helper-text')}
                 t={t}
+                required
               />
               
               <RegisterGenderSelector
@@ -236,7 +234,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
               <Button 
                 type="submit" 
                 className="bg-green-600 hover:bg-green-700"
-                disabled={isLoading || !isUsernameValid || !isEmailValid || !isPasswordValid || !isConfirmPasswordValid || (!isPhoneValid && phoneNumber !== '+359' && phoneNumber !== '')}
+                disabled={isLoading || !isUsernameValid || !isEmailValid || !isPasswordValid || !isConfirmPasswordValid || !isPhoneValid}
               >
                 {isLoading ? t('creating-account') : t('create-account')}
               </Button>
