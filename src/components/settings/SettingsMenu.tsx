@@ -11,6 +11,9 @@ import AccountTabContent from './AccountTabContent';
 import HistoryTabContent from './HistoryTabContent';
 import PaymentTabContent from './PaymentTabContent';
 import AboutTabContent from './AboutTabContent';
+import { useQuery } from '@tanstack/react-query';
+import { fetchRequestHistory } from '@/utils/api';
+import { RequestHistoryItem } from '@/types/history';
 
 interface SettingsMenuProps {
   open: boolean;
@@ -43,7 +46,16 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
   const [initialUsername, setInitialUsername] = useState(simulatedUser.username);
   const [initialEmail, setInitialEmail] = useState(simulatedUser.email);
   const [initialPhoneNumber, setInitialPhoneNumber] = useState(simulatedUser.phoneNumber);
-  // States related to editing (newUsername, newEmail, etc.) are moved to AccountEditModal
+
+  // Fetch request history using TanStack Query
+  const { 
+    data: requestHistory, 
+    isLoading: isLoadingHistory, 
+    error: historyError 
+  } = useQuery<RequestHistoryItem[], Error>({
+    queryKey: ['requestHistory'], 
+    queryFn: fetchRequestHistory
+  });
 
   const handleLogout = () => {
     toast({
@@ -68,78 +80,20 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
   // Callbacks for AccountEditModal
   const handleUsernameSave = (newUsernameValue: string) => {
     setInitialUsername(newUsernameValue);
-    // simulatedUser.username = newUsernameValue; // If simulatedUser needs to be consistent, though not directly used for display after this
   };
 
   const handleEmailSave = (newEmailValue: string) => {
     setInitialEmail(newEmailValue);
-    // simulatedUser.email = newEmailValue;
   };
 
   const handlePhoneNumberSave = (newPhoneNumberValue: string) => {
     setInitialPhoneNumber(newPhoneNumberValue);
-    // simulatedUser.phoneNumber = newPhoneNumberValue;
   };
 
   const handlePasswordSave = (newPasswordValue: string) => {
-    // This is where the "simulated" current password would be updated
     simulatedUser.currentPassword = newPasswordValue;
-    // Note: The new password input field itself is cleared within AccountEditModal
   };
 
-  const requestHistory = [
-    { 
-      id: 1, 
-      type: 'flat-tyre', 
-      date: '2024-01-15', 
-      time: '14:30',
-      completedTime: '15:45',
-      status: 'completed',
-      user: 'John Doe',
-      employee: 'Mike Johnson'
-    },
-    { 
-      id: 2, 
-      type: 'out-of-fuel', 
-      date: '2024-01-10', 
-      time: '09:15',
-      completedTime: '10:30',
-      status: 'completed',
-      user: 'Jane Smith',
-      employee: 'Sarah Wilson'
-    },
-    { 
-      id: 3, 
-      type: 'car-battery', 
-      date: '2024-01-05', 
-      time: '16:20',
-      completedTime: '17:15',
-      status: 'completed',
-      user: 'Bob Brown',
-      employee: 'Tom Davis'
-    },
-    { 
-      id: 4, 
-      type: 'tow-truck', 
-      date: '2024-01-02', 
-      time: '11:45',
-      completedTime: '13:00',
-      status: 'completed',
-      user: 'Alice Green',
-      employee: 'Chris Lee'
-    },
-    { 
-      id: 5, 
-      type: 'other-car-problems', 
-      date: '2023-12-28', 
-      time: '08:20',
-      completedTime: '09:30',
-      status: 'completed',
-      user: 'David White',
-      employee: 'Emma Brown'
-    }
-  ];
-  
   return (
     <Dialog open={open} onOpenChange={(isOpen) => {
       if (!isOpen) {
@@ -193,7 +147,12 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
             </TabsContent>
             
             <TabsContent value="history" className="mt-0">
-              <HistoryTabContent t={t} requestHistory={requestHistory} />
+              <HistoryTabContent 
+                t={t} 
+                requestHistory={requestHistory} 
+                isLoading={isLoadingHistory}
+                error={historyError}
+              />
             </TabsContent>
             
             <TabsContent value="payment" className="mt-0">

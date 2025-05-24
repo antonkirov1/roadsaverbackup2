@@ -1,25 +1,18 @@
 
 import React from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { History } from 'lucide-react'; // Icon for the heading, TabTrigger icon is separate
-
-interface RequestItem {
-  id: number;
-  type: string;
-  date: string;
-  time: string;
-  completedTime: string;
-  status: string;
-  user: string;
-  employee: string;
-}
+import { Skeleton } from "@/components/ui/skeleton"; // For loading state
+import { AlertCircle, History } from 'lucide-react';
+import { RequestHistoryItem } from '@/types/history';
 
 interface HistoryTabContentProps {
   t: (key: string) => string;
-  requestHistory: RequestItem[];
+  requestHistory?: RequestHistoryItem[];
+  isLoading: boolean;
+  error: Error | null;
 }
 
-const HistoryTabContent: React.FC<HistoryTabContentProps> = ({ t, requestHistory }) => {
+const HistoryTabContent: React.FC<HistoryTabContentProps> = ({ t, requestHistory, isLoading, error }) => {
   return (
     <div className="mt-0">
       <div className="text-center py-4">
@@ -31,7 +24,25 @@ const HistoryTabContent: React.FC<HistoryTabContentProps> = ({ t, requestHistory
         
         <ScrollArea className="h-[250px] w-full">
           <div className="space-y-2 text-left px-2">
-            {requestHistory.length > 0 ? (
+            {isLoading && (
+              Array.from({ length: 3 }).map((_, index) => (
+                <div key={index} className="p-3 bg-secondary rounded-lg space-y-2">
+                  <Skeleton className="h-4 w-3/4" />
+                  <Skeleton className="h-3 w-1/2" />
+                  <Skeleton className="h-3 w-2/3" />
+                </div>
+              ))
+            )}
+
+            {error && (
+              <div className="flex flex-col items-center justify-center text-destructive p-4">
+                <AlertCircle className="h-8 w-8 mb-2" />
+                <p>{t('error-loading-history') || 'Error loading history. Please try again.'}</p>
+                <p className="text-xs">{error.message}</p>
+              </div>
+            )}
+
+            {!isLoading && !error && requestHistory && requestHistory.length > 0 ? (
               requestHistory.map((request) => (
                 <div key={request.id} className="p-3 bg-secondary rounded-lg">
                   <div className="flex justify-between items-center">
@@ -44,7 +55,9 @@ const HistoryTabContent: React.FC<HistoryTabContentProps> = ({ t, requestHistory
                   <p className="text-sm text-muted-foreground">{t('employee')}: {request.employee}</p>
                 </div>
               ))
-            ) : (
+            ) : null}
+
+            {!isLoading && !error && (!requestHistory || requestHistory.length === 0) && (
               <p className="text-center text-muted-foreground">{t('no-requests')}</p>
             )}
           </div>
