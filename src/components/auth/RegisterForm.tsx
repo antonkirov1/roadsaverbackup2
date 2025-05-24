@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
@@ -8,155 +8,62 @@ import { useApp } from '@/contexts/AppContext';
 import { useTranslation } from '@/utils/translations';
 import RegisterFormFieldInput from './RegisterFormFieldInput';
 import RegisterGenderSelector from './RegisterGenderSelector';
+import {
+  useUsernameValidation,
+  useEmailValidation,
+  usePhoneNumberValidation,
+  usePasswordValidation,
+  useConfirmPasswordValidation
+} from '@/hooks/useAuthValidation';
 
 interface RegisterFormProps {
   onRegister: (userData: { username: string; email: string; password: string; gender?: string; phoneNumber?: string }) => void;
   onCancel: () => void;
 }
 
-// Simulated "database" and profanity list
-const simulatedExistingUsernames = ['admin', 'testuser', 'user123'];
-const simulatedExistingEmails = ['admin@example.com', 'test@example.com'];
-const profanityList = ['badword', 'curse', 'profane']; // Add more comprehensive list in a real app
-
 const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => {
   const { language, setLanguage } = useApp();
   const t = useTranslation(language);
   
-  const [username, setUsername] = useState('');
-  const [usernameError, setUsernameError] = useState('');
-  const [isUsernameValid, setIsUsernameValid] = useState(false);
+  // Use custom hooks for field validation
+  const {
+    value: username,
+    setValue: setUsername,
+    error: usernameError,
+    isValid: isUsernameValid
+  } = useUsernameValidation(t);
 
-  const [email, setEmail] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [isEmailValid, setIsEmailValid] = useState(false);
-  
-  const [password, setPassword] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const {
+    value: email,
+    setValue: setEmail,
+    error: emailError,
+    isValid: isEmailValid
+  } = useEmailValidation(t);
 
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [confirmPasswordError, setConfirmPasswordError] = useState('');
-  const [isConfirmPasswordValid, setIsConfirmPasswordValid] = useState(false);
-  
-  const [phoneNumber, setPhoneNumber] = useState('+359');
-  const [phoneError, setPhoneError] = useState('');
-  const [isPhoneValid, setIsPhoneValid] = useState(false);
+  const {
+    value: phoneNumber,
+    setValue: setPhoneNumber,
+    error: phoneError,
+    isValid: isPhoneValid
+  } = usePhoneNumberValidation(t);
+
+  const {
+    value: password,
+    setValue: setPassword,
+    error: passwordError,
+    isValid: isPasswordValid
+  } = usePasswordValidation(t);
+
+  const {
+    value: confirmPassword,
+    setValue: setConfirmPassword,
+    error: confirmPasswordError,
+    isValid: isConfirmPasswordValid
+  } = useConfirmPasswordValidation(password, t);
 
   const [gender, setGender] = useState('man');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  // Username validation
-  useEffect(() => {
-    if (!username) {
-      setUsernameError('');
-      setIsUsernameValid(false);
-      return;
-    }
-    if (username.length < 3) {
-      setUsernameError(t('username-min-length-error') || 'Username must be at least 3 characters');
-      setIsUsernameValid(false);
-    } else if (simulatedExistingUsernames.includes(username.toLowerCase())) {
-      setUsernameError(t('username-taken-error'));
-      setIsUsernameValid(false);
-    } else if (profanityList.some(word => username.toLowerCase().includes(word))) {
-      setUsernameError(t('username-profanity-error'));
-      setIsUsernameValid(false);
-    } else {
-      setUsernameError('');
-      setIsUsernameValid(true);
-    }
-  }, [username, t]);
-
-  // Email validation
-  useEffect(() => {
-    if (!email) {
-      setEmailError('');
-      setIsEmailValid(false);
-      return;
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setEmailError(t('email-invalid-format'));
-      setIsEmailValid(false);
-    } else if (simulatedExistingEmails.includes(email.toLowerCase())) {
-      setEmailError(t('email-taken-error'));
-      setIsEmailValid(false);
-    } else if (profanityList.some(word => email.toLowerCase().includes(word))) {
-      setEmailError(t('email-profanity-error'));
-      setIsEmailValid(false);
-    } else {
-      setEmailError('');
-      setIsEmailValid(true);
-    }
-  }, [email, t]);
-  
-  // Phone number validation
-  useEffect(() => {
-    // Allow empty or default placeholder initially without error
-    if (!phoneNumber || phoneNumber === '+359' || phoneNumber.trim() === '+359') {
-        setPhoneError('');
-        // Consider if an empty optional field should be 'valid' or just 'not invalid'
-        // For submission, it will be checked if it's required and empty
-        setIsPhoneValid(phoneNumber.trim() !== '+359' && phoneNumber.trim() !== ''); // Valid if it's not the placeholder and not empty
-        if (phoneNumber.trim() === '+359' || phoneNumber.trim() === '') {
-            setIsPhoneValid(true); // Treat as valid if empty or placeholder, submission logic handles if truly required
-        }
-        return;
-    }
-    // Validate only if it's not empty and not the placeholder
-    if (phoneNumber.length !== 13 || !phoneNumber.startsWith('+359')) {
-      setPhoneError(t('phone-invalid-format'));
-      setIsPhoneValid(false);
-    } else {
-      setPhoneError('');
-      setIsPhoneValid(true);
-    }
-  }, [phoneNumber, t]);
-
-  // Password validation
-  useEffect(() => {
-    if (!password) {
-      setPasswordError('');
-      setIsPasswordValid(false);
-      return;
-    }
-    if (password.length < 8) {
-      setPasswordError(t('password-length-error'));
-      setIsPasswordValid(false);
-    } else if (!/[A-Z]/.test(password)) {
-      setPasswordError(t('password-uppercase-error'));
-      setIsPasswordValid(false);
-    } else {
-      setPasswordError('');
-      setIsPasswordValid(true);
-    }
-  }, [password, t]);
-
-  // Confirm password validation
-  useEffect(() => {
-    if (!confirmPassword && !password) {
-        setConfirmPasswordError('');
-        setIsConfirmPasswordValid(false); // Or true if an empty confirm is fine when password is empty
-        return;
-    }
-    if (password && confirmPassword && password !== confirmPassword) {
-      setConfirmPasswordError(t('passwords-do-not-match'));
-      setIsConfirmPasswordValid(false);
-    } else if (password && confirmPassword && password === confirmPassword) {
-      setConfirmPasswordError('');
-      setIsConfirmPasswordValid(true);
-    } else if (password && !confirmPassword) { // Password is typed but confirm is not
-      setConfirmPasswordError(t('passwords-do-not-match')); // Or a specific "please confirm password"
-      setIsConfirmPasswordValid(false);
-    }
-    else {
-      setConfirmPasswordError('');
-       // If password is empty, confirm password validity depends on whether it's also empty
-      setIsConfirmPasswordValid(!password);
-    }
-  }, [password, confirmPassword, t]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -164,19 +71,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
     // Re-check phone validity for submission, ensuring it's not just the placeholder if it's meant to be filled
     const isActualPhoneValid = (phoneNumber.trim() === '' || phoneNumber.trim() === '+359') ? true : isPhoneValid;
 
-
     if (!isUsernameValid || !isEmailValid || !isPasswordValid || !isConfirmPasswordValid || !isActualPhoneValid || !gender) {
       toast({
         title: t("error-title"),
         description: t("fill-all-fields"),
         variant: "destructive",
       });
-      // Show specific errors if not already visible
-      if (!isUsernameValid && !usernameError) setUsernameError(t('enter-username'));
-      if (!isEmailValid && !emailError) setEmailError(t('email-invalid-format'));
-      if (!isActualPhoneValid && !phoneError && phoneNumber.trim() !== '' && phoneNumber.trim() !== '+359') setPhoneError(t('phone-invalid-format'));
-      if (!isPasswordValid && !passwordError) setPasswordError(t('password-requirements'));
-      if (!isConfirmPasswordValid && !confirmPasswordError) setConfirmPasswordError(t('passwords-do-not-match'));
       return;
     }
 
