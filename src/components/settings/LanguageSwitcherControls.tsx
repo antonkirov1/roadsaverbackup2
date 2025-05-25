@@ -8,7 +8,7 @@ interface LanguageSwitcherControlsProps {
   onLanguageChange: (language: 'en' | 'bg') => void;
   t: (key: string) => string;
   className?: string; // Allow passing custom className for the wrapper
-  theme?: 'user' | 'employee'; // Added theme prop
+  theme?: 'user' | 'employee'; // Ensuring this prop is correctly defined and optional
 }
 
 const LanguageSwitcherControls: React.FC<LanguageSwitcherControlsProps> = ({
@@ -16,7 +16,7 @@ const LanguageSwitcherControls: React.FC<LanguageSwitcherControlsProps> = ({
   onLanguageChange,
   t,
   className,
-  theme = 'user', // Default theme
+  theme = 'user', // Default theme if not provided
 }) => {
   const handleToggleLanguage = () => {
     onLanguageChange(currentLanguage === 'en' ? 'bg' : 'en');
@@ -24,17 +24,15 @@ const LanguageSwitcherControls: React.FC<LanguageSwitcherControlsProps> = ({
 
   // Adjust button style based on theme
   const buttonTextColorClass = theme === 'employee' ? 'text-primary-foreground' : 'text-current';
-  const buttonHoverBgClass = theme === 'employee' ? 'hover:bg-blue-700' : 'hover:bg-black/20';
+  const buttonHoverBgClass = theme === 'employee' ? 'hover:bg-blue-700' : 'hover:bg-black/20'; // Adjusted for consistency with user theme hover
 
 
   return (
-    // Removed absolute positioning, parent will control layout. Added className prop.
     <div className={className}> 
       <Button
         variant="ghost"
         size="icon"
         onClick={handleToggleLanguage}
-        // Adjusted classes for better adaptability on different backgrounds
         className={`h-8 w-auto px-2 flex items-center gap-1 rounded-md ${buttonTextColorClass} ${buttonHoverBgClass}`}
         title={t('change-language')}
       >
