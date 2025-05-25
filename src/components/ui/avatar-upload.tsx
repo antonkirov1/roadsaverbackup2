@@ -29,11 +29,11 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({
     if (!file) return;
 
     // Validate file type
-    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'];
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/svg+xml'];
     if (!allowedTypes.includes(file.type)) {
       toast({
         title: "Invalid file type",
-        description: "Please upload a PNG, JPEG, JPG, or GIF file",
+        description: "Please upload a PNG, JPEG, JPG, GIF, or SVG file",
         variant: "destructive"
       });
       return;
@@ -99,7 +99,7 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({
       <input
         ref={fileInputRef}
         type="file"
-        accept=".png,.jpeg,.jpg,.gif"
+        accept=".png,.jpeg,.jpg,.gif,.svg"
         onChange={handleFileSelect}
         className="hidden"
       />
@@ -108,3 +108,4 @@ const AvatarUpload: React.FC<AvatarUploadProps> = ({
 };
 
 export default AvatarUpload;
+
