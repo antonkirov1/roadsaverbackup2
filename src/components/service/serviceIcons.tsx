@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   Fuel, 
@@ -18,6 +17,18 @@ interface ServiceIconData {
   title: string;
   description: string;
 }
+
+// Placeholder mapping for custom SVG icons.
+// Replace these with actual paths after uploading your SVGs.
+const customServiceSvgUrls: Partial<Record<ServiceType, string>> = {
+  'flat-tyre': undefined, // e.g., '/lovable-uploads/flat-tyre.svg'
+  'out-of-fuel': undefined, // e.g., '/lovable-uploads/out-of-fuel.svg'
+  'car-battery': undefined, // e.g., '/lovable-uploads/car-battery.svg'
+  'other-car-problems': undefined, // e.g., '/lovable-uploads/other-car-problems.svg'
+  'tow-truck': undefined, // e.g., '/lovable-uploads/tow-truck.svg' (This will override the special PNG handling if provided)
+  'support': undefined, // e.g., '/lovable-uploads/support.svg'
+  // 'emergency' can also be customized if needed
+};
 
 export const useTowTruckIcon = (processedTowTruckIconUrl: string | null) => {
   // Improved filter to make the icon green and more visible
@@ -62,7 +73,27 @@ export const getServiceIconAndTitle = (
   iconSizeClass: string
 ): ServiceIconData => {
   let animationClass = "";
+  const customSvgUrl = customServiceSvgUrls[type];
 
+  if (customSvgUrl) {
+    // Determine animation based on type, even for custom SVGs
+    switch (type) {
+      case 'flat-tyre': animationClass = "animate-deflate-wobble"; break;
+      case 'out-of-fuel': animationClass = "animate-fuel-sputter-flash"; break;
+      case 'other-car-problems': animationClass = "animate-wrench-turn"; break;
+      case 'car-battery': animationClass = "animate-battery-flash-red"; break;
+      case 'tow-truck': animationClass = "animate-truck-pull"; break;
+      case 'support': animationClass = "animate-phone-ring"; break;
+      case 'emergency': animationClass = "animate-emergency-alert-flash"; break;
+    }
+    return {
+      icon: <img src={customSvgUrl} alt={t(type)} className={`${iconSizeClass} ${animationClass}`} />,
+      title: t(type),
+      description: t(`${type}-desc`)
+    };
+  }
+
+  // Fallback to existing Lucide icons or special tow-truck logic if no custom SVG is provided
   switch (type) {
     case 'flat-tyre':
       animationClass = "animate-deflate-wobble";
@@ -85,14 +116,14 @@ export const getServiceIconAndTitle = (
         title: t('other-car-problems'),
         description: t('other-car-problems-desc')
       };
-    case 'car-battery': // Updated text to "Car Battery Issues"
+    case 'car-battery':
       animationClass = "animate-battery-flash-red";
       return { 
         icon: <BatteryCharging className={`${iconSizeClass} ${animationClass}`} />,
-        title: t('car-battery'), // This key points to "Car Battery Issues"
+        title: t('car-battery'),
         description: t('car-battery-desc')
       };
-    case 'tow-truck': // Updated text to "I Need A Tow Truck"
+    case 'tow-truck': // This specific logic for tow-truck PNG remains if no custom SVG is set for it
       animationClass = "animate-truck-pull"; 
       const { iconSrc, greenFilterStyle } = useTowTruckIcon(processedTowTruckIconUrl);
       
@@ -104,11 +135,10 @@ export const getServiceIconAndTitle = (
                 style={greenFilterStyle}
                 onError={(e) => {
                   console.error('Error loading tow truck image:', e);
-                  // Fallback if the image fails to load - updated to new image path
                   (e.target as HTMLImageElement).src = '/lovable-uploads/28a97b53-1b48-4014-8db6-7628e5299a5e.png';
                 }}
               />, 
-        title: t('tow-truck'), // This key points to "I Need A Tow Truck"
+        title: t('tow-truck'),
         description: t('tow-truck-desc')
       };
     case 'emergency':
@@ -138,4 +168,3 @@ export const ContactDialogIcons = {
   email: <Mail className="h-4 w-4 mr-2" />,
   phone: <Phone className="h-4 w-4 mr-2" />
 };
-
