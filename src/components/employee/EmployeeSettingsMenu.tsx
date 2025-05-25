@@ -1,8 +1,9 @@
+
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"; // Added TabsList and TabsTrigger
 import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "@/components/ui/use-toast"; // Corrected path based on shadcn-toast docs
 import { User, History, Info, LogOut } from 'lucide-react';
 import { useTranslation } from '@/utils/translations';
 import AvatarUpload from '@/components/ui/avatar-upload';
@@ -31,7 +32,8 @@ const EmployeeSettingsMenu: React.FC<EmployeeSettingsMenuProps> = ({
       title: t('logged-out'),
       description: t('logged-out-msg')
     });
-    window.location.reload();
+    // Simulating logout, in a real app this would involve clearing auth state and redirecting
+    setTimeout(() => window.location.reload(), 1000); 
   };
 
   const handleAvatarChange = (file: File | null) => {
@@ -59,11 +61,13 @@ const EmployeeSettingsMenu: React.FC<EmployeeSettingsMenuProps> = ({
       <DialogContent 
         className={cn(
           "fixed top-0 left-0 w-full h-full max-w-full max-h-full p-0", 
+          "sm:rounded-lg sm:max-w-2xl sm:max-h-[90vh] sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2", // Centered modal on larger screens
           "rounded-none border-none bg-background font-clash",
           "flex flex-col overflow-hidden",
-          "translate-x-0 translate-y-0", 
-          "data-[state=open]:animate-none data-[state=closed]:animate-none",
-          "data-[state=open]:slide-in-from-left-0 data-[state=open]:slide-in-from-top-0" 
+          // Removed custom animations to use Radix default or define new ones if needed
+          "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
+          "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
+          "data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-1/4 sm:data-[state=open]:slide-in-from-left-1/2 sm:data-[state=open]:slide-in-from-top-1/2" // Adjusted entry animation
         )}
       > 
         <div className="bg-blue-600 text-primary-foreground p-3 flex justify-between items-center flex-shrink-0 shadow-md">
@@ -73,6 +77,7 @@ const EmployeeSettingsMenu: React.FC<EmployeeSettingsMenuProps> = ({
               currentLanguage={currentLanguage}
               onLanguageChange={onLanguageChange}
               t={t}
+              theme="employee" // Added theme prop
             />
           </div>
         </div>
@@ -86,26 +91,27 @@ const EmployeeSettingsMenu: React.FC<EmployeeSettingsMenuProps> = ({
         
         <Tabs defaultValue="account" className="w-full flex flex-col flex-grow overflow-hidden">
           <div className="flex-shrink-0 px-4"> 
+            {/* Original TabsList for reference, will be replaced */}
             <TabsList className="grid grid-cols-3 mb-3 -mt-2 h-auto"> 
               <TabsTrigger 
                 value="account" 
-                className="group flex flex-col items-center gap-1.5 py-2 px-1.5 text-sm data-[state=active]:p-1.5 data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:text-blue-500" 
+                className="group flex flex-col items-center gap-1.5 py-2 px-1.5 text-xs sm:text-sm data-[state=active]:p-1.5 data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:text-blue-500"
               >
-                <User className={`h-4 w-4 ${iconAnimation}`} />
+                <User className={`h-3 w-3 sm:h-4 sm:w-4 ${iconAnimation}`} />
                 <span className="leading-none">{t('account')}</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="history" 
-                className="group flex flex-col items-center gap-1.5 py-2 px-1.5 text-sm data-[state=active]:p-1.5 data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:text-blue-500"
+                className="group flex flex-col items-center gap-1.5 py-2 px-1.5 text-xs sm:text-sm data-[state=active]:p-1.5 data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:text-blue-500"
               >
-                <History className={`h-4 w-4 ${iconAnimation}`} />
+                <History className={`h-3 w-3 sm:h-4 sm:w-4 ${iconAnimation}`} />
                 <span className="leading-none">{t('history')}</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="about" 
-                className="group flex flex-col items-center gap-1.5 py-2 px-1.5 text-sm data-[state=active]:p-1.5 data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:text-blue-500"
+                className="group flex flex-col items-center gap-1.5 py-2 px-1.5 text-xs sm:text-sm data-[state=active]:p-1.5 data-[state=active]:border-b-2 data-[state=active]:border-blue-500 data-[state=active]:text-blue-500"
               >
-                <Info className={`h-4 w-4 ${iconAnimation}`} />
+                <Info className={`h-3 w-3 sm:h-4 sm:w-4 ${iconAnimation}`} />
                 <span className="leading-none">{t('about')}</span>
               </TabsTrigger>
             </TabsList>
