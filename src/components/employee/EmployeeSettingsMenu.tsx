@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "@/components/ui/use-toast";
 import { useTranslation } from '@/utils/translations';
 import { cn } from '@/lib/utils';
@@ -61,12 +60,17 @@ const EmployeeSettingsMenu: React.FC<EmployeeSettingsMenuProps> = ({
       <DialogContent
         className={cn(
           "fixed top-0 left-0 w-full h-full max-w-full max-h-full p-0",
+          "translate-x-0 translate-y-0", // Reset translations for full screen
+
           "sm:rounded-lg sm:max-w-2xl sm:max-h-[90vh] sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2",
+          
           "rounded-none border-none bg-background font-clash",
           "flex flex-col overflow-hidden",
+          
           "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
           "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
-          "data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-1/4 sm:data-[state=open]:slide-in-from-left-1/2 sm:data-[state=open]:slide-in-from-top-1/2"
+          
+          "data-[state=open]:slide-in-from-left-0 data-[state=open]:slide-in-from-top-0 sm:data-[state=open]:slide-in-from-left-1/2 sm:data-[state=open]:slide-in-from-top-1/2"
         )}
       >
         <EmployeeSettingsHeader
