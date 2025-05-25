@@ -72,4 +72,3 @@ const Index = () => {
 
 export default Index;
 
-8npm run dev
