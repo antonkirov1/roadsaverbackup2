@@ -25,8 +25,8 @@ export const useTowTruckIcon = (processedTowTruckIconUrl: string | null) => {
   const combinedFilter = `drop-shadow(1px 1px 1px rgba(0,0,0,0.2)) ${colorizeAndSharpenFilter}`;
   const greenFilterStyle = { filter: combinedFilter };
   
-  // Use the correct path for the tow truck icon
-  const iconSrc = processedTowTruckIconUrl || '/lovable-uploads/2d14545a-f9c9-43ff-b59c-b7e1b3b6765e.png'; 
+  // Use the correct path for the new tow truck icon
+  const iconSrc = processedTowTruckIconUrl || '/lovable-uploads/28a97b53-1b48-4014-8db6-7628e5299a5e.png'; 
   
   return {
     iconSrc,
@@ -36,8 +36,8 @@ export const useTowTruckIcon = (processedTowTruckIconUrl: string | null) => {
 
 export const processBackgroundRemoval = async (type: ServiceType, callback: (url: string | null) => void) => {
   if (type === 'tow-truck') {
-    // Use the correct path for the tow truck icon
-    const originalIconPath = '/lovable-uploads/2d14545a-f9c9-43ff-b59c-b7e1b3b6765e.png'; 
+    // Use the correct path for the new tow truck icon
+    const originalIconPath = '/lovable-uploads/28a97b53-1b48-4014-8db6-7628e5299a5e.png'; 
     callback(originalIconPath); // Show original immediately
 
     try {
@@ -104,8 +104,8 @@ export const getServiceIconAndTitle = (
                 style={greenFilterStyle}
                 onError={(e) => {
                   console.error('Error loading tow truck image:', e);
-                  // Fallback if the image fails to load
-                  (e.target as HTMLImageElement).src = '/lovable-uploads/2d14545a-f9c9-43ff-b59c-b7e1b3b6765e.png';
+                  // Fallback if the image fails to load - updated to new image path
+                  (e.target as HTMLImageElement).src = '/lovable-uploads/28a97b53-1b48-4014-8db6-7628e5299a5e.png';
                 }}
               />, 
         title: t('tow-truck'), // This key points to "I Need A Tow Truck"
@@ -138,3 +138,4 @@ export const ContactDialogIcons = {
   email: <Mail className="h-4 w-4 mr-2" />,
   phone: <Phone className="h-4 w-4 mr-2" />
 };
+
