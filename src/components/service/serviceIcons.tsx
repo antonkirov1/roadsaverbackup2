@@ -23,7 +23,7 @@ interface ServiceIconData {
 const customServiceSvgUrls: Partial<Record<ServiceType, string>> = {
   'flat-tyre': undefined, // e.g., '/lovable-uploads/flat-tyre.svg'
   'out-of-fuel': undefined, // e.g., '/lovable-uploads/out-of-fuel.svg'
-  'car-battery': undefined, // e.g., '/lovable-uploads/car-battery.svg'
+  'car-battery': '/lovable-uploads/car-battery.svg', // Updated
   'other-car-problems': undefined, // e.g., '/lovable-uploads/other-car-problems.svg'
   'tow-truck': undefined, // e.g., '/lovable-uploads/tow-truck.svg' (This will override the special PNG handling if provided)
   'support': undefined, // e.g., '/lovable-uploads/support.svg'
@@ -116,7 +116,7 @@ export const getServiceIconAndTitle = (
         title: t('other-car-problems'),
         description: t('other-car-problems-desc')
       };
-    case 'car-battery':
+    case 'car-battery': // This case will now be handled by customSvgUrl if defined, otherwise fallback here
       animationClass = "animate-battery-flash-red";
       return { 
         icon: <BatteryCharging className={`${iconSizeClass} ${animationClass}`} />,
