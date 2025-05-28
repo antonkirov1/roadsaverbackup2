@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Fuel, Wrench, Phone, AlertTriangle, Mail, Disc3, BatteryCharging } from 'lucide-react';
 import { loadImage, removeBackground } from '@/utils/imageProcessing';
@@ -93,7 +92,7 @@ export const getServiceIconAndTitle = (type: ServiceType, t: (key: string) => st
       icon: <img 
         src={customSvgUrl} 
         alt={t(type)} 
-        className={`${iconSizeClass} ${animationClass}`}
+        className={`${iconSizeClass} ${animationClass} object-contain`}
         onError={(e) => {
           console.error(`Failed to load custom SVG for ${type}, falling back to Lucide icon`);
           // Hide the broken image
