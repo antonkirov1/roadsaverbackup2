@@ -13,7 +13,8 @@ interface ServiceIconData {
 // Custom SVG icons - using the newly uploaded files
 const customServiceSvgUrls: Partial<Record<ServiceType, string>> = {
   'flat-tyre': '/lovable-uploads/flat-tire.svg',
-  'out-of-fuel': '/lovable-uploads/fuel-counter.svg',
+  // Temporarily disable the broken fuel counter SVG
+  // 'out-of-fuel': '/lovable-uploads/fuel-counter.svg',
   'car-battery': '/lovable-uploads/car-battery.svg',
   'other-car-problems': '/lovable-uploads/other-car-problems.svg',
   'tow-truck': '/lovable-uploads/tow-truck.svg',
@@ -89,7 +90,16 @@ export const getServiceIconAndTitle = (type: ServiceType, t: (key: string) => st
     }
     
     return {
-      icon: <img src={customSvgUrl} alt={t(type)} className={`${iconSizeClass} ${animationClass}`} />,
+      icon: <img 
+        src={customSvgUrl} 
+        alt={t(type)} 
+        className={`${iconSizeClass} ${animationClass}`}
+        onError={(e) => {
+          console.error(`Failed to load custom SVG for ${type}, falling back to Lucide icon`);
+          // Hide the broken image
+          (e.target as HTMLImageElement).style.display = 'none';
+        }}
+      />,
       title: t(type),
       description: t(`${type}-desc`)
     };
