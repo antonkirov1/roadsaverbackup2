@@ -1,21 +1,23 @@
+
 import React from 'react';
 import { Fuel, Wrench, Phone, AlertTriangle, Mail, Disc3, BatteryCharging } from 'lucide-react';
 import { loadImage, removeBackground } from '@/utils/imageProcessing';
+
 export type ServiceType = 'flat-tyre' | 'out-of-fuel' | 'other-car-problems' | 'tow-truck' | 'emergency' | 'support' | 'car-battery';
+
 interface ServiceIconData {
   icon: React.ReactNode;
   title: string;
   description: string;
 }
 
-// Custom SVG icons - now using the uploaded files
+// Custom SVG icons - using the newly uploaded files
 const customServiceSvgUrls: Partial<Record<ServiceType, string>> = {
-  'flat-tyre': '/lovable-uploads/b99a5fde-0e9d-4b8e-b276-c43924ce1074.png',
-  'out-of-fuel': '/lovable-uploads/75a3ac5f-6de5-4644-9b6c-70e9872d4965.png',
-  'car-battery': '/lovable-uploads/3b8bc326-78ae-4504-b286-f3cbf28a57f2.png',
-  'other-car-problems': '/lovable-uploads/2d14545a-f9c9-43ff-b59c-b7e1b3b6765e.png',
-  'tow-truck': '/lovable-uploads/28a97b53-1b48-4014-8db6-7628e5299a5e.png',
-  'support': '/lovable-uploads/14fd5d8b-cd3a-4614-b664-52f591fae6f6.png',
+  'flat-tyre': '/lovable-uploads/flat-tire.svg',
+  'out-of-fuel': '/lovable-uploads/fuel-counter.svg',
+  'car-battery': '/lovable-uploads/car-battery.svg',
+  'other-car-problems': '/lovable-uploads/other-car-problems.svg',
+  'support': '/lovable-uploads/contact-support.svg',
 };
 
 export const useTowTruckIcon = (processedTowTruckIconUrl: string | null) => {
@@ -33,6 +35,7 @@ export const useTowTruckIcon = (processedTowTruckIconUrl: string | null) => {
     greenFilterStyle
   };
 };
+
 export const processBackgroundRemoval = async (type: ServiceType, callback: (url: string | null) => void) => {
   if (type === 'tow-truck') {
     // Use the correct path for the new tow truck icon
@@ -53,6 +56,7 @@ export const processBackgroundRemoval = async (type: ServiceType, callback: (url
   }
   return null;
 };
+
 export const getServiceIconAndTitle = (type: ServiceType, t: (key: string) => string, processedTowTruckIconUrl: string | null, iconSizeClass: string): ServiceIconData => {
   let animationClass = "";
   const customSvgUrl = customServiceSvgUrls[type];
@@ -83,6 +87,7 @@ export const getServiceIconAndTitle = (type: ServiceType, t: (key: string) => st
         animationClass = "animate-emergency-alert-flash";
         break;
     }
+    
     return {
       icon: <img src={customSvgUrl} alt={t(type)} className={`${iconSizeClass} ${animationClass}`} />,
       title: t(type),
@@ -90,7 +95,7 @@ export const getServiceIconAndTitle = (type: ServiceType, t: (key: string) => st
     };
   }
 
-  // Use Lucide icons as the primary icons
+  // Use Lucide icons as fallback
   switch (type) {
     case 'flat-tyre':
       animationClass = "animate-deflate-wobble";
@@ -156,6 +161,7 @@ export const getServiceIconAndTitle = (type: ServiceType, t: (key: string) => st
       };
   }
 };
+
 export const ContactDialogIcons = {
   email: <Mail className="h-4 w-4 mr-2" />,
   phone: <Phone className="h-4 w-4 mr-2" />
