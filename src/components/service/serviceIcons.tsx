@@ -1,5 +1,6 @@
 import React from 'react';
 import { Fuel, Wrench, Phone, AlertTriangle, Mail, Disc3, BatteryCharging } from 'lucide-react';
+import { loadImage, removeBackground } from '@/utils/imageProcessing';
 
 export type ServiceType = 'flat-tyre' | 'out-of-fuel' | 'other-car-problems' | 'tow-truck' | 'emergency' | 'support' | 'car-battery';
 
