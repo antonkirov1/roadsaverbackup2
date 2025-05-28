@@ -8,16 +8,16 @@ interface ServiceIconData {
   description: string;
 }
 
-// Optional custom SVG icons - only use if the files actually exist
+// Custom SVG icons - now using the uploaded files
 const customServiceSvgUrls: Partial<Record<ServiceType, string>> = {
-  // Uncomment these when you have the actual SVG files uploaded
-  // 'flat-tyre': '/lovable-uploads/flat-tire.svg',
-  // 'out-of-fuel': '/lovable-uploads/fuel-counter.svg',
-  // 'car-battery': '/lovable-uploads/car-battery.svg',
-  // 'other-car-problems': '/lovable-uploads/other-car-problems.svg',
-  // 'tow-truck': '/lovable-uploads/tow-truck.svg',
-  // 'support': '/lovable-uploads/contact-support.svg',
+  'flat-tyre': '/lovable-uploads/b99a5fde-0e9d-4b8e-b276-c43924ce1074.png',
+  'out-of-fuel': '/lovable-uploads/75a3ac5f-6de5-4644-9b6c-70e9872d4965.png',
+  'car-battery': '/lovable-uploads/3b8bc326-78ae-4504-b286-f3cbf28a57f2.png',
+  'other-car-problems': '/lovable-uploads/2d14545a-f9c9-43ff-b59c-b7e1b3b6765e.png',
+  'tow-truck': '/lovable-uploads/28a97b53-1b48-4014-8db6-7628e5299a5e.png',
+  'support': '/lovable-uploads/14fd5d8b-cd3a-4614-b664-52f591fae6f6.png',
 };
+
 export const useTowTruckIcon = (processedTowTruckIconUrl: string | null) => {
   // Improved filter to make the icon green and more visible
   const colorizeAndSharpenFilter = 'brightness(0) saturate(100%) invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%)';
@@ -57,9 +57,9 @@ export const getServiceIconAndTitle = (type: ServiceType, t: (key: string) => st
   let animationClass = "";
   const customSvgUrl = customServiceSvgUrls[type];
 
-  // Only use custom SVG if it exists, otherwise fallback to Lucide icons
+  // Use custom SVG if it exists, otherwise fallback to Lucide icons
   if (customSvgUrl) {
-    // Determine animation based on type, even for custom SVGs
+    // Determine animation based on type
     switch (type) {
       case 'flat-tyre':
         animationClass = "animate-deflate-wobble";
