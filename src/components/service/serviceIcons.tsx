@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Fuel, Wrench, Phone, AlertTriangle, Mail, Disc3, BatteryCharging } from 'lucide-react';
 import { loadImage, removeBackground } from '@/utils/imageProcessing';
@@ -13,8 +14,7 @@ interface ServiceIconData {
 // Custom SVG icons - using the newly uploaded files
 const customServiceSvgUrls: Partial<Record<ServiceType, string>> = {
   'flat-tyre': '/lovable-uploads/flat-tire.svg',
-  // Temporarily disable the broken fuel counter SVG
-  // 'out-of-fuel': '/lovable-uploads/fuel-counter.svg',
+  'out-of-fuel': '/lovable-uploads/fuel-counter.svg',
   'car-battery': '/lovable-uploads/car-battery.svg',
   'other-car-problems': '/lovable-uploads/other-car-problems.svg',
   'tow-truck': '/lovable-uploads/tow-truck.svg',
