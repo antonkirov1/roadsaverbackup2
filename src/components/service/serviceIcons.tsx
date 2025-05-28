@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { 
   Fuel, 
@@ -18,16 +19,15 @@ interface ServiceIconData {
   description: string;
 }
 
-// Placeholder mapping for custom SVG icons.
-// Replace these with actual paths after uploading your SVGs.
+// Optional custom SVG icons - only use if the files actually exist
 const customServiceSvgUrls: Partial<Record<ServiceType, string>> = {
-  'flat-tyre': '/lovable-uploads/flat-tire.svg', // Updated
-  'out-of-fuel': '/lovable-uploads/fuel-counter.svg', // Updated
-  'car-battery': '/lovable-uploads/car-battery.svg', // Already updated
-  'other-car-problems': '/lovable-uploads/other-car-problems.svg', // Updated
-  'tow-truck': '/lovable-uploads/tow-truck.svg', // Updated (This will override the special PNG handling)
-  'support': '/lovable-uploads/contact-support.svg', // Updated
-  // 'emergency' can also be customized if needed
+  // Uncomment these when you have the actual SVG files uploaded
+  // 'flat-tyre': '/lovable-uploads/flat-tire.svg',
+  // 'out-of-fuel': '/lovable-uploads/fuel-counter.svg',
+  // 'car-battery': '/lovable-uploads/car-battery.svg',
+  // 'other-car-problems': '/lovable-uploads/other-car-problems.svg',
+  // 'tow-truck': '/lovable-uploads/tow-truck.svg',
+  // 'support': '/lovable-uploads/contact-support.svg',
 };
 
 export const useTowTruckIcon = (processedTowTruckIconUrl: string | null) => {
@@ -75,6 +75,7 @@ export const getServiceIconAndTitle = (
   let animationClass = "";
   const customSvgUrl = customServiceSvgUrls[type];
 
+  // Only use custom SVG if it exists, otherwise fallback to Lucide icons
   if (customSvgUrl) {
     // Determine animation based on type, even for custom SVGs
     switch (type) {
@@ -93,37 +94,37 @@ export const getServiceIconAndTitle = (
     };
   }
 
-  // Fallback to existing Lucide icons or special tow-truck logic if no custom SVG is provided
+  // Use Lucide icons as the primary icons
   switch (type) {
     case 'flat-tyre':
       animationClass = "animate-deflate-wobble";
       return { 
-        icon: <Disc3 className={`${iconSizeClass} ${animationClass}`} />, 
+        icon: <Disc3 className={`${iconSizeClass} ${animationClass} text-green-600`} />, 
         title: t('flat-tyre'),
         description: t('flat-tyre-desc')
       };
     case 'out-of-fuel':
       animationClass = "animate-fuel-sputter-flash";
       return { 
-        icon: <Fuel className={`${iconSizeClass} ${animationClass}`} />, 
+        icon: <Fuel className={`${iconSizeClass} ${animationClass} text-green-600`} />, 
         title: t('out-of-fuel'),
         description: t('out-of-fuel-desc')
       };
     case 'other-car-problems':
       animationClass = "animate-wrench-turn";
       return { 
-        icon: <Wrench className={`${iconSizeClass} ${animationClass}`} />, 
+        icon: <Wrench className={`${iconSizeClass} ${animationClass} text-green-600`} />, 
         title: t('other-car-problems'),
         description: t('other-car-problems-desc')
       };
-    case 'car-battery': // This case will now be handled by customSvgUrl if defined, otherwise fallback here
+    case 'car-battery':
       animationClass = "animate-battery-flash-red";
       return { 
-        icon: <BatteryCharging className={`${iconSizeClass} ${animationClass}`} />,
+        icon: <BatteryCharging className={`${iconSizeClass} ${animationClass} text-green-600`} />,
         title: t('car-battery'),
         description: t('car-battery-desc')
       };
-    case 'tow-truck': // This specific logic for tow-truck PNG remains if no custom SVG is set for it
+    case 'tow-truck':
       animationClass = "animate-truck-pull"; 
       const { iconSrc, greenFilterStyle } = useTowTruckIcon(processedTowTruckIconUrl);
       
@@ -151,13 +152,13 @@ export const getServiceIconAndTitle = (
     case 'support':
       animationClass = "animate-phone-ring";
       return { 
-        icon: <Phone className={`${iconSizeClass} ${animationClass}`} />, 
+        icon: <Phone className={`${iconSizeClass} ${animationClass} text-green-600`} />, 
         title: t('support'),
         description: t('support-desc')
       };
     default:
       return { 
-        icon: <Wrench className={iconSizeClass} />, 
+        icon: <Wrench className={`${iconSizeClass} text-green-600`} />, 
         title: t('service'),
         description: t('service-desc')
       };
