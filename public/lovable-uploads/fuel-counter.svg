@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
 <svg height="800px" width="800px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
@@ -13,5 +14,7 @@
 		l17.298-17.298l-3.3-3.294L130.931,47.407z M130.931,131.599l17.298,17.298l3.294-3.294l-17.292-17.298L130.931,131.599z
 		 M74.043,152.346H86v-2.112v-2.1H74.043v-5.197h12.894v-2.172v-2.16H68.929v24.464h18.575v-2.178v-2.172H74.043V152.346z
 		 M74.61,40.402V30.055h10.716v-2.112v-2.094H74.61v-5.567h12.304v-2.178v-2.166H69.508v24.464h2.56H74.61z"/>
+	<!-- Arrow pointing down at E -->
+	<polygon style="fill:#ff0000;" points="25,120 20,110 30,110" class="fuel-arrow"/>
 </g>
 </svg>

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Fuel, Wrench, Phone, AlertTriangle, Mail, Disc3, BatteryCharging } from 'lucide-react';
 import { loadImage, removeBackground } from '@/utils/imageProcessing';
@@ -70,7 +69,7 @@ export const getServiceIconAndTitle = (type: ServiceType, t: (key: string) => st
         animationClass = "animate-deflate-wobble";
         break;
       case 'out-of-fuel':
-        animationClass = "animate-fuel-sputter-flash";
+        animationClass = "animate-fuel-flash-red";
         break;
       case 'other-car-problems':
         animationClass = "animate-wrench-turn";
@@ -106,7 +105,7 @@ export const getServiceIconAndTitle = (type: ServiceType, t: (key: string) => st
         description: t('flat-tyre-desc')
       };
     case 'out-of-fuel':
-      animationClass = "animate-fuel-sputter-flash";
+      animationClass = "animate-fuel-flash-red";
       return {
         icon: <Fuel className={`${iconSizeClass} ${animationClass} text-green-600`} />,
         title: t('out-of-fuel'),

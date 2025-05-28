@@ -96,10 +96,9 @@ export default {
           '75%': { transform: 'scale(0.85) rotate(1deg)' },
           '100%': { transform: 'scale(1) rotate(0deg)' }
         },
-        'fuel-flicker': {
-          '0%, 100%': { opacity: '1' },
-          '25%, 75%': { opacity: '0.6' },
-          '50%': { opacity: '0.8' },
+        'fuel-flash-red': {
+          '0%, 100%': { filter: 'brightness(1)' },
+          '50%': { filter: 'brightness(0) saturate(100%) invert(18%) sepia(95%) saturate(7468%) hue-rotate(357deg) brightness(95%) contrast(118%)' }
         },
         'fuel-sputter-flash': {
           '0%, 100%': { transform: 'translateX(0) rotate(0deg)', color: 'currentColor', opacity: '1' },
@@ -150,6 +149,7 @@ export default {
 				'pulse-subtle': 'pulse-subtle 2s ease-in-out infinite',
         'deflate-wobble': 'deflate-wobble 2s ease-in-out infinite',
         'fuel-flicker': 'fuel-flicker 1.2s ease-in-out infinite',
+        'fuel-flash-red': 'fuel-flash-red 1.5s ease-in-out infinite',
         'fuel-sputter-flash': 'fuel-sputter-flash 1.8s ease-in-out infinite',
         'battery-flash-red': 'battery-flash-red 1.5s ease-in-out infinite',
         'wrench-turn': 'wrench-turn 2.5s ease-in-out infinite alternate',
