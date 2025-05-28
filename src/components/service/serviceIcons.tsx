@@ -69,7 +69,7 @@ export const getServiceIconAndTitle = (type: ServiceType, t: (key: string) => st
         animationClass = "animate-deflate-wobble";
         break;
       case 'out-of-fuel':
-        animationClass = "animate-fuel-flash-red";
+        animationClass = "animate-fuel-pulse-flash";
         break;
       case 'other-car-problems':
         animationClass = "animate-wrench-turn";
@@ -114,7 +114,7 @@ export const getServiceIconAndTitle = (type: ServiceType, t: (key: string) => st
         description: t('flat-tyre-desc')
       };
     case 'out-of-fuel':
-      animationClass = "animate-fuel-flash-red";
+      animationClass = "animate-fuel-pulse-flash";
       return {
         icon: <Fuel className={`${iconSizeClass} ${animationClass} text-green-600`} />,
         title: t('out-of-fuel'),
