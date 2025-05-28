@@ -17,6 +17,7 @@ const customServiceSvgUrls: Partial<Record<ServiceType, string>> = {
   'out-of-fuel': '/lovable-uploads/fuel-counter.svg',
   'car-battery': '/lovable-uploads/car-battery.svg',
   'other-car-problems': '/lovable-uploads/other-car-problems.svg',
+  'tow-truck': '/lovable-uploads/tow-truck.svg',
   'support': '/lovable-uploads/contact-support.svg',
 };
 
