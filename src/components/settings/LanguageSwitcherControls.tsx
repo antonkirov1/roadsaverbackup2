@@ -28,7 +28,7 @@ const LanguageSwitcherControls: React.FC<LanguageSwitcherControlsProps> = ({
 
 
   return (
-    <div className={className}> 
+    <div className={`mr-8 ${className}`}> 
       <Button
         variant="ghost"
         size="icon"
