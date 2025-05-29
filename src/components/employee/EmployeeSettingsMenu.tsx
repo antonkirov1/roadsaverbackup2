@@ -48,12 +48,6 @@ const EmployeeSettingsMenu: React.FC<EmployeeSettingsMenuProps> = ({
     }
   };
 
-  const completedRequests = [
-    { id: 1, type: 'flat-tyre', date: '2024-01-15', customer: 'John Doe', completedTime: '14:30' },
-    { id: 2, type: 'out-of-fuel', date: '2024-01-14', customer: 'Jane Smith', completedTime: '16:45' },
-    { id: 3, type: 'car-battery', date: '2024-01-13', customer: 'Mike Johnson', completedTime: '11:20' }
-  ];
-
   const iconAnimation = "transition-all duration-300 ease-in-out group-hover:scale-125 group-hover:rotate-[-10deg] group-data-[state=active]:scale-110 group-data-[state=active]:text-blue-500";
 
   return (
@@ -103,7 +97,7 @@ const EmployeeSettingsMenu: React.FC<EmployeeSettingsMenuProps> = ({
             </TabsContent>
 
             <TabsContent value="history" className="m-0 h-full">
-              <HistorySettingsTab t={t} completedRequests={completedRequests} />
+              <HistorySettingsTab t={t} />
             </TabsContent>
 
             <TabsContent value="about" className="m-0 h-full">

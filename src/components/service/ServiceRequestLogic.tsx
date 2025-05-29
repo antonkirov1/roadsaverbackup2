@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { toast } from "@/components/ui/use-toast";
 import { useApp } from '@/contexts/AppContext';
@@ -77,15 +78,19 @@ export const useServiceRequest = (
     setTimeout(() => {
       if (isAccepted) {
         // Update ongoing request with employee info
-        setOngoingRequest(prev => prev ? {
-          ...prev,
-          status: 'accepted',
+        const updatedRequest = {
+          id: requestId,
+          type,
+          status: 'accepted' as const,
+          timestamp: new Date().toLocaleString(),
+          location: 'Sofia Center, Bulgaria',
           employeeId: 'emp123',
           employeeName: 'John Smith',
           employeePhone: '+359888123456',
           employeeLocation: employeePos
-        } : null);
+        };
         
+        setOngoingRequest(updatedRequest);
         setEmployeeLocation(employeePos);
         setStatus('accepted');
         toast({
@@ -118,7 +123,15 @@ export const useServiceRequest = (
         }, 30000);
         
       } else {
-        setOngoingRequest(prev => prev ? { ...prev, status: 'declined' } : null);
+        const declinedRequest = {
+          id: requestId,
+          type,
+          status: 'declined' as const,
+          timestamp: new Date().toLocaleString(),
+          location: 'Sofia Center, Bulgaria'
+        };
+        
+        setOngoingRequest(declinedRequest);
         setStatus('declined');
         setDeclineReason("I apologize, but all of our service technicians are currently occupied with other emergencies. We expect to have someone available in approximately 15-20 minutes. If this is an urgent matter, please contact our emergency hotline for immediate assistance.");
         toast({
