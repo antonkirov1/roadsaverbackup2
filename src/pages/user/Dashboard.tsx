@@ -1,17 +1,12 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import ServiceCard from '@/components/service/ServiceCard';
-import ServiceRequest from '@/components/service/ServiceRequest';
-import EmergencyServices from '@/components/service/EmergencyServices';
-import SettingsMenu from '@/components/settings/SettingsMenu';
-import OngoingRequestsDialog from '@/components/service/OngoingRequestsDialog';
 import { useApp } from '@/contexts/AppContext';
 import { useTranslation } from '@/utils/translations';
 import { toast } from '@/components/ui/use-toast';
-import MapInput from '@/components/MapInput';
-import { Settings, MapPin, Globe, Siren, Clock } from 'lucide-react';
+import DashboardHeader from '@/components/dashboard/DashboardHeader';
+import DashboardServices from '@/components/dashboard/DashboardServices';
+import DashboardModals from '@/components/dashboard/DashboardModals';
 
 type ServiceType = 'flat-tyre' | 'out-of-fuel' | 'other-car-problems' | 'tow-truck' | 'emergency' | 'support' | 'car-battery';
 
@@ -69,130 +64,35 @@ const Dashboard: React.FC = () => {
   
   return (
     <div className="min-h-screen bg-background pb-16 font-clash">
-      {/* Header */}
-      <header className="bg-green-600 text-white p-3 sm:p-4 flex justify-between items-center sticky top-0 z-10">
-        <h1 className="text-xl font-semibold font-clash">RoadSaver</h1>
-        <div className="flex gap-1 sm:gap-2">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={() => setShowEmergencyServices(true)}
-            className="text-white hover:bg-white/20 h-8 w-8 sm:h-10 sm:w-10"
-            title={t('emergency-services')}
-          >
-            <Siren className="h-4 w-4 sm:h-5 sm:w-5 animate-emergency-alert-flash" />
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={() => setShowLocationPicker(true)}
-            className="text-white hover:bg-white/20 h-8 w-8 sm:h-10 sm:w-10"
-            title={t('update-location')}
-          >
-            <MapPin className="h-4 w-4 sm:h-5 sm:w-5 animate-map-pin-bob" />
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={() => setShowSettings(true)}
-            className="text-white hover:bg-white/20 h-8 w-8 sm:h-10 sm:w-10"
-            title={t('settings')}
-          >
-            <Settings className="h-4 w-4 sm:h-5 sm:w-5 animate-settings-gear-turn" />
-          </Button>
-          <div className="relative">
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={() => setLanguage(language === 'en' ? 'bg' : 'en')}
-              className="text-white hover:bg-white/20 h-8 w-8 sm:h-10 sm:w-10"
-              title={t('change-language')}
-            >
-              <Globe className="h-3 w-3 sm:h-4 sm:w-4 animate-globe-pulse" />
-            </Button>
-            <span className="absolute -bottom-1 -right-1 text-xs bg-white text-green-600 px-1 rounded">
-              {language.toUpperCase()}
-            </span>
-          </div>
-        </div>
-      </header>
+      <DashboardHeader
+        language={language}
+        t={t}
+        onEmergencyClick={() => setShowEmergencyServices(true)}
+        onLocationClick={() => setShowLocationPicker(true)}
+        onSettingsClick={() => setShowSettings(true)}
+        onLanguageToggle={() => setLanguage(language === 'en' ? 'bg' : 'en')}
+        onOngoingRequestsClick={() => setShowOngoingRequests(true)}
+      />
       
-      {/* Main Content */}
-      <main className="container max-w-md mx-auto px-4 py-4 sm:py-6">
-        <div className="flex items-center justify-between mb-4 sm:mb-6">
-          <h2 className="text-xl sm:text-2xl font-bold">{t('services')}</h2>
-          <Button 
-            variant="outline" 
-            size="sm"
-            onClick={() => setShowOngoingRequests(true)}
-            className="text-xs sm:text-sm"
-          >
-            <Clock className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-            {t('ongoing-requests')}
-          </Button>
-        </div>
-        
-        <div className="grid grid-cols-2 gap-3 sm:gap-4">
-          <ServiceCard type="flat-tyre" onClick={() => handleServiceSelect('flat-tyre')} />
-          <ServiceCard type="out-of-fuel" onClick={() => handleServiceSelect('out-of-fuel')} />
-          <ServiceCard type="car-battery" onClick={() => handleServiceSelect('car-battery')} />
-          <ServiceCard type="other-car-problems" onClick={() => handleServiceSelect('other-car-problems')} />
-          <ServiceCard type="tow-truck" onClick={() => handleServiceSelect('tow-truck')} />
-          <ServiceCard type="support" onClick={() => handleServiceSelect('support')} />
-        </div>
-      </main>
+      <DashboardServices onServiceSelect={handleServiceSelect} />
       
-      {/* Modals */}
-      {selectedService && (
-        <ServiceRequest
-          type={selectedService}
-          open={!!selectedService}
-          onClose={handleRequestClose}
-          userLocation={userLocation}
-        />
-      )}
-      
-      {showEmergencyServices && (
-        <EmergencyServices
-          open={showEmergencyServices}
-          onClose={() => setShowEmergencyServices(false)}
-        />
-      )}
-      
-      {showSettings && (
-        <SettingsMenu
-          open={showSettings}
-          onClose={() => setShowSettings(false)}
-          onLanguageChange={setLanguage}
-          currentLanguage={language}
-        />
-      )}
-      
-      {showOngoingRequests && (
-        <OngoingRequestsDialog
-          open={showOngoingRequests}
-          onClose={() => setShowOngoingRequests(false)}
-        />
-      )}
-      
-      {showLocationPicker && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-background rounded-lg shadow-lg p-4 w-full max-w-md">
-            <h2 className="text-xl font-bold mb-4">{t('update-location')}</h2>
-            <MapInput 
-              onLocationSelect={handleLocationChange} 
-              initialLocation={userLocation} 
-            />
-            <Button 
-              variant="outline" 
-              onClick={() => setShowLocationPicker(false)}
-              className="mt-4 w-full"
-            >
-              {t('cancel')}
-            </Button>
-          </div>
-        </div>
-      )}
+      <DashboardModals
+        selectedService={selectedService}
+        showEmergencyServices={showEmergencyServices}
+        showSettings={showSettings}
+        showLocationPicker={showLocationPicker}
+        showOngoingRequests={showOngoingRequests}
+        userLocation={userLocation}
+        language={language}
+        t={t}
+        onServiceRequestClose={handleRequestClose}
+        onEmergencyServicesClose={() => setShowEmergencyServices(false)}
+        onSettingsClose={() => setShowSettings(false)}
+        onLocationPickerClose={() => setShowLocationPicker(false)}
+        onOngoingRequestsClose={() => setShowOngoingRequests(false)}
+        onLocationChange={handleLocationChange}
+        onLanguageChange={setLanguage}
+      />
     </div>
   );
 };
