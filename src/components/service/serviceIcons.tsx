@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Fuel, Wrench, Phone, AlertTriangle, Mail, Disc3, BatteryCharging } from 'lucide-react';
 import { loadImage, removeBackground } from '@/utils/imageProcessing';
@@ -22,12 +21,10 @@ const customServiceSvgUrls: Partial<Record<ServiceType, string>> = {
 };
 
 export const useTowTruckIcon = (processedTowTruckIconUrl: string | null) => {
-  // Updated filter to use RoadSaver purple color with black contour
-  const roadSaverPurpleFilter = 'brightness(0) saturate(100%) invert(63%) sepia(45%) saturate(3058%) hue-rotate(246deg) brightness(98%) contrast(93%)';
+  // Only black contour filter, no color change
   const blackContourFilter = 'drop-shadow(1px 1px 0px black) drop-shadow(-1px -1px 0px black) drop-shadow(1px -1px 0px black) drop-shadow(-1px 1px 0px black)';
-  const combinedFilter = `${blackContourFilter} ${roadSaverPurpleFilter}`;
   const filterStyle = {
-    filter: combinedFilter
+    filter: blackContourFilter
   };
 
   // Use the correct path for the new tow truck icon
@@ -90,17 +87,15 @@ export const getServiceIconAndTitle = (type: ServiceType, t: (key: string) => st
         break;
     }
     
-    // Apply RoadSaver purple filter with black contour to all custom SVG icons
-    const roadSaverPurpleFilter = 'brightness(0) saturate(100%) invert(63%) sepia(45%) saturate(3058%) hue-rotate(246deg) brightness(98%) contrast(93%)';
+    // Apply only black contour to all custom SVG icons
     const blackContourFilter = 'drop-shadow(1px 1px 0px black) drop-shadow(-1px -1px 0px black) drop-shadow(1px -1px 0px black) drop-shadow(-1px 1px 0px black)';
-    const combinedFilter = `${blackContourFilter} ${roadSaverPurpleFilter}`;
     
     return {
       icon: <img 
         src={customSvgUrl} 
         alt={t(type)} 
         className={`w-8 h-8 sm:w-10 sm:h-10 ${animationClass} object-contain`}
-        style={{ filter: combinedFilter }}
+        style={{ filter: blackContourFilter }}
         onError={(e) => {
           console.error(`Failed to load custom SVG for ${type}, falling back to Lucide icon`);
           // Hide the broken image
@@ -112,33 +107,33 @@ export const getServiceIconAndTitle = (type: ServiceType, t: (key: string) => st
     };
   }
 
-  // Use Lucide icons as fallback with RoadSaver purple color
+  // Use Lucide icons as fallback with black color and black contour
   switch (type) {
     case 'flat-tyre':
       animationClass = "animate-deflate-wobble";
       return {
-        icon: <Disc3 className={`${iconSizeClass} ${animationClass} text-roadsaver-primary`} style={{filter: 'drop-shadow(1px 1px 0px black) drop-shadow(-1px -1px 0px black) drop-shadow(1px -1px 0px black) drop-shadow(-1px 1px 0px black)'}} />,
+        icon: <Disc3 className={`${iconSizeClass} ${animationClass} text-black`} style={{filter: 'drop-shadow(1px 1px 0px black) drop-shadow(-1px -1px 0px black) drop-shadow(1px -1px 0px black) drop-shadow(-1px 1px 0px black)'}} />,
         title: t('flat-tyre'),
         description: t('flat-tyre-desc')
       };
     case 'out-of-fuel':
       animationClass = "animate-fuel-pulse-flash";
       return {
-        icon: <Fuel className={`${iconSizeClass} ${animationClass} text-roadsaver-primary`} style={{filter: 'drop-shadow(1px 1px 0px black) drop-shadow(-1px -1px 0px black) drop-shadow(1px -1px 0px black) drop-shadow(-1px 1px 0px black)'}} />,
+        icon: <Fuel className={`${iconSizeClass} ${animationClass} text-black`} style={{filter: 'drop-shadow(1px 1px 0px black) drop-shadow(-1px -1px 0px black) drop-shadow(1px -1px 0px black) drop-shadow(-1px 1px 0px black)'}} />,
         title: t('out-of-fuel'),
         description: t('out-of-fuel-desc')
       };
     case 'other-car-problems':
       animationClass = "animate-wrench-turn";
       return {
-        icon: <Wrench className={`${iconSizeClass} ${animationClass} text-roadsaver-primary`} style={{filter: 'drop-shadow(1px 1px 0px black) drop-shadow(-1px -1px 0px black) drop-shadow(1px -1px 0px black) drop-shadow(-1px 1px 0px black)'}} />,
+        icon: <Wrench className={`${iconSizeClass} ${animationClass} text-black`} style={{filter: 'drop-shadow(1px 1px 0px black) drop-shadow(-1px -1px 0px black) drop-shadow(1px -1px 0px black) drop-shadow(-1px 1px 0px black)'}} />,
         title: t('other-car-problems'),
         description: t('other-car-problems-desc')
       };
     case 'car-battery':
       animationClass = "animate-battery-flash-red";
       return {
-        icon: <BatteryCharging className={`${iconSizeClass} ${animationClass} text-roadsaver-primary`} style={{filter: 'drop-shadow(1px 1px 0px black) drop-shadow(-1px -1px 0px black) drop-shadow(1px -1px 0px black) drop-shadow(-1px 1px 0px black)'}} />,
+        icon: <BatteryCharging className={`${iconSizeClass} ${animationClass} text-black`} style={{filter: 'drop-shadow(1px 1px 0px black) drop-shadow(-1px -1px 0px black) drop-shadow(1px -1px 0px black) drop-shadow(-1px 1px 0px black)'}} />,
         title: t('car-battery'),
         description: t('car-battery-desc')
       };
@@ -166,13 +161,13 @@ export const getServiceIconAndTitle = (type: ServiceType, t: (key: string) => st
     case 'support':
       animationClass = "animate-phone-ring";
       return {
-        icon: <Phone className={`${iconSizeClass} ${animationClass} text-roadsaver-primary`} style={{filter: 'drop-shadow(1px 1px 0px black) drop-shadow(-1px -1px 0px black) drop-shadow(1px -1px 0px black) drop-shadow(-1px 1px 0px black)'}} />,
+        icon: <Phone className={`${iconSizeClass} ${animationClass} text-black`} style={{filter: 'drop-shadow(1px 1px 0px black) drop-shadow(-1px -1px 0px black) drop-shadow(1px -1px 0px black) drop-shadow(-1px 1px 0px black)'}} />,
         title: t('support'),
         description: t('support-desc')
       };
     default:
       return {
-        icon: <Wrench className={`${iconSizeClass} text-roadsaver-primary`} style={{filter: 'drop-shadow(1px 1px 0px black) drop-shadow(-1px -1px 0px black) drop-shadow(1px -1px 0px black) drop-shadow(-1px 1px 0px black)'}} />,
+        icon: <Wrench className={`${iconSizeClass} text-black`} style={{filter: 'drop-shadow(1px 1px 0px black) drop-shadow(-1px -1px 0px black) drop-shadow(1px -1px 0px black) drop-shadow(-1px 1px 0px black)'}} />,
         title: t('service'),
         description: t('service-desc')
       };
