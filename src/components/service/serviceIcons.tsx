@@ -24,7 +24,7 @@ const iconConfigurations: Record<ServiceType, {
     fallbackLucideIcon: Disc3
   },
   'out-of-fuel': {
-    customSvgUrl: '/lovable-uploads/Out Of Fuel.svg',
+    customSvgUrl: '/lovable-uploads/Out%20Of%20Fuel.svg',
     animationClass: 'animate-fuel-pulse-flash',
     fallbackLucideIcon: Fuel
   },
@@ -86,7 +86,7 @@ export const processBackgroundRemoval = async (type: ServiceType, callback: (url
 export const getServiceIconAndTitle = (type: ServiceType, t: (key: string) => string, processedTowTruckIconUrl: string | null, iconSizeClass: string): ServiceIconData => {
   const config = iconConfigurations[type];
   
-  // Handle icons with custom SVGs (including tow-truck now)
+  // Handle icons with custom SVGs
   if (config.customSvgUrl) {
     const iconStyle = config.colorFilter ? { filter: config.colorFilter } : {};
     
@@ -94,7 +94,7 @@ export const getServiceIconAndTitle = (type: ServiceType, t: (key: string) => st
       icon: <img 
         src={config.customSvgUrl} 
         alt={t(type)} 
-        className={`w-8 h-8 sm:w-10 sm:h-10 ${config.animationClass} object-contain`}
+        className={`w-8 h-8 sm:w-10 sm:w-10 ${config.animationClass} object-contain`}
         style={iconStyle}
         onError={(e) => {
           console.error(`Failed to load custom SVG for ${type}, falling back to Lucide icon`);
