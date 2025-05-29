@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Fuel, Wrench, Phone, AlertTriangle, Mail, Disc3, BatteryCharging } from 'lucide-react';
 import { loadImage, removeBackground } from '@/utils/imageProcessing';
@@ -82,11 +81,15 @@ export const getServiceIconAndTitle = (type: ServiceType, t: (key: string) => st
         break;
     }
     
+    // Apply black color filter to the car battery icon
+    const blackFilter = type === 'car-battery' ? 'brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%)' : '';
+    
     return {
       icon: <img 
         src={customSvgUrl} 
         alt={t(type)} 
         className={`w-8 h-8 sm:w-10 sm:h-10 ${animationClass} object-contain`}
+        style={type === 'car-battery' ? { filter: blackFilter } : {}}
         onError={(e) => {
           console.error(`Failed to load custom SVG for ${type}, falling back to Lucide icon`);
           // Hide the broken image
