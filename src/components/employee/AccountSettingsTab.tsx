@@ -36,7 +36,7 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
           <div className="flex flex-col items-center">
             <div className="relative">
               <div className="relative">
-                <Avatar className="h-20 w-20 border-4 border-blue-500">
+                <Avatar className="h-24 w-24 border-4 border-blue-500">
                   <AvatarImage src={employeeAvatar} alt="Employee Avatar" />
                   <AvatarFallback className="text-lg font-semibold">E</AvatarFallback>
                 </Avatar>
