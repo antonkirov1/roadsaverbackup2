@@ -16,37 +16,49 @@ const iconConfigurations: Record<ServiceType, {
   customSvgUrl?: string;
   animationClass: string;
   colorFilter?: string;
+  darkModeColorFilter?: string;
   fallbackLucideIcon: React.ComponentType<any>;
 }> = {
   'flat-tyre': {
     customSvgUrl: '/lovable-uploads/flat-tire.svg',
     animationClass: 'animate-deflate-wobble',
+    colorFilter: 'brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%)',
+    darkModeColorFilter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)',
     fallbackLucideIcon: Disc3
   },
   'out-of-fuel': {
     customSvgUrl: '/lovable-uploads/Out Of Fuel.svg',
     animationClass: 'animate-fuel-pulse-flash',
+    colorFilter: 'brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%)',
+    darkModeColorFilter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)',
     fallbackLucideIcon: Fuel
   },
   'other-car-problems': {
     customSvgUrl: '/lovable-uploads/other-car-problems.svg',
     animationClass: 'animate-wrench-turn',
+    colorFilter: 'brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%)',
+    darkModeColorFilter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)',
     fallbackLucideIcon: Wrench
   },
   'car-battery': {
     customSvgUrl: '/lovable-uploads/car-battery.svg',
     animationClass: 'animate-battery-flash-red',
     colorFilter: 'brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%)',
+    darkModeColorFilter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)',
     fallbackLucideIcon: BatteryCharging
   },
   'tow-truck': {
     customSvgUrl: '/lovable-uploads/tow-truck.svg',
     animationClass: 'animate-truck-pull',
+    colorFilter: 'brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%)',
+    darkModeColorFilter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)',
     fallbackLucideIcon: Wrench
   },
   'support': {
     customSvgUrl: '/lovable-uploads/contact-support.svg',
     animationClass: 'animate-phone-ring',
+    colorFilter: 'brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%)',
+    darkModeColorFilter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)',
     fallbackLucideIcon: Phone
   },
   'emergency': {
@@ -88,14 +100,11 @@ export const getServiceIconAndTitle = (type: ServiceType, t: (key: string) => st
   
   // Handle icons with custom SVGs
   if (config.customSvgUrl) {
-    const iconStyle = config.colorFilter ? { filter: config.colorFilter } : {};
-    
     return {
       icon: <img 
         src={config.customSvgUrl} 
         alt={t(type)} 
-        className={`w-8 h-8 sm:w-10 sm:w-10 ${config.animationClass} object-contain`}
-        style={iconStyle}
+        className={`w-8 h-8 sm:w-10 sm:w-10 ${config.animationClass} object-contain filter-icon-color`}
         onError={(e) => {
           console.error(`Failed to load custom SVG for ${type}, falling back to Lucide icon`);
           (e.target as HTMLImageElement).style.display = 'none';
@@ -108,7 +117,7 @@ export const getServiceIconAndTitle = (type: ServiceType, t: (key: string) => st
 
   // Fallback to Lucide icons
   const LucideIcon = config.fallbackLucideIcon;
-  const iconColor = type === 'emergency' ? 'text-red-500' : 'text-black';
+  const iconColor = type === 'emergency' ? 'text-red-500' : 'text-black dark:text-white';
   
   return {
     icon: <LucideIcon className={`${iconSizeClass} ${config.animationClass} ${iconColor}`} />,

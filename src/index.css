@@ -107,3 +107,21 @@
 .location-marker {
   position: relative;
 }
+
+/* Service icon color filters for dark mode */
+.filter-icon-color {
+  filter: brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%);
+}
+
+.dark .filter-icon-color {
+  filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+}
+
+/* Circular background icon styles for dark mode */
+.circle-icon-bg {
+  background-color: rgba(34, 197, 94, 0.1);
+}
+
+.dark .circle-icon-bg {
+  background-color: rgba(0, 0, 0, 0.3);
+}
