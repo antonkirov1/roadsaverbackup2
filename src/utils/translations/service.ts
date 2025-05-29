@@ -1,3 +1,4 @@
+
 interface TranslationEntry {
   en: string;
   bg: string;
@@ -22,8 +23,8 @@ export const serviceTranslations: TranslationGroup = {
     bg: 'Други проблеми с колата'
   },
   'car-battery': {
-    en: 'Car Battery Issues',
-    bg: 'Проблеми с акумулатора'
+    en: 'Car Battery Problems/ My car doesn\'t start',
+    bg: 'Проблеми с акумулатора/ Колата не запалва'
   },
   'tow-truck': {
     en: 'I Need A Tow Truck',

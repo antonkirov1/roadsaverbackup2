@@ -24,7 +24,7 @@ const iconConfigurations: Record<ServiceType, {
     fallbackLucideIcon: Disc3
   },
   'out-of-fuel': {
-    customSvgUrl: '/lovable-uploads/Out Of Fuel.svg', // Fixed the correct filename
+    customSvgUrl: '/lovable-uploads/Out Of Fuel.svg',
     animationClass: 'animate-fuel-pulse-flash',
     fallbackLucideIcon: Fuel
   },
@@ -40,8 +40,9 @@ const iconConfigurations: Record<ServiceType, {
     fallbackLucideIcon: BatteryCharging
   },
   'tow-truck': {
+    customSvgUrl: '/lovable-uploads/tow-truck.svg',
     animationClass: 'animate-truck-pull',
-    fallbackLucideIcon: Wrench // This uses special handling
+    fallbackLucideIcon: Wrench
   },
   'support': {
     customSvgUrl: '/lovable-uploads/contact-support.svg',
@@ -85,26 +86,7 @@ export const processBackgroundRemoval = async (type: ServiceType, callback: (url
 export const getServiceIconAndTitle = (type: ServiceType, t: (key: string) => string, processedTowTruckIconUrl: string | null, iconSizeClass: string): ServiceIconData => {
   const config = iconConfigurations[type];
   
-  // Special handling for tow-truck which uses processed images
-  if (type === 'tow-truck') {
-    const { iconSrc, greenFilterStyle } = useTowTruckIcon(processedTowTruckIconUrl);
-    return {
-      icon: <img 
-        src={iconSrc} 
-        alt={t('tow-truck')} 
-        style={greenFilterStyle} 
-        onError={e => {
-          console.error('Error loading tow truck image:', e);
-          (e.target as HTMLImageElement).src = '/lovable-uploads/28a97b53-1b48-4014-8db6-7628e5299a5e.png';
-        }} 
-        className={`${iconSizeClass} ${config.animationClass} object-scale-down`}
-      />,
-      title: t('tow-truck'),
-      description: t('tow-truck-desc')
-    };
-  }
-
-  // Handle icons with custom SVGs
+  // Handle icons with custom SVGs (including tow-truck now)
   if (config.customSvgUrl) {
     const iconStyle = config.colorFilter ? { filter: config.colorFilter } : {};
     
