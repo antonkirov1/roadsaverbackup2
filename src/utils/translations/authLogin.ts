@@ -60,5 +60,9 @@ export const authLoginTranslations: TranslationGroup = {
   'create-account': {
     en: 'Create Account',
     bg: 'Създаване на акаунт'
+  },
+  'employee-dashboard': {
+    en: 'Dashboard for Employees',
+    bg: 'Табло за служители'
   }
 };

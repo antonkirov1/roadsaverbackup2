@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -48,9 +49,9 @@ const EmployeeSettingsMenu: React.FC<EmployeeSettingsMenuProps> = ({
   };
 
   const completedRequests = [
-    { id: 1, type: 'flat-tyre', date: '2024-01-15', customer: 'John Doe' },
-    { id: 2, type: 'out-of-fuel', date: '2024-01-14', customer: 'Jane Smith' },
-    { id: 3, type: 'car-battery', date: '2024-01-13', customer: 'Mike Johnson' }
+    { id: 1, type: 'flat-tyre', date: '2024-01-15', customer: 'John Doe', completedTime: '14:30' },
+    { id: 2, type: 'out-of-fuel', date: '2024-01-14', customer: 'Jane Smith', completedTime: '16:45' },
+    { id: 3, type: 'car-battery', date: '2024-01-13', customer: 'Mike Johnson', completedTime: '11:20' }
   ];
 
   const iconAnimation = "transition-all duration-300 ease-in-out group-hover:scale-125 group-hover:rotate-[-10deg] group-data-[state=active]:scale-110 group-data-[state=active]:text-blue-500";
@@ -60,7 +61,7 @@ const EmployeeSettingsMenu: React.FC<EmployeeSettingsMenuProps> = ({
       <DialogContent
         className={cn(
           "fixed top-0 left-0 w-full h-full max-w-full max-h-full p-0",
-          "translate-x-0 translate-y-0", // Reset translations for full screen
+          "translate-x-0 translate-y-0",
 
           "sm:rounded-lg sm:max-w-2xl sm:max-h-[90vh] sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2",
           

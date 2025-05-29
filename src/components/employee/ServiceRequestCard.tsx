@@ -1,10 +1,10 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Car, Fuel, Wrench } from 'lucide-react';
 import { ServiceRequest } from '@/types/serviceRequest';
 import { useTranslation } from '@/utils/translations';
 import { useApp } from '@/contexts/AppContext';
+import { getServiceIconAndTitle, ServiceType } from '@/components/service/serviceIcons';
 
 interface ServiceRequestCardProps {
   request: ServiceRequest;
@@ -14,20 +14,6 @@ interface ServiceRequestCardProps {
 const ServiceRequestCard: React.FC<ServiceRequestCardProps> = ({ request, onClick }) => {
   const { language } = useApp();
   const t = useTranslation(language);
-  
-  const getServiceIcon = (type: string) => {
-    switch (type) {
-      case 'flat-tyre':
-        return <Car className="h-6 w-6" />;
-      case 'out-of-fuel':
-        return <Fuel className="h-6 w-6" />;
-      case 'small-issue':
-      case 'tow-truck':
-        return <Wrench className="h-6 w-6" />;
-      default:
-        return <Car className="h-6 w-6" />;
-    }
-  };
   
   const getRequestTitle = (type: string) => {
     // First try to use translation key based on the type
@@ -62,6 +48,10 @@ const ServiceRequestCard: React.FC<ServiceRequestCardProps> = ({ request, onClic
     }
   };
 
+  // Get the service icon using the same logic as user version
+  const iconSizeClass = "h-6 w-6";
+  const { icon } = getServiceIconAndTitle(request.type as ServiceType, t, null, iconSizeClass);
+
   return (
     <Card 
       className={`cursor-pointer border-l-4 ${
@@ -75,7 +65,7 @@ const ServiceRequestCard: React.FC<ServiceRequestCardProps> = ({ request, onClic
         <div className="flex justify-between">
           <div className="flex items-center">
             <div className="bg-primary/10 p-2 rounded-full mr-3">
-              {getServiceIcon(request.type)}
+              {icon}
             </div>
             <div>
               <CardTitle className="text-lg">{getRequestTitle(request.type)}</CardTitle>

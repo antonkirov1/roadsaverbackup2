@@ -121,5 +121,9 @@ export const serviceTranslations: TranslationGroup = {
   'phone-number': {
     en: 'Phone number:',
     bg: 'Телефонен номер:'
+  },
+  'completed-at': {
+    en: 'Completed at',
+    bg: 'Завършено в'
   }
 };

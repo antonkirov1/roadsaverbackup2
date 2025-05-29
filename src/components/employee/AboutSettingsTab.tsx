@@ -19,9 +19,6 @@ const AboutSettingsTab: React.FC<AboutSettingsTabProps> = ({ t }) => {
           <div className="text-sm">
             <p>{t('work-hours-line1')}</p>
             <p>{t('work-hours-line2')}</p>
-            <p className="mt-2 text-orange-600 px-2 leading-relaxed">
-              {t('outside-hours-contact-employee') || t('outside-hours-contact')}
-            </p>
           </div>
 
           <div>
