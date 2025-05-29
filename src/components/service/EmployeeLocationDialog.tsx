@@ -3,13 +3,11 @@ import React from 'react';
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useApp } from '@/contexts/AppContext';
 import { useTranslation } from '@/utils/translations';
-import { Phone, MapPin } from 'lucide-react';
+import { Phone } from 'lucide-react';
 import GoogleMap from '@/components/GoogleMap';
 
 interface EmployeeLocationDialogProps {
@@ -18,7 +16,7 @@ interface EmployeeLocationDialogProps {
 }
 
 const EmployeeLocationDialog: React.FC<EmployeeLocationDialogProps> = ({ open, onClose }) => {
-  const { language, ongoingRequest } = useApp();
+  const { language, ongoingRequest, userLocation } = useApp();
   const t = useTranslation(language);
 
   const handleCallEmployee = () => {
@@ -32,13 +30,6 @@ const EmployeeLocationDialog: React.FC<EmployeeLocationDialogProps> = ({ open, o
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <MapPin className="h-5 w-5" />
-            Employee Location - {ongoingRequest.employeeName}
-          </DialogTitle>
-        </DialogHeader>
-        
         <div className="space-y-4">
           {/* Request Info */}
           <div className="bg-gray-50 p-3 rounded-lg space-y-2">
@@ -56,10 +47,10 @@ const EmployeeLocationDialog: React.FC<EmployeeLocationDialogProps> = ({ open, o
             </p>
           </div>
 
-          {/* Google Map */}
+          {/* Google Map with both user and employee locations */}
           <div className="w-full">
             <GoogleMap
-              userLocation={{ lat: 42.698334, lng: 23.319941 }} // Default Sofia location
+              userLocation={userLocation}
               employeeLocation={ongoingRequest.employeeLocation}
               height="300px"
             />

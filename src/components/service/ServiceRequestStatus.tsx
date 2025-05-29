@@ -25,10 +25,10 @@ const ServiceRequestStatus: React.FC<ServiceRequestStatusProps> = ({
   onClose
 }) => {
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 pb-4">
       {/* X button for declined status */}
       {status === 'declined' && (
-        <div className="flex justify-end">
+        <div className="flex justify-end -mt-2">
           <Button
             variant="ghost"
             size="icon"
@@ -65,7 +65,7 @@ const ServiceRequestStatus: React.FC<ServiceRequestStatusProps> = ({
         )}
         
         {status === 'declined' && (
-          <div className="rounded-md bg-red-50 p-3 mt-2">
+          <div className="rounded-md bg-red-50 p-3">
             <p className="text-sm font-medium text-red-800">Request Declined</p>
             <p className="text-sm text-red-700 mt-1">{declineReason}</p>
           </div>
@@ -75,10 +75,10 @@ const ServiceRequestStatus: React.FC<ServiceRequestStatusProps> = ({
       <GoogleMap 
         userLocation={userLocation} 
         employeeLocation={employeeLocation}
-        height="200px" 
+        height="180px" 
       />
       
-      <DialogFooter className="flex-col sm:flex-row gap-2">
+      <DialogFooter className="flex-col sm:flex-row gap-2 mt-4">
         {status === 'declined' ? (
           <div className="flex gap-2 w-full">
             <Button 
