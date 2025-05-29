@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import ServiceRequestDialog from './ServiceRequestDialog';
 import ServiceRequestForm from './ServiceRequestForm';
@@ -41,19 +42,15 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
   const [showCancelConfirmDialog, setShowCancelConfirmDialog] = useState(false);
 
   const handleAttemptClose = () => {
-    // Fixed condition: removed 'status === 'en-route''
-    if (status === 'pending' || status === 'accepted') {
+    // Only show confirmation dialog for pending requests
+    if (status === 'pending') {
       setShowCancelConfirmDialog(true);
     } else {
-      onClose(); // Close directly if not in a state that needs confirmation
+      onClose(); // Close directly for accepted, declined, or initial state
     }
   };
 
   const confirmCancelRequest = () => {
-    // Reset relevant states when request is actually cancelled
-    // This might involve calling a reset function from useServiceRequest if available,
-    // or resetting parts of its state if onClose is expected to fully reset the flow.
-    // For now, just calling onClose as it was.
     onClose(); 
     setShowCancelConfirmDialog(false);
   };
@@ -63,7 +60,7 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
       <ServiceRequestDialog
         type={type}
         open={open}
-        onClose={handleAttemptClose} // Use attemptClose for the dialog's own close trigger
+        onClose={handleAttemptClose}
         showRealTimeUpdate={showRealTimeUpdate}
       >
         {!showRealTimeUpdate ? (
@@ -74,7 +71,7 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
             userLocation={userLocation}
             isSubmitting={isSubmitting}
             onSubmit={handleSubmit}
-            onCancel={handleAttemptClose} // Also use attemptClose for form's cancel
+            onCancel={handleAttemptClose}
           />
         ) : (
           <ServiceRequestStatus
@@ -84,7 +81,7 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
             userLocation={userLocation}
             employeeLocation={employeeLocation}
             onContactSupport={handleContactSupport}
-            onClose={handleAttemptClose} // And here for status view
+            onClose={handleAttemptClose}
           />
         )}
       </ServiceRequestDialog>
