@@ -129,11 +129,11 @@ export default {
         'battery-flash-red': {
           '0%, 100%': { 
             transform: 'scale(1)',
-            filter: 'brightness(0) saturate(100%) invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%)'
+            filter: 'brightness(0) saturate(100%) invert(18%) sepia(95%) saturate(7468%) hue-rotate(357deg) brightness(95%) contrast(118%)'
           },
           '25%': { 
             transform: 'scale(1.1)',
-            filter: 'brightness(0) saturate(100%) invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%)'
+            filter: 'brightness(0) saturate(100%) invert(18%) sepia(95%) saturate(7468%) hue-rotate(357deg) brightness(95%) contrast(118%)'
           },
           '50%': { 
             transform: 'scale(1.15)',
