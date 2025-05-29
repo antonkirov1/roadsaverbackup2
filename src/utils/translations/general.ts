@@ -1,3 +1,4 @@
+
 interface TranslationEntry {
   en: string;
   bg: string;
@@ -8,6 +9,34 @@ interface TranslationGroup {
 }
 
 export const generalTranslations: TranslationGroup = {
+  'app-subtitle': {
+    en: 'Emergency road assistance when you need it most',
+    bg: 'Спешна пътна помощ, когато най-много я нуждаете'
+  },
+  'user-app': {
+    en: 'User App',
+    bg: 'Потребителско приложение'
+  },
+  'for-customers': {
+    en: 'For customers needing assistance',
+    bg: 'За клиенти, нуждаещи се от помощ'
+  },
+  'open-user-app': {
+    en: 'Open User App',
+    bg: 'Отвори потребителското приложение'
+  },
+  'employee-app': {
+    en: 'Employee App',
+    bg: 'Служебно приложение'
+  },
+  'for-service-providers': {
+    en: 'For service providers',
+    bg: 'За доставчици на услуги'
+  },
+  'open-employee-app': {
+    en: 'Open Employee App',
+    bg: 'Отвори служебното приложение'
+  },
   'welcome': {
     en: 'Welcome',
     bg: 'Добре дошли'

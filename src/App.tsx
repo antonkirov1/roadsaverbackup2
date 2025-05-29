@@ -23,9 +23,9 @@ function App() {
             <div className="min-h-screen bg-background text-foreground">
               <Routes>
                 <Route path="/" element={<Index />} />
-                <Route path="/auth" element={<Auth />} />
+                <Route path="/user" element={<Auth />} />
                 <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/employee/auth" element={<EmployeeAuth />} />
+                <Route path="/employee" element={<EmployeeAuth />} />
                 <Route path="/employee/dashboard" element={<EmployeeDashboard />} />
                 <Route path="/404" element={<NotFound />} />
                 <Route path="*" element={<Navigate to="/404" replace />} />
