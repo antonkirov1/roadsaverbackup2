@@ -1,5 +1,4 @@
 
-// Add missing translations for settings menu
 interface TranslationEntry {
   en: string;
   bg: string;
@@ -9,35 +8,34 @@ interface TranslationGroup {
   [key: string]: TranslationEntry;
 }
 
-// General translations that don't fit in other categories
 export const generalTranslations: TranslationGroup = {
-  'app-subtitle': {
-    en: 'Road assistance services for every need',
-    bg: 'Услуги за пътна помощ за всяка нужда'
+  'welcome': {
+    en: 'Welcome',
+    bg: 'Добре дошли'
   },
-  'user-app': {
-    en: 'User App',
-    bg: 'Потребителско приложение'
+  'services': {
+    en: 'Services',
+    bg: 'Услуги'
   },
-  'employee-app': {
-    en: 'Employee App',
-    bg: 'Приложение за служители'
+  'ongoing-requests': {
+    en: 'Ongoing Requests',
+    bg: 'Текущи заявки'
   },
-  'for-customers': {
-    en: 'For customers needing road assistance',
-    bg: 'За клиенти, нуждаещи се от пътна помощ'
+  'no-ongoing-requests': {
+    en: 'No ongoing requests',
+    bg: 'Няма текущи заявки'
   },
-  'for-service-providers': {
-    en: 'For service providers and employees',
-    bg: 'За доставчици на услуги и служители'
+  'dashboard': {
+    en: 'Dashboard',
+    bg: 'Табло'
   },
-  'open-user-app': {
-    en: 'Open User App',
-    bg: 'Отвори потребителско приложение'
+  'employee-dashboard': {
+    en: 'Dashboard for Employees',
+    bg: 'Табло за служители'
   },
-  'open-employee-app': {
-    en: 'Open Employee App',
-    bg: 'Отвори приложение за служители'
+  'settings': {
+    en: 'Settings',
+    bg: 'Настройки'
   },
   'language': {
     en: 'Language',
@@ -53,22 +51,154 @@ export const generalTranslations: TranslationGroup = {
   },
   'change-language': {
     en: 'Change Language',
-    bg: 'Промяна на езика'
+    bg: 'Смени език'
+  },
+  'update-location': {
+    en: 'Update Location',
+    bg: 'Обнови местоположение'
   },
   'location-updated': {
     en: 'Location Updated',
-    bg: 'Местоположението е актуализирано'
+    bg: 'Местоположението е обновено'
   },
   'location-updated-msg': {
-    en: 'Your location has been updated successfully',
-    bg: 'Вашето местоположение беше актуализирано успешно'
+    en: 'Your location has been successfully updated',
+    bg: 'Вашето местоположение беше успешно обновено'
   },
-  'current-phone': {
-    en: 'Current phone number:',
-    bg: 'Текущ телефонен номер:'
+  'location-access-denied': {
+    en: 'Location Access Denied',
+    bg: 'Отказан достъп до местоположение'
   },
-  'account-info': {
-    en: 'Account information',
-    bg: 'Информация за акаунта'
+  'location-access-message': {
+    en: 'Please allow location access for better service',
+    bg: 'Моля, разрешете достъп до местоположението за по-добро обслужване'
+  },
+  'emergency-services': {
+    en: 'Emergency Services',
+    bg: 'Спешни услуги'
+  },
+  'save': {
+    en: 'Save',
+    bg: 'Запази'
+  },
+  'cancel': {
+    en: 'Cancel',
+    bg: 'Отказ'
+  },
+  'confirm': {
+    en: 'Confirm',
+    bg: 'Потвърди'
+  },
+  'yes': {
+    en: 'Yes',
+    bg: 'Да'
+  },
+  'no': {
+    en: 'No',
+    bg: 'Не'
+  },
+  'edit': {
+    en: 'Edit',
+    bg: 'Редактирай'
+  },
+  'delete': {
+    en: 'Delete',
+    bg: 'Изтрий'
+  },
+  'loading': {
+    en: 'Loading...',
+    bg: 'Зарежда...'
+  },
+  'error': {
+    en: 'Error',
+    bg: 'Грешка'
+  },
+  'success': {
+    en: 'Success',
+    bg: 'Успех'
+  },
+  'warning': {
+    en: 'Warning',
+    bg: 'Предупреждение'
+  },
+  'info': {
+    en: 'Information',
+    bg: 'Информация'
+  },
+  'close': {
+    en: 'Close',
+    bg: 'Затвори'
+  },
+  'submit': {
+    en: 'Submit',
+    bg: 'Изпрати'
+  },
+  'search': {
+    en: 'Search',
+    bg: 'Търси'
+  },
+  'filter': {
+    en: 'Filter',
+    bg: 'Филтър'
+  },
+  'all': {
+    en: 'All',
+    bg: 'Всички'
+  },
+  'none': {
+    en: 'None',
+    bg: 'Няма'
+  },
+  'select': {
+    en: 'Select',
+    bg: 'Избери'
+  },
+  'back': {
+    en: 'Back',
+    bg: 'Назад'
+  },
+  'next': {
+    en: 'Next',
+    bg: 'Напред'
+  },
+  'previous': {
+    en: 'Previous',
+    bg: 'Предишен'
+  },
+  'continue': {
+    en: 'Continue',
+    bg: 'Продължи'
+  },
+  'finish': {
+    en: 'Finish',
+    bg: 'Завърши'
+  },
+  'start': {
+    en: 'Start',
+    bg: 'Започни'
+  },
+  'stop': {
+    en: 'Stop',
+    bg: 'Спри'
+  },
+  'pause': {
+    en: 'Pause',
+    bg: 'Пауза'
+  },
+  'resume': {
+    en: 'Resume',
+    bg: 'Продължи'
+  },
+  'retry': {
+    en: 'Retry',
+    bg: 'Опитай отново'
+  },
+  'refresh': {
+    en: 'Refresh',
+    bg: 'Обнови'
+  },
+  'clear': {
+    en: 'Clear',
+    bg: 'Изчисти'
   }
 };

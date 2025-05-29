@@ -5,11 +5,12 @@ import ServiceCard from '@/components/service/ServiceCard';
 import ServiceRequest from '@/components/service/ServiceRequest';
 import EmergencyServices from '@/components/service/EmergencyServices';
 import SettingsMenu from '@/components/settings/SettingsMenu';
+import OngoingRequestsDialog from '@/components/service/OngoingRequestsDialog';
 import { useApp } from '@/contexts/AppContext';
 import { useTranslation } from '@/utils/translations';
 import { toast } from '@/components/ui/use-toast';
 import MapInput from '@/components/MapInput';
-import { Settings, MapPin, Globe, Siren } from 'lucide-react';
+import { Settings, MapPin, Globe, Siren, Clock } from 'lucide-react';
 
 type ServiceType = 'flat-tyre' | 'out-of-fuel' | 'other-car-problems' | 'tow-truck' | 'emergency' | 'support' | 'car-battery';
 
@@ -22,6 +23,7 @@ const Dashboard: React.FC = () => {
   const [showEmergencyServices, setShowEmergencyServices] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showLocationPicker, setShowLocationPicker] = useState(false);
+  const [showOngoingRequests, setShowOngoingRequests] = useState(false);
   
   // Redirect to auth if not authenticated
   React.useEffect(() => {
@@ -107,7 +109,18 @@ const Dashboard: React.FC = () => {
       
       {/* Main Content */}
       <main className="container max-w-md mx-auto px-4 py-4 sm:py-6">
-        <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">{t('services')}</h2>
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold">{t('services')}</h2>
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={() => setShowOngoingRequests(true)}
+            className="text-xs sm:text-sm"
+          >
+            <Clock className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+            {t('ongoing-requests')}
+          </Button>
+        </div>
         
         <div className="grid grid-cols-2 gap-3 sm:gap-4">
           <ServiceCard type="flat-tyre" onClick={() => handleServiceSelect('flat-tyre')} />
@@ -142,6 +155,13 @@ const Dashboard: React.FC = () => {
           onClose={() => setShowSettings(false)}
           onLanguageChange={setLanguage}
           currentLanguage={language}
+        />
+      )}
+      
+      {showOngoingRequests && (
+        <OngoingRequestsDialog
+          open={showOngoingRequests}
+          onClose={() => setShowOngoingRequests(false)}
         />
       )}
       
