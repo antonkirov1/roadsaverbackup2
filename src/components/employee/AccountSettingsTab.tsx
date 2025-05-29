@@ -36,13 +36,13 @@ const AccountSettingsTab: React.FC<AccountSettingsTabProps> = ({
           <div className="flex flex-col items-center">
             <div className="relative">
               <div className="relative">
-                <Avatar className="h-24 w-24 border-4 border-blue-500">
+                <Avatar className="h-20 w-20 border-4 border-blue-500">
                   <AvatarImage src={employeeAvatar} alt="Employee Avatar" />
                   <AvatarFallback className="text-lg font-semibold">E</AvatarFallback>
                 </Avatar>
                 <button
                   onClick={handleAvatarClick}
-                  className="absolute -bottom-1 -right-1 bg-blue-500 hover:bg-blue-600 text-white rounded-full p-1.5 transition-colors shadow-md"
+                  className="absolute -bottom-1 -right-1 bg-blue-500 hover:bg-blue-600 text-white rounded-full p-1.5 transition-all duration-200 hover:scale-110 shadow-md"
                   aria-label={t('change-avatar')}
                 >
                   <Plus className="h-4 w-4" />

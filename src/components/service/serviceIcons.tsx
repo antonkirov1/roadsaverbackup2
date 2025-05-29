@@ -24,7 +24,7 @@ const iconConfigurations: Record<ServiceType, {
     fallbackLucideIcon: Disc3
   },
   'out-of-fuel': {
-    customSvgUrl: '/lovable-uploads/Out%20Of%20Fuel.svg',
+    customSvgUrl: '/lovable-uploads/Out Of Fuel.svg',
     animationClass: 'animate-fuel-pulse-flash',
     fallbackLucideIcon: Fuel
   },

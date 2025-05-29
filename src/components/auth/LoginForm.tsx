@@ -71,7 +71,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onCreateAccount, isEmplo
       <CardHeader>
         <CardTitle className="text-2xl font-bold">{t('sign-in')}</CardTitle>
         <CardDescription>
-          {isEmployee ? t('employee-login-desc') : t('welcome-back')}
+          {isEmployee ? t('welcome-back') : t('welcome-back')}
         </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
