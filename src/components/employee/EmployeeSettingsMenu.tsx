@@ -11,6 +11,7 @@ import EmployeeSettingsTabsNavigation from './EmployeeSettingsTabsNavigation';
 import AccountSettingsTab from './AccountSettingsTab';
 import HistorySettingsTab from './HistorySettingsTab';
 import AboutSettingsTab from './AboutSettingsTab';
+import ThemeToggle from '@/components/ui/theme-toggle';
 
 interface EmployeeSettingsMenuProps {
   open: boolean;
@@ -68,11 +69,17 @@ const EmployeeSettingsMenu: React.FC<EmployeeSettingsMenuProps> = ({
           "data-[state=open]:slide-in-from-left-0 data-[state=open]:slide-in-from-top-0 sm:data-[state=open]:slide-in-from-left-1/2 sm:data-[state=open]:slide-in-from-top-1/2"
         )}
       >
-        <EmployeeSettingsHeader
-          currentLanguage={currentLanguage}
-          onLanguageChange={onLanguageChange}
-          t={t}
-        />
+        <div className="bg-blue-600 text-primary-foreground p-3 flex justify-between items-center flex-shrink-0 shadow-md">
+          <h1 className="text-xl font-semibold font-clash">RoadSaver</h1>
+          <div className="flex items-center gap-4">
+            <ThemeToggle showLabels={false} size="sm" />
+            <EmployeeSettingsHeader
+              currentLanguage={currentLanguage}
+              onLanguageChange={onLanguageChange}
+              t={t}
+            />
+          </div>
+        </div>
 
         <DialogHeader className="text-left px-4 pt-4 pb-2 flex-shrink-0">
           <DialogTitle>{t('settings')}</DialogTitle>

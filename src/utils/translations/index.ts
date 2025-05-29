@@ -13,6 +13,7 @@ import { statusTranslations } from './status';
 import { settingsTranslations } from './settings';
 import { generalTranslations } from './general';
 import { uiTranslations } from './ui';
+import { themeTranslations } from './theme';
 
 // Combine all translation categories
 export const translations = {
@@ -30,6 +31,7 @@ export const translations = {
   ...settingsTranslations,
   ...generalTranslations,
   ...uiTranslations,
+  ...themeTranslations,
 };
 
 export type Language = 'en' | 'bg';
@@ -42,4 +44,3 @@ export const useTranslation = (language: Language) => {
     return translation[language] || key;
   };
 };
-

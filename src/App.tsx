@@ -1,47 +1,42 @@
 
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import Index from './pages/Index';
+import NotFound from './pages/NotFound';
+import Auth from './pages/user/Auth';
+import Dashboard from './pages/user/Dashboard';
+import EmployeeAuth from './pages/employee/EmployeeAuth';
+import EmployeeDashboard from './pages/employee/EmployeeDashboard';
+import { AppProvider } from './contexts/AppContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AppProvider } from "@/contexts/AppContext";
-
-// Pages
-import Index from "./pages/Index";
-import Auth from "./pages/user/Auth";
-import Dashboard from "./pages/user/Dashboard";
-import EmployeeAuth from "./pages/employee/EmployeeAuth";
-import EmployeeDashboard from "./pages/employee/EmployeeDashboard";
-import NotFound from "./pages/NotFound";
+import './App.css';
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <AppProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            {/* Main landing page */}
-            <Route path="/" element={<Index />} />
-            
-            {/* User app routes */}
-            <Route path="/user" element={<Auth />} />
-            <Route path="/user/dashboard" element={<Dashboard />} />
-            
-            {/* Employee app routes */}
-            <Route path="/employee" element={<EmployeeAuth />} />
-            <Route path="/employee/dashboard" element={<EmployeeDashboard />} />
-            
-            {/* 404 catch-all route */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </AppProvider>
-  </QueryClientProvider>
-);
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <AppProvider>
+          <BrowserRouter>
+            <div className="min-h-screen bg-background text-foreground">
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/employee/auth" element={<EmployeeAuth />} />
+                <Route path="/employee/dashboard" element={<EmployeeDashboard />} />
+                <Route path="/404" element={<NotFound />} />
+                <Route path="*" element={<Navigate to="/404" replace />} />
+              </Routes>
+              <Toaster />
+            </div>
+          </BrowserRouter>
+        </AppProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
+  );
+}
 
 export default App;

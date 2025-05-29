@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
@@ -10,6 +11,7 @@ import PaymentTabContent from './PaymentTabContent';
 import AboutTabContent from './AboutTabContent';
 import SettingsTabsNavigation from './SettingsTabsNavigation';
 import LanguageSwitcherControls from './LanguageSwitcherControls';
+import ThemeToggle from '@/components/ui/theme-toggle';
 import { useAccountSettings } from '@/hooks/useAccountSettings';
 import { cn } from '@/lib/utils';
 
@@ -70,7 +72,8 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
       > 
         <div className="bg-primary text-primary-foreground p-3 flex justify-between items-center flex-shrink-0 shadow-md">
           <h1 className="text-xl font-semibold font-clash">RoadSaver</h1>
-          <div className="flex items-center"> 
+          <div className="flex items-center gap-4"> 
+            <ThemeToggle showLabels={false} size="sm" />
             <LanguageSwitcherControls 
               currentLanguage={currentLanguage}
               onLanguageChange={onLanguageChange}
