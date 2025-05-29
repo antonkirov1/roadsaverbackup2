@@ -26,13 +26,13 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
     <>
       {/* Header */}
       <header className="bg-green-600 text-white p-3 sm:p-4 flex justify-between items-center sticky top-0 z-10">
-        <h1 className="text-xl font-semibold font-clash">RoadSaver</h1>
+        <h1 className="text-xl font-semibold font-clash text-white dark:text-black">RoadSaver</h1>
         <div className="flex gap-1 sm:gap-2">
           <Button 
             variant="ghost" 
             size="icon" 
             onClick={onEmergencyClick}
-            className="text-white hover:bg-white/20 h-8 w-8 sm:h-10 sm:w-10"
+            className="text-white dark:text-black hover:bg-white/20 h-8 w-8 sm:h-10 sm:w-10"
             title={t('emergency-services')}
           >
             <Siren className="h-4 w-4 sm:h-5 sm:w-5 animate-emergency-alert-flash" />
@@ -41,7 +41,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
             variant="ghost" 
             size="icon" 
             onClick={onLocationClick}
-            className="text-white hover:bg-white/20 h-8 w-8 sm:h-10 sm:w-10"
+            className="text-white dark:text-black hover:bg-white/20 h-8 w-8 sm:h-10 sm:w-10"
             title={t('update-location')}
           >
             <MapPin className="h-4 w-4 sm:h-5 sm:w-5 animate-map-pin-bob" />
@@ -50,7 +50,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
             variant="ghost" 
             size="icon" 
             onClick={onSettingsClick}
-            className="text-white hover:bg-white/20 h-8 w-8 sm:h-10 sm:w-10"
+            className="text-white dark:text-black hover:bg-white/20 h-8 w-8 sm:h-10 sm:w-10"
             title={t('settings')}
           >
             <Settings className="h-4 w-4 sm:h-5 sm:w-5 animate-settings-gear-turn" />
@@ -60,7 +60,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
               variant="ghost" 
               size="icon" 
               onClick={onLanguageToggle}
-              className="text-white hover:bg-white/20 h-8 w-8 sm:h-10 sm:w-10"
+              className="text-white dark:text-black hover:bg-white/20 h-8 w-8 sm:h-10 sm:w-10"
               title={t('change-language')}
             >
               <Globe className="h-3 w-3 sm:h-4 sm:w-4 animate-globe-pulse" />

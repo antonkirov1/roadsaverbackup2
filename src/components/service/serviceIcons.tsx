@@ -104,7 +104,7 @@ export const getServiceIconAndTitle = (type: ServiceType, t: (key: string) => st
       icon: <img 
         src={config.customSvgUrl} 
         alt={t(type)} 
-        className={`w-8 h-8 sm:w-10 sm:w-10 ${config.animationClass} object-contain filter-icon-color`}
+        className={`w-8 h-8 sm:w-10 sm:h-10 ${config.animationClass} object-contain filter-icon-color`}
         onError={(e) => {
           console.error(`Failed to load custom SVG for ${type}, falling back to Lucide icon`);
           (e.target as HTMLImageElement).style.display = 'none';
