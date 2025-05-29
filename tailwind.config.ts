@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -126,8 +127,22 @@ export default {
           '80%': { transform: 'translateX(1px) rotate(2deg)' }
         },
         'battery-flash-red': {
-          '0%, 100%': { color: 'currentColor' },
-          '50%': { color: 'theme("colors.roadsaver.red")' },
+          '0%, 100%': { 
+            transform: 'scale(1)',
+            filter: 'brightness(0) saturate(100%) invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%)'
+          },
+          '25%': { 
+            transform: 'scale(1.1)',
+            filter: 'brightness(0) saturate(100%) invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%)'
+          },
+          '50%': { 
+            transform: 'scale(1.15)',
+            filter: 'brightness(0) saturate(100%) invert(18%) sepia(95%) saturate(7468%) hue-rotate(357deg) brightness(95%) contrast(118%)'
+          },
+          '75%': { 
+            transform: 'scale(1.1)',
+            filter: 'brightness(0) saturate(100%) invert(18%) sepia(95%) saturate(7468%) hue-rotate(357deg) brightness(95%) contrast(118%)'
+          }
         },
         'wrench-turn': {
           '0%, 100%': { transform: 'rotate(0deg)' },
@@ -170,7 +185,7 @@ export default {
         'fuel-flash-red': 'fuel-flash-red 1.5s ease-in-out infinite',
         'fuel-pulse-flash': 'fuel-pulse-flash 2s ease-in-out infinite',
         'fuel-sputter-flash': 'fuel-sputter-flash 1.8s ease-in-out infinite',
-        'battery-flash-red': 'battery-flash-red 1.5s ease-in-out infinite',
+        'battery-flash-red': 'battery-flash-red 1.2s ease-in-out infinite',
         'wrench-turn': 'wrench-turn 2.5s ease-in-out infinite alternate',
         'truck-pull': 'truck-pull 2.2s ease-in-out infinite',
         'phone-ring': 'phone-ring 1.3s ease-in-out infinite',

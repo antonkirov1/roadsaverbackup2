@@ -89,11 +89,15 @@ export const getServiceIconAndTitle = (type: ServiceType, t: (key: string) => st
         break;
     }
     
+    // Apply green filter to all custom SVG icons
+    const greenFilter = 'brightness(0) saturate(100%) invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%)';
+    
     return {
       icon: <img 
         src={customSvgUrl} 
         alt={t(type)} 
         className={`w-8 h-8 sm:w-10 sm:h-10 ${animationClass} object-contain`}
+        style={{ filter: greenFilter }}
         onError={(e) => {
           console.error(`Failed to load custom SVG for ${type}, falling back to Lucide icon`);
           // Hide the broken image

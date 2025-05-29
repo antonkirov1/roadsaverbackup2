@@ -61,9 +61,9 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   
   return <>
       <Card className="group p-3 sm:p-4 hover:bg-secondary/70 transition-colors cursor-pointer flex flex-col min-h-[120px] sm:min-h-[140px]" onClick={handleClick}>
-        {/* Icon container with fixed height */}
+        {/* Icon container with fixed height and circular background */}
         <div className="flex justify-center items-center h-12 sm:h-16 mb-2 sm:mb-3">
-          <div className="bg-green-600/10 p-3 sm:p-4 text-green-600 transition-transform duration-200 group-hover:scale-110 rounded-sm flex items-center justify-center">
+          <div className="bg-green-600/10 p-3 sm:p-4 text-green-600 transition-transform duration-200 group-hover:scale-110 rounded-full flex items-center justify-center">
             {icon}
           </div>
         </div>
