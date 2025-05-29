@@ -3,22 +3,15 @@ import React from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { History } from 'lucide-react';
 import { getServiceIconAndTitle, ServiceType } from '@/components/service/serviceIcons';
-
-// Define a type for a single request item if not already globally available
-interface CompletedRequest {
-  id: number;
-  type: string; // This should ideally be a key for translation
-  date: string;
-  customer: string;
-  completedTime?: string; // Added completion time
-}
+import { useApp } from '@/contexts/AppContext';
 
 interface HistorySettingsTabProps {
   t: (key: string) => string;
-  completedRequests: CompletedRequest[];
 }
 
-const HistorySettingsTab: React.FC<HistorySettingsTabProps> = ({ t, completedRequests }) => {
+const HistorySettingsTab: React.FC<HistorySettingsTabProps> = ({ t }) => {
+  const { requestHistory } = useApp();
+
   return (
     <div className="h-full flex flex-col overflow-hidden">
       <div className="text-center py-4 flex-shrink-0">
@@ -30,8 +23,8 @@ const HistorySettingsTab: React.FC<HistorySettingsTabProps> = ({ t, completedReq
       </div>
       <ScrollArea className="flex-grow">
         <div className="space-y-2 pb-4">
-          {completedRequests.length > 0 ? (
-            completedRequests.map((request) => {
+          {requestHistory && requestHistory.length > 0 ? (
+            requestHistory.map((request) => {
               const iconSizeClass = "h-5 w-5";
               const { icon } = getServiceIconAndTitle(request.type as ServiceType, t, null, iconSizeClass);
               
@@ -44,7 +37,7 @@ const HistorySettingsTab: React.FC<HistorySettingsTabProps> = ({ t, completedReq
                     </div>
                     <span className="text-sm text-blue-600">{t('completed')}</span>
                   </div>
-                  <p className="text-sm text-muted-foreground">{request.customer}</p>
+                  <p className="text-sm text-muted-foreground">{request.user}</p>
                   <p className="text-sm text-muted-foreground">
                     {request.date} {request.completedTime && `- ${t('completed-at')}: ${request.completedTime}`}
                   </p>

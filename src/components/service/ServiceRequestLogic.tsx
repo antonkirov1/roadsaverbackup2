@@ -1,6 +1,6 @@
-
 import { useState } from 'react';
 import { toast } from "@/components/ui/use-toast";
+import { useApp } from '@/contexts/AppContext';
 
 const serviceMessages = {
   'flat-tyre': 'I have a flat tyre and need assistance',
@@ -16,6 +16,7 @@ export const useServiceRequest = (
   type: 'flat-tyre' | 'out-of-fuel' | 'other-car-problems' | 'tow-truck' | 'emergency' | 'support' | 'car-battery',
   userLocation: { lat: number; lng: number }
 ) => {
+  const { setOngoingRequest, addToHistory } = useApp();
   const [message, setMessage] = useState(serviceMessages[type] || '');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showRealTimeUpdate, setShowRealTimeUpdate] = useState(false);
@@ -40,6 +41,19 @@ export const useServiceRequest = (
     setIsSubmitting(true);
     
     setTimeout(() => {
+      const requestId = Date.now().toString();
+      const timestamp = new Date().toISOString();
+      
+      // Create ongoing request
+      const ongoingRequest = {
+        id: requestId,
+        type,
+        status: 'pending' as const,
+        timestamp: new Date().toLocaleString(),
+        location: 'Sofia Center, Bulgaria'
+      };
+      
+      setOngoingRequest(ongoingRequest);
       setStatus('pending');
       setIsSubmitting(false);
       setShowRealTimeUpdate(true);
@@ -48,11 +62,11 @@ export const useServiceRequest = (
         description: "Your request has been sent to our team."
       });
       
-      simulateEmployeeResponse();
+      simulateEmployeeResponse(requestId, timestamp);
     }, 1500);
   };
 
-  const simulateEmployeeResponse = () => {
+  const simulateEmployeeResponse = (requestId: string, timestamp: string) => {
     const employeePos = {
       lat: userLocation.lat + (Math.random() - 0.5) * 0.01,
       lng: userLocation.lng + (Math.random() - 0.5) * 0.01
@@ -62,6 +76,16 @@ export const useServiceRequest = (
     
     setTimeout(() => {
       if (isAccepted) {
+        // Update ongoing request with employee info
+        setOngoingRequest(prev => prev ? {
+          ...prev,
+          status: 'accepted',
+          employeeId: 'emp123',
+          employeeName: 'John Smith',
+          employeePhone: '+359888123456',
+          employeeLocation: employeePos
+        } : null);
+        
         setEmployeeLocation(employeePos);
         setStatus('accepted');
         toast({
@@ -70,7 +94,31 @@ export const useServiceRequest = (
         });
         
         simulateEmployeeMovement(employeePos);
+        
+        // Simulate completion after 30 seconds
+        setTimeout(() => {
+          const completedRequest = {
+            id: requestId,
+            type,
+            date: new Date().toLocaleDateString(),
+            time: new Date(timestamp).toLocaleTimeString(),
+            completedTime: new Date().toLocaleTimeString(),
+            status: 'completed' as const,
+            user: 'Current User',
+            employee: 'John Smith'
+          };
+          
+          addToHistory(completedRequest);
+          setOngoingRequest(null);
+          
+          toast({
+            title: "Service Completed",
+            description: "Your request has been completed successfully."
+          });
+        }, 30000);
+        
       } else {
+        setOngoingRequest(prev => prev ? { ...prev, status: 'declined' } : null);
         setStatus('declined');
         setDeclineReason("I apologize, but all of our service technicians are currently occupied with other emergencies. We expect to have someone available in approximately 15-20 minutes. If this is an urgent matter, please contact our emergency hotline for immediate assistance.");
         toast({
@@ -78,6 +126,11 @@ export const useServiceRequest = (
           description: "Your request was declined by our team.",
           variant: "destructive"
         });
+        
+        // Clear ongoing request after decline
+        setTimeout(() => {
+          setOngoingRequest(null);
+        }, 5000);
       }
     }, 3000);
   };

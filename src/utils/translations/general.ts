@@ -1,4 +1,3 @@
-
 interface TranslationEntry {
   en: string;
   bg: string;
@@ -200,5 +199,33 @@ export const generalTranslations: TranslationGroup = {
   'clear': {
     en: 'Clear',
     bg: 'Изчисти'
+  },
+  'employee-assigned': {
+    en: 'Employee Assigned',
+    bg: 'Назначен служител'
+  },
+  'call-employee': {
+    en: 'Call The Employee',
+    bg: 'Обади се на служителя'
+  },
+  'request-in-progress': {
+    en: 'Request in Progress',
+    bg: 'Заявка в ход'
+  },
+  'service-completed': {
+    en: 'Service Completed',
+    bg: 'Услугата завършена'
+  },
+  'completed-time': {
+    en: 'Completed Time',
+    bg: 'Час на завършване'
+  },
+  'user': {
+    en: 'User',
+    bg: 'Потребител'
+  },
+  'employee': {
+    en: 'Employee',
+    bg: 'Служител'
   }
 };

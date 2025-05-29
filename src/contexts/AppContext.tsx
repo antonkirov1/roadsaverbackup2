@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { useTranslation } from '@/utils/translations';
@@ -8,11 +7,38 @@ interface User {
   email?: string;
 }
 
+interface OngoingRequest {
+  id: string;
+  type: string;
+  status: 'pending' | 'accepted' | 'declined';
+  timestamp: string;
+  location: string;
+  employeeId?: string;
+  employeeName?: string;
+  employeePhone?: string;
+  employeeLocation?: { lat: number; lng: number };
+}
+
+interface CompletedRequest {
+  id: string;
+  type: string;
+  date: string;
+  time: string;
+  completedTime: string;
+  status: 'completed';
+  user: string;
+  employee: string;
+}
+
 interface AppContextType {
   user: User | null;
   isAuthenticated: boolean;
   language: 'en' | 'bg';
   userLocation: { lat: number; lng: number };
+  ongoingRequest: OngoingRequest | null;
+  setOngoingRequest: (request: OngoingRequest | null) => void;
+  addToHistory: (request: CompletedRequest) => void;
+  requestHistory: CompletedRequest[];
   login: (user: User) => void;
   logout: () => void;
   setLanguage: (language: 'en' | 'bg') => void;
@@ -28,6 +54,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [user, setUser] = useState<User | null>(null);
   const [language, setLanguageState] = useState<'en' | 'bg'>('en');
   const [userLocation, setUserLocationState] = useState(defaultLocation);
+  const [ongoingRequest, setOngoingRequest] = useState<OngoingRequest | null>(null);
+  const [requestHistory, setRequestHistory] = useState<CompletedRequest[]>([]);
   
   // Try to get user location on initial load
   useEffect(() => {
@@ -67,11 +95,19 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     setUserLocationState(location);
   };
   
+  const addToHistory = (request: CompletedRequest) => {
+    setRequestHistory(prev => [request, ...prev]);
+  };
+  
   const value = {
     user,
     isAuthenticated: !!user,
     language,
     userLocation,
+    ongoingRequest,
+    setOngoingRequest,
+    addToHistory,
+    requestHistory,
     login,
     logout,
     setLanguage,

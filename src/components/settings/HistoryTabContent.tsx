@@ -1,25 +1,15 @@
 
 import React from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Skeleton } from "@/components/ui/skeleton"; 
-import { AlertCircle, History as HistoryIcon } from 'lucide-react';
-import { RequestHistoryItem } from '@/types/history';
-import { useQuery } from '@tanstack/react-query';
-import { fetchRequestHistory } from '@/utils/api';
+import { History as HistoryIcon } from 'lucide-react';
+import { useApp } from '@/contexts/AppContext';
 
 interface HistoryTabContentProps {
   t: (key: string) => string;
 }
 
 const HistoryTabContent: React.FC<HistoryTabContentProps> = ({ t }) => {
-  const { 
-    data: requestHistory, 
-    isLoading, 
-    error 
-  } = useQuery<RequestHistoryItem[], Error>({
-    queryKey: ['requestHistory'], 
-    queryFn: fetchRequestHistory
-  });
+  const { requestHistory } = useApp();
 
   return (
     <div className="h-full flex flex-col overflow-hidden">
@@ -33,25 +23,7 @@ const HistoryTabContent: React.FC<HistoryTabContentProps> = ({ t }) => {
       
       <ScrollArea className="flex-grow">
         <div className="space-y-2 pb-4">
-          {isLoading && (
-            Array.from({ length: 3 }).map((_, index) => (
-              <div key={index} className="p-3 bg-secondary rounded-lg space-y-2">
-                <Skeleton className="h-4 w-3/4" />
-                <Skeleton className="h-3 w-1/2" />
-                <Skeleton className="h-3 w-2/3" />
-              </div>
-            ))
-          )}
-
-          {error && (
-            <div className="flex flex-col items-center justify-center text-destructive p-4">
-              <AlertCircle className="h-8 w-8 mb-2" />
-              <p>{t('error-loading-history') || 'Error loading history. Please try again.'}</p>
-              <p className="text-xs">{error.message}</p>
-            </div>
-          )}
-
-          {!isLoading && !error && requestHistory && requestHistory.length > 0 ? (
+          {requestHistory && requestHistory.length > 0 ? (
             requestHistory.map((request) => (
               <div key={request.id} className="p-3 bg-secondary rounded-lg">
                 <div className="flex justify-between items-center">
@@ -64,9 +36,7 @@ const HistoryTabContent: React.FC<HistoryTabContentProps> = ({ t }) => {
                 <p className="text-sm text-muted-foreground">{t('employee')}: {request.employee}</p>
               </div>
             ))
-          ) : null}
-
-          {!isLoading && !error && (!requestHistory || requestHistory.length === 0) && (
+          ) : (
             <p className="text-center text-muted-foreground">{t('no-requests')}</p>
           )}
         </div>

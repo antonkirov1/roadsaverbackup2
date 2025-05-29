@@ -15,7 +15,7 @@ import { Settings, MapPin, Globe, Siren, Clock } from 'lucide-react';
 type ServiceType = 'flat-tyre' | 'out-of-fuel' | 'other-car-problems' | 'tow-truck' | 'emergency' | 'support' | 'car-battery';
 
 const Dashboard: React.FC = () => {
-  const { isAuthenticated, userLocation, setUserLocation, language, setLanguage } = useApp();
+  const { isAuthenticated, userLocation, setUserLocation, language, setLanguage, ongoingRequest } = useApp();
   const navigate = useNavigate();
   const t = useTranslation(language);
   
@@ -33,6 +33,16 @@ const Dashboard: React.FC = () => {
   }, [isAuthenticated, navigate]);
   
   const handleServiceSelect = (service: ServiceType) => {
+    // Check if there's an ongoing request
+    if (ongoingRequest) {
+      toast({
+        title: "Request in Progress",
+        description: "Please wait for your current request to be completed before making a new one.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     if (service === 'emergency') {
       setShowEmergencyServices(true);
     } else if (service === 'support') {
