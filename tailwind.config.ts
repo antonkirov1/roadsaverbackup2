@@ -129,19 +129,19 @@ export default {
         'battery-flash-red': {
           '0%, 100%': { 
             transform: 'scale(1)',
-            filter: 'brightness(0) saturate(100%) invert(18%) sepia(95%) saturate(7468%) hue-rotate(357deg) brightness(95%) contrast(118%)'
+            filter: 'brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%)'
           },
           '25%': { 
-            transform: 'scale(1.1)',
-            filter: 'brightness(0) saturate(100%) invert(18%) sepia(95%) saturate(7468%) hue-rotate(357deg) brightness(95%) contrast(118%)'
+            transform: 'scale(1.05)',
+            filter: 'brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%)'
           },
           '50%': { 
-            transform: 'scale(1.15)',
+            transform: 'scale(1.1)',
             filter: 'brightness(0) saturate(100%) invert(18%) sepia(95%) saturate(7468%) hue-rotate(357deg) brightness(95%) contrast(118%)'
           },
           '75%': { 
-            transform: 'scale(1.1)',
-            filter: 'brightness(0) saturate(100%) invert(18%) sepia(95%) saturate(7468%) hue-rotate(357deg) brightness(95%) contrast(118%)'
+            transform: 'scale(1.05)',
+            filter: 'brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%)'
           }
         },
         'wrench-turn': {
