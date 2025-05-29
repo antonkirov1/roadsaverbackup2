@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
+import { X } from 'lucide-react';
 import GoogleMap from '@/components/GoogleMap';
 
 interface ServiceRequestStatusProps {
@@ -25,6 +26,20 @@ const ServiceRequestStatus: React.FC<ServiceRequestStatusProps> = ({
 }) => {
   return (
     <div className="space-y-4">
+      {/* X button for declined status */}
+      {status === 'declined' && (
+        <div className="flex justify-end">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onClose}
+            className="h-8 w-8 rounded-full hover:bg-gray-100"
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
+      
       <div className="rounded-md p-3 bg-secondary">
         <p className="font-medium">Service Request:</p>
         <p className="text-sm text-muted-foreground">{message}</p>
@@ -64,21 +79,29 @@ const ServiceRequestStatus: React.FC<ServiceRequestStatusProps> = ({
       />
       
       <DialogFooter className="flex-col sm:flex-row gap-2">
-        {status === 'declined' && (
+        {status === 'declined' ? (
+          <div className="flex gap-2 w-full">
+            <Button 
+              onClick={onContactSupport}
+              className="flex-1 bg-blue-600 hover:bg-blue-700"
+            >
+              Contact Support
+            </Button>
+            <Button 
+              onClick={onClose}
+              className="flex-1 bg-green-600 hover:bg-green-700"
+            >
+              Close
+            </Button>
+          </div>
+        ) : (
           <Button 
-            onClick={onContactSupport}
-            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700"
+            onClick={onClose}
+            className="w-full sm:w-auto bg-green-600 hover:bg-green-700"
           >
-            Contact Support
+            {status === 'accepted' ? 'Close' : 'Cancel'}
           </Button>
         )}
-        <Button 
-          variant={status === 'declined' ? "outline" : "default"}
-          onClick={onClose}
-          className={`w-full sm:w-auto ${status !== 'declined' ? 'bg-green-600 hover:bg-green-700' : ''}`}
-        >
-          {status === 'accepted' ? 'Close' : 'Cancel'}
-        </Button>
       </DialogFooter>
     </div>
   );
