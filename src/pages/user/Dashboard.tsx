@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -70,7 +71,6 @@ const Dashboard: React.FC = () => {
     <div className="min-h-screen bg-background pb-16 font-clash">
       {/* Header */}
       <header className="bg-green-600 text-white p-3 sm:p-4 flex justify-between items-center sticky top-0 z-10">
-        {/* Changed h1 className to match SettingsMenu banner: text-xl font-semibold font-clash */}
         <h1 className="text-xl font-semibold font-clash">RoadSaver</h1>
         <div className="flex gap-1 sm:gap-2">
           <Button 
