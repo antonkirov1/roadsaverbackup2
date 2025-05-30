@@ -49,7 +49,13 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
   const [hasDeclinedOnce, setHasDeclinedOnce] = useState(false);
 
   const handleAttemptClose = () => {
-    // Only show confirmation dialog for pending requests
+    // If price quote is showing, just close the dialog but keep the request in price quote state
+    if (showPriceQuote) {
+      onClose();
+      return;
+    }
+    
+    // Only show confirmation dialog for pending requests (not in price quote state)
     if (status === 'pending') {
       setShowCancelConfirmDialog(true);
     } else {
@@ -72,9 +78,9 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
   };
 
   const handlePriceQuoteClose = () => {
-    // Close the price quote dialog but keep the ongoing request active
-    // The request will remain in ongoing requests until user makes a decision
-    setShowPriceQuote(false);
+    // Close the price quote dialog but keep the ongoing request active in price quote state
+    // When user reopens from ongoing requests, they'll see the price quote again
+    onClose();
   };
 
   return (
