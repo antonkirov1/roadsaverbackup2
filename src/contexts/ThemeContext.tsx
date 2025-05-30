@@ -1,42 +1,56 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
+type Theme = "dark" | "light" | "system"
+
 interface ThemeContextType {
   isDarkMode: boolean;
+  theme: Theme;
   toggleDarkMode: () => void;
+  setTheme: (theme: Theme) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [theme, setTheme] = useState<Theme>("system");
 
   useEffect(() => {
-    // Check for saved theme preference or default to light mode
-    const savedTheme = localStorage.getItem('darkMode');
+    // Check for saved theme preference or default to system
+    const savedTheme = localStorage.getItem('theme') as Theme;
     if (savedTheme) {
-      setIsDarkMode(JSON.parse(savedTheme));
+      setTheme(savedTheme);
     }
   }, []);
 
   useEffect(() => {
-    // Apply theme to document
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
+    const root = window.document.documentElement;
+    root.classList.remove("light", "dark");
+
+    if (theme === "system") {
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      root.classList.add(systemTheme);
+      setIsDarkMode(systemTheme === "dark");
     } else {
-      document.documentElement.classList.remove('dark');
+      root.classList.add(theme);
+      setIsDarkMode(theme === "dark");
     }
     
     // Save theme preference
-    localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
-  }, [isDarkMode]);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
 
   const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
+    setTheme(isDarkMode ? "light" : "dark");
+  };
+
+  const handleSetTheme = (newTheme: Theme) => {
+    setTheme(newTheme);
   };
 
   return (
-    <ThemeContext.Provider value={{ isDarkMode, toggleDarkMode }}>
+    <ThemeContext.Provider value={{ isDarkMode, theme, toggleDarkMode, setTheme: handleSetTheme }}>
       {children}
     </ThemeContext.Provider>
   );

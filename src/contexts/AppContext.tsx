@@ -1,9 +1,11 @@
+
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { useTranslation } from '@/utils/translations';
 
 interface User {
   username: string;
+  name: string;
   email?: string;
 }
 
@@ -32,6 +34,7 @@ interface CompletedRequest {
 
 interface AppContextType {
   user: User | null;
+  setUser: (user: User | null) => void;
   isAuthenticated: boolean;
   language: 'en' | 'bg';
   userLocation: { lat: number; lng: number };
@@ -101,6 +104,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   
   const value = {
     user,
+    setUser,
     isAuthenticated: !!user,
     language,
     userLocation,
