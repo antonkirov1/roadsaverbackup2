@@ -1,24 +1,42 @@
 
 import React from 'react';
-import ServiceCard from '@/components/service/ServiceCard';
-
-type ServiceType = 'flat-tyre' | 'out-of-fuel' | 'other-car-problems' | 'tow-truck' | 'emergency' | 'support' | 'car-battery';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface DashboardServicesProps {
-  onServiceSelect: (service: ServiceType) => void;
+  onServiceSelect: (service: string) => void;
+  t: (key: string) => string;
 }
 
-const DashboardServices: React.FC<DashboardServicesProps> = ({ onServiceSelect }) => {
+const DashboardServices: React.FC<DashboardServicesProps> = ({
+  onServiceSelect,
+  t
+}) => {
+  const services = [
+    'flat-tyre',
+    'out-of-fuel',
+    'car-battery',
+    'tow-truck',
+    'other-car-problems',
+    'support'
+  ];
+
   return (
-    <div className="container max-w-md mx-auto px-4">
-      <div className="grid grid-cols-2 gap-3 sm:gap-4">
-        <ServiceCard type="flat-tyre" onClick={() => onServiceSelect('flat-tyre')} />
-        <ServiceCard type="out-of-fuel" onClick={() => onServiceSelect('out-of-fuel')} />
-        <ServiceCard type="car-battery" onClick={() => onServiceSelect('car-battery')} />
-        <ServiceCard type="other-car-problems" onClick={() => onServiceSelect('other-car-problems')} />
-        <ServiceCard type="tow-truck" onClick={() => onServiceSelect('tow-truck')} />
-        <ServiceCard type="support" onClick={() => onServiceSelect('support')} />
-      </div>
+    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
+      {services.map((service) => (
+        <Card 
+          key={service}
+          className="hover:bg-secondary transition-colors cursor-pointer" 
+          onClick={() => onServiceSelect(service)}
+        >
+          <CardHeader>
+            <CardTitle>{t(service)}</CardTitle>
+            <CardDescription>{t(`${service}-desc`)}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {t(`${service}-content`)}
+          </CardContent>
+        </Card>
+      ))}
     </div>
   );
 };
