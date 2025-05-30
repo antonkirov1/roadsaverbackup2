@@ -7,4 +7,5 @@ export interface ServiceRequest {
   status: 'pending' | 'accepted' | 'declined';
   timestamp: string;
   username: string;
+  priceQuote?: number;
 }

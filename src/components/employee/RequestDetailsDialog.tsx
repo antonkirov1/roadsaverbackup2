@@ -1,7 +1,9 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import GoogleMap from '@/components/GoogleMap';
 import { ServiceRequest } from '@/types/serviceRequest';
 import { useTranslation } from '@/utils/translations';
@@ -10,7 +12,7 @@ interface RequestDetailsDialogProps {
   request: ServiceRequest | null;
   employeeLocation: { lat: number; lng: number };
   onClose: () => void;
-  onAccept: (requestId: string) => void;
+  onAccept: (requestId: string, priceQuote: number) => void;
   onDecline: () => void;
   getRequestTitle: (type: string) => string;
   language: 'en' | 'bg';
@@ -26,11 +28,21 @@ const RequestDetailsDialog: React.FC<RequestDetailsDialogProps> = ({
   language
 }) => {
   const t = useTranslation(language);
+  const [priceQuote, setPriceQuote] = useState<string>('');
   
   if (!request) return null;
 
   // Translate request type title
   const translatedTitle = t(request.type) || getRequestTitle(request.type);
+
+  const handleAccept = () => {
+    const price = parseFloat(priceQuote);
+    if (!priceQuote || isNaN(price) || price <= 0) {
+      alert('Please enter a valid price quote');
+      return;
+    }
+    onAccept(request.id, price);
+  };
 
   return (
     <Dialog open={!!request} onOpenChange={onClose}>
@@ -55,6 +67,21 @@ const RequestDetailsDialog: React.FC<RequestDetailsDialogProps> = ({
               height="200px" 
             />
           </div>
+
+          {request.status === 'pending' && (
+            <div className="space-y-2">
+              <Label htmlFor="price-quote">Price Quote (BGN)</Label>
+              <Input
+                id="price-quote"
+                type="number"
+                min="0"
+                step="0.01"
+                placeholder="Enter price quote..."
+                value={priceQuote}
+                onChange={(e) => setPriceQuote(e.target.value)}
+              />
+            </div>
+          )}
         </div>
         
         <DialogFooter className="flex gap-2 sm:justify-between">
@@ -68,10 +95,10 @@ const RequestDetailsDialog: React.FC<RequestDetailsDialogProps> = ({
                 {t('decline')}
               </Button>
               <Button 
-                onClick={() => onAccept(request.id)}
+                onClick={handleAccept}
                 className="bg-roadsaver-green text-white hover:bg-roadsaver-green/90"
               >
-                {t('accept')}
+                Accept And Send Price Quote
               </Button>
             </>
           ) : (

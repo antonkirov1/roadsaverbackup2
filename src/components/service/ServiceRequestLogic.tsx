@@ -21,6 +21,8 @@ export const useServiceRequest = (
   const [message, setMessage] = useState(serviceMessages[type] || '');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showRealTimeUpdate, setShowRealTimeUpdate] = useState(false);
+  const [showPriceQuote, setShowPriceQuote] = useState(false);
+  const [priceQuote, setPriceQuote] = useState<number>(0);
   const [employeeLocation, setEmployeeLocation] = useState<{ lat: number; lng: number } | undefined>(undefined);
   const [status, setStatus] = useState<'pending' | 'accepted' | 'declined'>('pending');
   const [declineReason, setDeclineReason] = useState('');
@@ -77,50 +79,16 @@ export const useServiceRequest = (
     
     setTimeout(() => {
       if (isAccepted) {
-        // Update ongoing request with employee info
-        const updatedRequest = {
-          id: requestId,
-          type,
-          status: 'accepted' as const,
-          timestamp: new Date().toLocaleString(),
-          location: 'Sofia Center, Bulgaria',
-          employeeId: 'emp123',
-          employeeName: 'John Smith',
-          employeePhone: '+359888123456',
-          employeeLocation: employeePos
-        };
+        // Generate random price quote
+        const randomPrice = Math.floor(Math.random() * 100) + 50; // 50-150 BGN
+        setPriceQuote(randomPrice);
+        setShowPriceQuote(true);
+        setShowRealTimeUpdate(false);
         
-        setOngoingRequest(updatedRequest);
-        setEmployeeLocation(employeePos);
-        setStatus('accepted');
         toast({
-          title: "Request Accepted",
-          description: "An employee is on the way to help you."
+          title: "Price Quote Received",
+          description: `You received a price quote of ${randomPrice} BGN.`
         });
-        
-        simulateEmployeeMovement(employeePos);
-        
-        // Simulate completion after 30 seconds
-        setTimeout(() => {
-          const completedRequest = {
-            id: requestId,
-            type,
-            date: new Date().toLocaleDateString(),
-            time: new Date(timestamp).toLocaleTimeString(),
-            completedTime: new Date().toLocaleTimeString(),
-            status: 'completed' as const,
-            user: 'Current User',
-            employee: 'John Smith'
-          };
-          
-          addToHistory(completedRequest);
-          setOngoingRequest(null);
-          
-          toast({
-            title: "Service Completed",
-            description: "Your request has been completed successfully."
-          });
-        }, 30000);
         
       } else {
         const declinedRequest = {
@@ -148,25 +116,69 @@ export const useServiceRequest = (
     }, 3000);
   };
 
-  const simulateEmployeeMovement = (startPos: { lat: number; lng: number }) => {
-    const steps = 10;
-    let currentStep = 0;
+  const handleAcceptQuote = () => {
+    // Update ongoing request with employee info
+    const updatedRequest = {
+      id: Date.now().toString(),
+      type,
+      status: 'accepted' as const,
+      timestamp: new Date().toLocaleString(),
+      location: 'Sofia Center, Bulgaria',
+      employeeId: 'emp123',
+      employeeName: 'John Smith',
+      employeePhone: '+359888123456',
+      employeeLocation: employeeLocation
+    };
     
-    const interval = setInterval(() => {
-      currentStep++;
-      
-      if (currentStep >= steps) {
-        clearInterval(interval);
-        return;
-      }
-      
-      const newPos = {
-        lat: startPos.lat + (userLocation.lat - startPos.lat) * (currentStep / steps),
-        lng: startPos.lng + (userLocation.lng - startPos.lng) * (currentStep / steps)
+    setOngoingRequest(updatedRequest);
+    setShowPriceQuote(false);
+    setShowRealTimeUpdate(true);
+    setStatus('accepted');
+    
+    toast({
+      title: "Quote Accepted",
+      description: "An employee is on the way to help you."
+    });
+
+    // Simulate completion after 30 seconds
+    setTimeout(() => {
+      const completedRequest = {
+        id: updatedRequest.id,
+        type,
+        date: new Date().toLocaleDateString(),
+        time: new Date().toLocaleTimeString(),
+        completedTime: new Date().toLocaleTimeString(),
+        status: 'completed' as const,
+        user: 'Current User',
+        employee: 'John Smith'
       };
       
-      setEmployeeLocation(newPos);
-    }, 2000);
+      addToHistory(completedRequest);
+      setOngoingRequest(null);
+      
+      toast({
+        title: "Service Completed",
+        description: "Your request has been completed successfully."
+      });
+    }, 30000);
+  };
+
+  const handleDeclineQuote = () => {
+    setShowPriceQuote(false);
+    setOngoingRequest(null);
+    toast({
+      title: "Quote Declined",
+      description: "Your request remains active for other employees to respond."
+    });
+  };
+
+  const handleCancelRequest = () => {
+    setShowPriceQuote(false);
+    setOngoingRequest(null);
+    toast({
+      title: "Request Cancelled",
+      description: "Your service request has been cancelled."
+    });
   };
 
   const handleContactSupport = () => {
@@ -185,10 +197,15 @@ export const useServiceRequest = (
     setMessage,
     isSubmitting,
     showRealTimeUpdate,
+    showPriceQuote,
+    priceQuote,
     employeeLocation,
     status,
     declineReason,
     handleSubmit,
+    handleAcceptQuote,
+    handleDeclineQuote,
+    handleCancelRequest,
     handleContactSupport
   };
 };

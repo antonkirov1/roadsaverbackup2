@@ -11,6 +11,7 @@ import ServiceRequestList from '@/components/employee/ServiceRequestList';
 import RequestDetailsDialog from '@/components/employee/RequestDetailsDialog';
 import DeclineReasonDialog from '@/components/employee/DeclineReasonDialog';
 import EmployeeSettingsMenu from '@/components/employee/EmployeeSettingsMenu';
+import EmployeePriceAdjustDialog from '@/components/employee/EmployeePriceAdjustDialog';
 
 const EmployeeDashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -22,6 +23,8 @@ const EmployeeDashboard: React.FC = () => {
   const [declineReason, setDeclineReason] = useState('');
   const [showDeclineDialog, setShowDeclineDialog] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showPriceAdjust, setShowPriceAdjust] = useState(false);
+  const [currentPriceQuote, setCurrentPriceQuote] = useState<number>(0);
   const [employeeLocation, setEmployeeLocation] = useState({ lat: 42.695, lng: 23.325 });
   
   // Demo: Generate random requests
@@ -62,19 +65,21 @@ const EmployeeDashboard: React.FC = () => {
     setSelectedRequest(request);
   };
   
-  const handleAccept = (requestId: string) => {
-    // Update request status
+  const handleAccept = (requestId: string, priceQuote: number) => {
+    // Update request status and store price quote
     setRequests(prev => 
       prev.map(req => 
         req.id === requestId 
-          ? { ...req, status: 'accepted' } 
+          ? { ...req, status: 'accepted', priceQuote } 
           : req
       )
     );
     
+    setCurrentPriceQuote(priceQuote);
+    
     toast({
       title: t('request-accepted'),
-      description: t("You've accepted the service request.")
+      description: `Price quote of ${priceQuote.toFixed(2)} BGN sent to customer.`
     });
     
     setSelectedRequest(null);
@@ -105,6 +110,14 @@ const EmployeeDashboard: React.FC = () => {
     setShowDeclineDialog(false);
     setSelectedRequest(null);
     setDeclineReason('');
+  };
+
+  const handlePriceAdjust = (newPrice: number) => {
+    setCurrentPriceQuote(newPrice);
+    toast({
+      title: 'Price Quote Updated',
+      description: `New price quote of ${newPrice.toFixed(2)} BGN sent to customer.`
+    });
   };
 
   const handleLogout = () => {
@@ -152,6 +165,14 @@ const EmployeeDashboard: React.FC = () => {
         onSubmit={handleDeclineSubmit}
         reason={declineReason}
         onChange={setDeclineReason}
+        language={language}
+      />
+
+      <EmployeePriceAdjustDialog
+        open={showPriceAdjust}
+        onClose={() => setShowPriceAdjust(false)}
+        currentPrice={currentPriceQuote}
+        onSendQuote={handlePriceAdjust}
         language={language}
       />
 

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import ServiceRequestDialog from './ServiceRequestDialog';
 import ServiceRequestForm from './ServiceRequestForm';
 import ServiceRequestStatus from './ServiceRequestStatus';
+import PriceQuoteDialog from './PriceQuoteDialog';
 import { useServiceRequest } from './ServiceRequestLogic';
 import {
   AlertDialog,
@@ -32,10 +33,15 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
     setMessage,
     isSubmitting,
     showRealTimeUpdate,
+    showPriceQuote,
+    priceQuote,
     employeeLocation,
     status,
     declineReason,
     handleSubmit,
+    handleAcceptQuote,
+    handleDeclineQuote,
+    handleCancelRequest,
     handleContactSupport
   } = useServiceRequest(type, userLocation);
 
@@ -59,7 +65,7 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
     <>
       <ServiceRequestDialog
         type={type}
-        open={open}
+        open={open && !showPriceQuote}
         onClose={handleAttemptClose}
         showRealTimeUpdate={showRealTimeUpdate}
       >
@@ -85,6 +91,16 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
           />
         )}
       </ServiceRequestDialog>
+
+      <PriceQuoteDialog
+        open={showPriceQuote}
+        onClose={() => setShowPriceQuote(false)}
+        serviceType={type}
+        priceQuote={priceQuote}
+        onAccept={handleAcceptQuote}
+        onDecline={handleDeclineQuote}
+        onCancelRequest={handleCancelRequest}
+      />
 
       {showCancelConfirmDialog && (
         <AlertDialog open={showCancelConfirmDialog} onOpenChange={setShowCancelConfirmDialog}>
