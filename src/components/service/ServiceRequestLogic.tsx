@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { toast } from "@/components/ui/use-toast";
 import { useApp } from '@/contexts/AppContext';
@@ -198,6 +197,7 @@ export const useServiceRequest = (
     isSubmitting,
     showRealTimeUpdate,
     showPriceQuote,
+    setShowPriceQuote,
     priceQuote,
     employeeLocation,
     status,

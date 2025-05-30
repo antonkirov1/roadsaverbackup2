@@ -34,6 +34,7 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
     isSubmitting,
     showRealTimeUpdate,
     showPriceQuote,
+    setShowPriceQuote,
     priceQuote,
     employeeLocation,
     status,
