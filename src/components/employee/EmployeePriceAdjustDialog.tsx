@@ -18,6 +18,8 @@ interface EmployeePriceAdjustDialogProps {
   currentPrice: number;
   onSendQuote: (newPrice: number) => void;
   language: 'en' | 'bg';
+  isRevision?: boolean;
+  customerDeclined?: boolean;
 }
 
 const EmployeePriceAdjustDialog: React.FC<EmployeePriceAdjustDialogProps> = ({
@@ -25,7 +27,9 @@ const EmployeePriceAdjustDialog: React.FC<EmployeePriceAdjustDialogProps> = ({
   onClose,
   currentPrice,
   onSendQuote,
-  language
+  language,
+  isRevision = false,
+  customerDeclined = false
 }) => {
   const t = useTranslation(language);
   const [newPrice, setNewPrice] = useState<string>(currentPrice.toString());
@@ -40,16 +44,38 @@ const EmployeePriceAdjustDialog: React.FC<EmployeePriceAdjustDialogProps> = ({
     onClose();
   };
 
+  const handleDeclineRevision = () => {
+    // Employee chooses not to revise the quote
+    onClose();
+  };
+
+  const title = customerDeclined 
+    ? 'Customer Declined - Send Revised Quote?' 
+    : isRevision 
+    ? 'Revise Price Quote' 
+    : 'Adjust Price Quote';
+
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Adjust Price Quote</DialogTitle>
+          <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-4">
+          {customerDeclined && (
+            <div className="rounded-md bg-yellow-50 dark:bg-yellow-900/20 p-3">
+              <p className="text-sm text-yellow-700 dark:text-yellow-300">
+                The customer has declined your quote of {currentPrice.toFixed(2)} BGN. 
+                You have one opportunity to send a revised quote.
+              </p>
+            </div>
+          )}
+          
           <div className="space-y-2">
-            <Label htmlFor="new-price">New Price Quote (BGN)</Label>
+            <Label htmlFor="new-price">
+              {customerDeclined ? 'Revised Price Quote (BGN)' : 'New Price Quote (BGN)'}
+            </Label>
             <Input
               id="new-price"
               type="number"
@@ -63,14 +89,17 @@ const EmployeePriceAdjustDialog: React.FC<EmployeePriceAdjustDialogProps> = ({
         </div>
         
         <DialogFooter className="flex gap-2">
-          <Button variant="outline" onClick={onClose}>
-            Cancel
+          <Button 
+            variant="outline" 
+            onClick={customerDeclined ? handleDeclineRevision : onClose}
+          >
+            {customerDeclined ? "Don't Revise" : 'Cancel'}
           </Button>
           <Button 
             onClick={handleSendQuote}
             className="bg-green-600 hover:bg-green-700 text-white"
           >
-            Send Price Quote
+            {customerDeclined ? 'Send Revised Quote' : 'Send Price Quote'}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -47,6 +47,7 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
   } = useServiceRequest(type, userLocation);
 
   const [showCancelConfirmDialog, setShowCancelConfirmDialog] = useState(false);
+  const [hasDeclinedOnce, setHasDeclinedOnce] = useState(false);
 
   const handleAttemptClose = () => {
     // Only show confirmation dialog for pending requests
@@ -60,6 +61,15 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
   const confirmCancelRequest = () => {
     onClose(); 
     setShowCancelConfirmDialog(false);
+  };
+
+  const handleDecline = () => {
+    if (!hasDeclinedOnce) {
+      setHasDeclinedOnce(true);
+      // Don't close the dialog yet, wait for potential revision
+    } else {
+      handleDeclineQuote();
+    }
   };
 
   return (
@@ -99,8 +109,9 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
         serviceType={type}
         priceQuote={priceQuote}
         onAccept={handleAcceptQuote}
-        onDecline={handleDeclineQuote}
+        onDecline={handleDecline}
         onCancelRequest={handleCancelRequest}
+        hasDeclinedOnce={hasDeclinedOnce}
       />
 
       {showCancelConfirmDialog && (

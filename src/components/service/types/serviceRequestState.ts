@@ -9,6 +9,8 @@ export interface ServiceRequestState {
   status: 'pending' | 'accepted' | 'declined';
   declineReason: string;
   serviceFee?: number;
+  hasDeclinedOnce?: boolean;
+  isWaitingForRevision?: boolean;
 }
 
 export type ServiceType = 'flat-tyre' | 'out-of-fuel' | 'other-car-problems' | 'tow-truck' | 'emergency' | 'support' | 'car-battery';
