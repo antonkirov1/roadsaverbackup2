@@ -1,9 +1,11 @@
+
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { useTranslation } from '@/utils/translations';
 
 interface User {
   username: string;
+  name: string;
   email?: string;
 }
 

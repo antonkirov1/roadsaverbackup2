@@ -1,60 +1,55 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import LoginForm from '@/components/auth/LoginForm';
 import { useApp } from '@/contexts/AppContext';
-import { toast } from '@/components/ui/use-toast';
-import { useTranslation } from '@/utils/translations';
-import { Button } from "@/components/ui/button";
-import { Globe } from 'lucide-react';
-import ThemeToggle from '@/components/ui/theme-toggle';
+import LoginForm from '@/components/auth/LoginForm';
+import RegisterForm from '@/components/auth/RegisterForm';
 
-const EmployeeAuth: React.FC = () => {
+const EmployeeAuth = () => {
+  const [isLogin, setIsLogin] = useState(true);
+  const { login, isAuthenticated } = useApp();
   const navigate = useNavigate();
-  const { login, language, setLanguage } = useApp();
-  const t = useTranslation(language);
-  
-  const handleLogin = (credentials: { username: string; password: string }) => {
-    login({ username: credentials.username });
-    navigate('/employee/dashboard');
-    toast({
-      title: t("employee-login-successful"),
-      description: t("welcome-employee-dashboard")
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/employee/dashboard');
+    }
+  }, [isAuthenticated, navigate]);
+
+  const handleLogin = (username: string) => {
+    login({ 
+      username, 
+      name: username // Use username as name for now
     });
   };
-  
-  return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-b from-blue-600/10 to-background p-4 font-clash relative">
-      
-      {/* Top right controls with theme toggle and language switcher */}
-      <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
-        <ThemeToggle showLabels={false} size="sm" />
-        <div className="relative">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={() => setLanguage(language === 'en' ? 'bg' : 'en')}
-            aria-label={t(language === 'en' ? 'switch-to-bulgarian' : 'switch-to-english')}
-            className="h-10 w-10 bg-blue-600 text-white hover:bg-blue-700"
-          >
-            <Globe className="h-4 w-4" />
-          </Button>
-          <span className="absolute -bottom-1 -right-1 text-xs bg-white text-blue-600 px-1 rounded">
-            {language.toUpperCase()}
-          </span>
-        </div>
-      </div>
 
-      <div className="w-full max-w-md">
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2">RoadSaver</h1>
-          <p className="text-muted-foreground">{t("employee-dashboard")}</p>
+  const handleRegister = (username: string, email: string) => {
+    login({ 
+      username, 
+      name: username, // Use username as name for now
+      email 
+    });
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-emerald-100 dark:from-gray-900 dark:to-gray-800">
+      <div className="w-full max-w-md p-8 space-y-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Employee Portal</h2>
+          <p className="mt-2 text-gray-600 dark:text-gray-400">Access your employee dashboard</p>
         </div>
         
-        <LoginForm 
-          onLogin={handleLogin} 
-          isEmployee={true} 
-        />
+        {isLogin ? (
+          <LoginForm 
+            onLogin={handleLogin}
+            onSwitchToRegister={() => setIsLogin(false)}
+          />
+        ) : (
+          <RegisterForm 
+            onRegister={handleRegister}
+            onSwitchToLogin={() => setIsLogin(true)}
+          />
+        )}
       </div>
     </div>
   );
