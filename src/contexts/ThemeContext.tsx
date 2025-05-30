@@ -1,11 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-type Theme = 'light' | 'dark' | 'system';
-
 interface ThemeContextType {
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
   isDarkMode: boolean;
   toggleDarkMode: () => void;
 }
@@ -13,55 +9,34 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [theme, setTheme] = useState<Theme>('light');
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     // Check for saved theme preference or default to light mode
-    const savedTheme = localStorage.getItem('theme') as Theme;
+    const savedTheme = localStorage.getItem('darkMode');
     if (savedTheme) {
-      setTheme(savedTheme);
-    }
-    
-    const savedDarkMode = localStorage.getItem('darkMode');
-    if (savedDarkMode) {
-      setIsDarkMode(JSON.parse(savedDarkMode));
+      setIsDarkMode(JSON.parse(savedTheme));
     }
   }, []);
 
   useEffect(() => {
     // Apply theme to document
-    if (theme === 'dark' || isDarkMode) {
+    if (isDarkMode) {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
     
     // Save theme preference
-    localStorage.setItem('theme', theme);
     localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
-  }, [theme, isDarkMode]);
+  }, [isDarkMode]);
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
   };
 
-  const handleSetTheme = (newTheme: Theme) => {
-    setTheme(newTheme);
-    if (newTheme === 'dark') {
-      setIsDarkMode(true);
-    } else if (newTheme === 'light') {
-      setIsDarkMode(false);
-    }
-  };
-
   return (
-    <ThemeContext.Provider value={{ 
-      theme, 
-      setTheme: handleSetTheme, 
-      isDarkMode, 
-      toggleDarkMode 
-    }}>
+    <ThemeContext.Provider value={{ isDarkMode, toggleDarkMode }}>
       {children}
     </ThemeContext.Provider>
   );
