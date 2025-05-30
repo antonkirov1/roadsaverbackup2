@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import {
   Dialog,
@@ -93,11 +92,10 @@ const PriceQuoteDialog: React.FC<PriceQuoteDialogProps> = ({
     }, 3000);
   };
 
-  // Prevent dialog from closing when clicking outside or pressing escape
+  // Allow dialog to close when clicking outside or pressing escape - this will keep the request active
   const handleOpenChange = (open: boolean) => {
-    // Only allow closing through the action buttons, not by clicking outside or escape
     if (!open) {
-      return;
+      onClose(); // This will close the dialog but keep the ongoing request active
     }
   };
 

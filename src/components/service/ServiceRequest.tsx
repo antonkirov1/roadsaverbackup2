@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import ServiceRequestDialog from './ServiceRequestDialog';
 import ServiceRequestForm from './ServiceRequestForm';
@@ -50,12 +49,6 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
   const [hasDeclinedOnce, setHasDeclinedOnce] = useState(false);
 
   const handleAttemptClose = () => {
-    // Only allow closing if not in a critical state where user needs to make a decision
-    if (showPriceQuote) {
-      // If price quote is showing, don't allow closing
-      return;
-    }
-    
     // Only show confirmation dialog for pending requests
     if (status === 'pending') {
       setShowCancelConfirmDialog(true);
@@ -76,6 +69,12 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
     } else {
       handleDeclineQuote();
     }
+  };
+
+  const handlePriceQuoteClose = () => {
+    // Close the price quote dialog but keep the ongoing request active
+    // The request will remain in ongoing requests until user makes a decision
+    setShowPriceQuote(false);
   };
 
   return (
@@ -111,7 +110,7 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
 
       <PriceQuoteDialog
         open={showPriceQuote}
-        onClose={() => {}} // Don't allow closing through this prop
+        onClose={handlePriceQuoteClose}
         serviceType={type}
         priceQuote={priceQuote}
         onAccept={handleAcceptQuote}
