@@ -8,6 +8,7 @@ export interface ServiceRequestState {
   employeeLocation?: { lat: number; lng: number };
   status: 'pending' | 'accepted' | 'declined';
   declineReason: string;
+  serviceFee?: number;
 }
 
 export type ServiceType = 'flat-tyre' | 'out-of-fuel' | 'other-car-problems' | 'tow-truck' | 'emergency' | 'support' | 'car-battery';

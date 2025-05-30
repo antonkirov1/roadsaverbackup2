@@ -16,9 +16,16 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { useApp } from '@/contexts/AppContext';
 import { useTranslation } from '@/utils/translations';
+import { Info } from 'lucide-react';
 
 interface PriceQuoteDialogProps {
   open: boolean;
@@ -53,8 +60,11 @@ const PriceQuoteDialog: React.FC<PriceQuoteDialogProps> = ({
     onClose();
   };
 
+  const serviceFee = 5;
+  const totalPrice = priceQuote + serviceFee;
+
   return (
-    <>
+    <TooltipProvider>
       <Dialog open={open} onOpenChange={onClose}>
         <DialogContent className="max-w-md">
           <DialogHeader>
@@ -72,6 +82,28 @@ const PriceQuoteDialog: React.FC<PriceQuoteDialogProps> = ({
               <p className="text-2xl font-bold text-green-600 dark:text-green-400">
                 {priceQuote.toFixed(2)} BGN
               </p>
+              <div className="flex items-center gap-2 mt-2">
+                <span className="text-sm text-gray-500">+ {serviceFee.toFixed(2)} BGN fee</span>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info className="h-4 w-4 text-gray-400 cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p className="text-sm">
+                      A small fee for maintaining the app and assuring it functions as intended, 
+                      also covering future updates and new exciting features for you to enjoy.
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
+              <div className="border-t border-gray-200 dark:border-gray-700 mt-3 pt-3">
+                <div className="flex justify-between items-center">
+                  <span className="font-medium">Total:</span>
+                  <span className="text-xl font-bold text-green-600 dark:text-green-400">
+                    {totalPrice.toFixed(2)} BGN
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
           
@@ -92,7 +124,8 @@ const PriceQuoteDialog: React.FC<PriceQuoteDialogProps> = ({
             <Button 
               onClick={handleCancelRequest}
               variant="outline"
-              className="border-red-500 text-red-600 hover:bg-red-50"
+              className="border-red-500 text-re
+              d-600 hover:bg-red-50"
             >
               Cancel Request
             </Button>
@@ -121,7 +154,7 @@ const PriceQuoteDialog: React.FC<PriceQuoteDialogProps> = ({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </>
+    </TooltipProvider>
   );
 };
 
