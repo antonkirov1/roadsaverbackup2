@@ -41,7 +41,7 @@ const iconConfigurations: Record<ServiceType, {
     fallbackLucideIcon: Wrench
   },
   'car-battery': {
-    customSvgUrl: '/lovable-uploads/car-battery.svg',
+    customSvgUrl: '/lovable-uploads/jumper_cables_with_battery.svg',
     animationClass: 'animate-battery-flash-red',
     colorFilter: 'brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%)',
     darkModeColorFilter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)',
