@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoginForm from '@/components/auth/LoginForm';
@@ -8,6 +9,7 @@ import { toast } from '@/components/ui/use-toast';
 import { Button } from "@/components/ui/button";
 import { Globe } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import ThemeToggle from '@/components/ui/theme-toggle';
 
 const Auth: React.FC = () => {
   const [showRegister, setShowRegister] = useState(false);
@@ -46,7 +48,8 @@ const Auth: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-b from-green-600/10 to-background px-4 py-8 font-clash relative">
       
-      <div className="absolute top-4 right-4 z-10">
+      <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
+        <ThemeToggle showLabels={false} size="sm" />
         <div className="relative">
           <Button 
             variant="ghost" 

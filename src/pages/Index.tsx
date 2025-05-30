@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { User, Car, Globe } from 'lucide-react';
 import { useApp } from '@/contexts/AppContext';
 import { useTranslation } from '@/utils/translations';
+import ThemeToggle from '@/components/ui/theme-toggle';
 
 const Index = () => {
   const { language, setLanguage } = useApp();
@@ -13,8 +14,9 @@ const Index = () => {
   
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-green-600/20 to-background p-4 font-clash">
-      {/* Language Toggle */}
-      <div className="absolute top-4 right-4 z-10">
+      {/* Top right controls */}
+      <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
+        <ThemeToggle showLabels={false} size="sm" />
         <div className="relative">
           <Button 
             variant="ghost" 
@@ -33,7 +35,7 @@ const Index = () => {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-2">RoadSaver</h1>
-          <p className="text-muted-foreground">{t('app-subtitle')}</p> {/* Changed text to use translation key */}
+          <p className="text-muted-foreground">{t('app-subtitle')}</p>
         </div>
         
         <div className="space-y-4">
@@ -71,4 +73,3 @@ const Index = () => {
 };
 
 export default Index;
-

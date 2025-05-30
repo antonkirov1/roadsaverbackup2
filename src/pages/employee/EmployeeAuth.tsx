@@ -7,6 +7,7 @@ import { toast } from '@/components/ui/use-toast';
 import { useTranslation } from '@/utils/translations';
 import { Button } from "@/components/ui/button";
 import { Globe } from 'lucide-react';
+import ThemeToggle from '@/components/ui/theme-toggle';
 
 const EmployeeAuth: React.FC = () => {
   const navigate = useNavigate();
@@ -25,8 +26,9 @@ const EmployeeAuth: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-b from-blue-600/10 to-background p-4 font-clash relative">
       
-      {/* Language switcher similar to user Auth page, themed blue */}
-      <div className="absolute top-4 right-4 z-10">
+      {/* Top right controls with theme toggle and language switcher */}
+      <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
+        <ThemeToggle showLabels={false} size="sm" />
         <div className="relative">
           <Button 
             variant="ghost" 
