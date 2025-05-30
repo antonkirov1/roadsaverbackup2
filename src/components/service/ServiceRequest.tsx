@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import ServiceRequestDialog from './ServiceRequestDialog';
 import ServiceRequestForm from './ServiceRequestForm';
@@ -83,6 +84,10 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
     onClose();
   };
 
+  const handleReviewPriceQuote = () => {
+    setShowPriceQuote(true);
+  };
+
   return (
     <>
       <ServiceRequestDialog
@@ -110,6 +115,8 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
             employeeLocation={employeeLocation}
             onContactSupport={handleContactSupport}
             onClose={handleAttemptClose}
+            onReviewPriceQuote={handleReviewPriceQuote}
+            hasPriceQuote={priceQuote > 0}
           />
         )}
       </ServiceRequestDialog>
