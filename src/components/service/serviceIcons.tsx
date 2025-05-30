@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Fuel, Wrench, Phone, AlertTriangle, Mail, Disc3, BatteryCharging } from 'lucide-react';
 import { loadImage, removeBackground } from '@/utils/imageProcessing';
@@ -27,7 +26,7 @@ const iconConfigurations: Record<ServiceType, {
     fallbackLucideIcon: Disc3
   },
   'out-of-fuel': {
-    customSvgUrl: '/lovable-uploads/Out Of Fuel.svg',
+    customSvgUrl: '/lovable-uploads/low-fuel.svg',
     animationClass: 'animate-fuel-pulse-flash',
     colorFilter: 'brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%)',
     darkModeColorFilter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)',
