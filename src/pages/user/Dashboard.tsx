@@ -86,6 +86,12 @@ const Dashboard: React.FC = () => {
     logout();
     navigate('/user');
   };
+
+  const handleViewRequest = () => {
+    if (ongoingRequest) {
+      setSelectedService(ongoingRequest.type as ServiceType);
+    }
+  };
   
   return (
     <div className="min-h-screen bg-background pb-16 font-clash">
@@ -117,6 +123,7 @@ const Dashboard: React.FC = () => {
         onOngoingRequestsClose={() => setShowOngoingRequests(false)}
         onLocationChange={handleLocationChange}
         onLanguageChange={setLanguage}
+        onViewRequest={handleViewRequest}
       />
 
       <ExitConfirmDialog

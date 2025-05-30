@@ -25,6 +25,7 @@ interface DashboardModalsProps {
   onOngoingRequestsClose: () => void;
   onLocationChange: (location: { lat: number; lng: number }) => void;
   onLanguageChange: (language: 'en' | 'bg') => void;
+  onViewRequest: () => void;
 }
 
 const DashboardModals: React.FC<DashboardModalsProps> = ({
@@ -42,7 +43,8 @@ const DashboardModals: React.FC<DashboardModalsProps> = ({
   onLocationPickerClose,
   onOngoingRequestsClose,
   onLocationChange,
-  onLanguageChange
+  onLanguageChange,
+  onViewRequest
 }) => {
   return (
     <>
@@ -79,6 +81,7 @@ const DashboardModals: React.FC<DashboardModalsProps> = ({
         <OngoingRequestsDialog
           open={showOngoingRequests}
           onClose={onOngoingRequestsClose}
+          onViewRequest={onViewRequest}
         />
       )}
       

@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { useTranslation } from '@/utils/translations';
@@ -5,6 +6,7 @@ import { useTranslation } from '@/utils/translations';
 interface User {
   username: string;
   email?: string;
+  name?: string;
 }
 
 interface OngoingRequest {
