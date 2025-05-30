@@ -16,14 +16,12 @@ interface OngoingRequestsDialogProps {
   open: boolean;
   onClose: () => void;
   onViewRequest: () => void;
-  onReviewPriceQuote?: () => void;
 }
 
 const OngoingRequestsDialog: React.FC<OngoingRequestsDialogProps> = ({
   open,
   onClose,
-  onViewRequest,
-  onReviewPriceQuote
+  onViewRequest
 }) => {
   const { ongoingRequest, language } = useApp();
   const t = useTranslation(language);
@@ -57,18 +55,6 @@ const OngoingRequestsDialog: React.FC<OngoingRequestsDialogProps> = ({
                 {ongoingRequest.status.charAt(0).toUpperCase() + ongoingRequest.status.slice(1)}
               </Badge>
             </div>
-            
-            {/* Add the "Review the price and decide" button for pending requests */}
-            {ongoingRequest.status === 'pending' && onReviewPriceQuote && (
-              <div className="mb-4">
-                <Button 
-                  onClick={onReviewPriceQuote}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white"
-                >
-                  Review the price and decide
-                </Button>
-              </div>
-            )}
             
             <div className="space-y-2 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">

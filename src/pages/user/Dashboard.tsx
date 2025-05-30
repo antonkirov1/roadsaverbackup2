@@ -64,14 +64,6 @@ const Dashboard = () => {
     }
   };
 
-  const handleReviewPriceQuote = () => {
-    if (ongoingRequest) {
-      setSelectedServiceType(ongoingRequest.type as any);
-      setShowServiceRequest(true);
-      setShowOngoingRequests(false);
-    }
-  };
-
   return (
     <Shell>
       <div className="container relative">
@@ -108,7 +100,6 @@ const Dashboard = () => {
         open={showOngoingRequests}
         onClose={() => setShowOngoingRequests(false)}
         onViewRequest={handleViewOngoingRequest}
-        onReviewPriceQuote={handleReviewPriceQuote}
       />
 
       <CompletedRequestsDialog
