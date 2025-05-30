@@ -93,12 +93,20 @@ const PriceQuoteDialog: React.FC<PriceQuoteDialogProps> = ({
     }, 3000);
   };
 
+  // Prevent dialog from closing when clicking outside or pressing escape
+  const handleOpenChange = (open: boolean) => {
+    // Only allow closing through the action buttons, not by clicking outside or escape
+    if (!open) {
+      return;
+    }
+  };
+
   const serviceFee = 5;
   const totalPrice = priceQuote + serviceFee;
 
   if (isWaitingForRevision) {
     return (
-      <Dialog open={open} onOpenChange={onClose}>
+      <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>Waiting for Response</DialogTitle>
@@ -127,7 +135,7 @@ const PriceQuoteDialog: React.FC<PriceQuoteDialogProps> = ({
 
   return (
     <>
-      <Dialog open={open} onOpenChange={onClose}>
+      <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>

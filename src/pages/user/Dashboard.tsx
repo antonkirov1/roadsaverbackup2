@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/contexts/AppContext';
 import { useTranslation } from '@/utils/translations';
@@ -7,11 +7,12 @@ import { toast } from '@/components/ui/use-toast';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import DashboardServices from '@/components/dashboard/DashboardServices';
 import DashboardModals from '@/components/dashboard/DashboardModals';
+import ExitConfirmDialog from '@/components/dashboard/ExitConfirmDialog';
 
 type ServiceType = 'flat-tyre' | 'out-of-fuel' | 'other-car-problems' | 'tow-truck' | 'emergency' | 'support' | 'car-battery';
 
 const Dashboard: React.FC = () => {
-  const { isAuthenticated, userLocation, setUserLocation, language, setLanguage, ongoingRequest } = useApp();
+  const { isAuthenticated, userLocation, setUserLocation, language, setLanguage, ongoingRequest, logout } = useApp();
   const navigate = useNavigate();
   const t = useTranslation(language);
   
@@ -20,13 +21,32 @@ const Dashboard: React.FC = () => {
   const [showSettings, setShowSettings] = useState(false);
   const [showLocationPicker, setShowLocationPicker] = useState(false);
   const [showOngoingRequests, setShowOngoingRequests] = useState(false);
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
   
   // Redirect to auth if not authenticated
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isAuthenticated) {
       navigate('/user');
     }
   }, [isAuthenticated, navigate]);
+
+  // Handle browser back button
+  useEffect(() => {
+    const handlePopState = (event: PopStateEvent) => {
+      event.preventDefault();
+      setShowExitConfirm(true);
+      // Push the current state back to prevent actual navigation
+      window.history.pushState(null, '', window.location.pathname);
+    };
+
+    // Push initial state
+    window.history.pushState(null, '', window.location.pathname);
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
   
   const handleServiceSelect = (service: ServiceType) => {
     // Check if there's an ongoing request
@@ -61,6 +81,11 @@ const Dashboard: React.FC = () => {
       description: t('location-updated-msg')
     });
   };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/user');
+  };
   
   return (
     <div className="min-h-screen bg-background pb-16 font-clash">
@@ -92,6 +117,12 @@ const Dashboard: React.FC = () => {
         onOngoingRequestsClose={() => setShowOngoingRequests(false)}
         onLocationChange={handleLocationChange}
         onLanguageChange={setLanguage}
+      />
+
+      <ExitConfirmDialog
+        open={showExitConfirm}
+        onClose={() => setShowExitConfirm(false)}
+        onLogout={handleLogout}
       />
     </div>
   );
