@@ -58,18 +58,6 @@ const OngoingRequestsDialog: React.FC<OngoingRequestsDialogProps> = ({
               </Badge>
             </div>
             
-            {/* Add the "Review the price and decide" button for pending requests */}
-            {ongoingRequest.status === 'pending' && onReviewPriceQuote && (
-              <div className="mb-4">
-                <Button 
-                  onClick={onReviewPriceQuote}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white"
-                >
-                  Review the price and decide
-                </Button>
-              </div>
-            )}
-            
             <div className="space-y-2 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4" />
@@ -82,11 +70,22 @@ const OngoingRequestsDialog: React.FC<OngoingRequestsDialogProps> = ({
             </div>
           </div>
           
-          <div className="flex gap-2">
-            <Button onClick={onViewRequest} className="flex-1">
+          <div className="flex flex-col gap-2">
+            <Button onClick={onViewRequest} className="w-full">
               View Details
             </Button>
-            <Button onClick={onClose} variant="outline" className="flex-1">
+            
+            {/* Green Review Price Button */}
+            {ongoingRequest.status === 'pending' && onReviewPriceQuote && (
+              <Button 
+                onClick={onReviewPriceQuote}
+                className="w-full bg-green-600 hover:bg-green-700 text-white"
+              >
+                Review The Price And Decide
+              </Button>
+            )}
+            
+            <Button onClick={onClose} variant="outline" className="w-full">
               Close
             </Button>
           </div>
