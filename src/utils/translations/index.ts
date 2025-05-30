@@ -15,8 +15,8 @@ import { generalTranslations } from './general';
 import { uiTranslations } from './ui';
 import { themeTranslations } from './theme';
 
-// Combine all translation categories
-export const translations = {
+// Combine all translation categories - flatten the structure
+const allTranslations = {
   ...authGeneralTranslations,
   ...authLoginTranslations,
   ...authRegisterTranslations,
@@ -36,11 +36,14 @@ export const translations = {
 
 export type Language = 'en' | 'bg';
 
-// Keep the same useTranslation hook to maintain compatibility
+// Fixed useTranslation hook to work with the correct structure
 export const useTranslation = (language: Language) => {
   return (key: string): string => {
-    const translation = translations[key];
-    if (!translation) return key;
-    return translation[language] || key;
+    const translation = allTranslations[key];
+    if (!translation || !translation[language]) {
+      console.log(`Missing translation for key: ${key}`);
+      return key;
+    }
+    return translation[language];
   };
 };
