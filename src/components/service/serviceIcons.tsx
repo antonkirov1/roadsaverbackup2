@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Fuel, Wrench, Phone, AlertTriangle, Mail, Disc3, BatteryCharging } from 'lucide-react';
 import { loadImage, removeBackground } from '@/utils/imageProcessing';
@@ -97,6 +98,9 @@ export const processBackgroundRemoval = async (type: ServiceType, callback: (url
 export const getServiceIconAndTitle = (type: ServiceType, t: (key: string) => string, processedTowTruckIconUrl: string | null, iconSizeClass: string): ServiceIconData => {
   const config = iconConfigurations[type];
   
+  // Add console log to debug icon loading
+  console.log(`Loading icon for ${type}, SVG URL: ${config.customSvgUrl}`);
+  
   // Handle icons with custom SVGs
   if (config.customSvgUrl) {
     return {
@@ -104,8 +108,10 @@ export const getServiceIconAndTitle = (type: ServiceType, t: (key: string) => st
         src={config.customSvgUrl} 
         alt={t(type)} 
         className={`w-8 h-8 sm:w-10 sm:h-10 ${config.animationClass} object-contain filter-icon-color ${type === 'car-battery' ? 'car-battery-icon' : ''}`}
+        onLoad={() => console.log(`Successfully loaded custom SVG for ${type}`)}
         onError={(e) => {
-          console.error(`Failed to load custom SVG for ${type}, falling back to Lucide icon`);
+          console.error(`Failed to load custom SVG for ${type} at path: ${config.customSvgUrl}`, e);
+          console.log(`Falling back to Lucide icon for ${type}`);
           (e.target as HTMLImageElement).style.display = 'none';
         }}
       />,
