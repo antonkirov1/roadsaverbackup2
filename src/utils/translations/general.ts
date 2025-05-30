@@ -59,7 +59,14 @@ export const generalTranslations = {
     'location-access-denied': 'Location Access Denied',
     'location-access-message': 'Please enable location access to get better service.',
     'tap-to-view-details': 'Tap to view details',
-    'review-price-and-decide': 'Review The Price And Decide'
+    'review-price-and-decide': 'Review The Price And Decide',
+    'app-subtitle': 'Emergency road assistance when you need it most',
+    'user-app': 'User App',
+    'for-customers': 'For customers needing assistance',
+    'open-user-app': 'Open User App',
+    'employee-app': 'Employee App',
+    'for-service-providers': 'For service providers',
+    'open-employee-app': 'Open Employee App'
   },
   bg: {
     'welcome': 'Добре дошли',
@@ -120,6 +127,13 @@ export const generalTranslations = {
     'location-access-denied': 'Достъпът до местоположение е отказан',
     'location-access-message': 'Моля, разрешете достъп до местоположението за по-добро обслужване.',
     'tap-to-view-details': 'Докоснете за детайли',
-    'review-price-and-decide': 'Прегледайте цената и решете'
+    'review-price-and-decide': 'Прегледайте цената и решете',
+    'app-subtitle': 'Спешна пътна помощ когато най-много се нуждаете от нея',
+    'user-app': 'Потребителско приложение',
+    'for-customers': 'За клиенти, нуждаещи се от помощ',
+    'open-user-app': 'Отвори потребителското приложение',
+    'employee-app': 'Служебно приложение',
+    'for-service-providers': 'За доставчици на услуги',
+    'open-employee-app': 'Отвори служебното приложение'
   }
 };
