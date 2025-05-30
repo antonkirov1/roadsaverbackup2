@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/contexts/AppContext';
@@ -8,17 +9,17 @@ import ServiceRequest from '@/components/service/ServiceRequest';
 import OngoingRequestsDialog from '@/components/service/OngoingRequestsDialog';
 import CompletedRequestsDialog from '@/components/service/CompletedRequestsDialog';
 import { useTranslation } from '@/utils/translations';
-import { useTheme } from "@/contexts/ThemeContext"
+import { useTheme } from "@/contexts/ThemeContext";
 import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 const Dashboard = () => {
-  const { user, setUser, ongoingRequest } = useApp();
+  const { user, ongoingRequest } = useApp();
   const navigate = useNavigate();
   const { language, setLanguage } = useApp();
   const t = useTranslation(language);
-  const { theme, setTheme } = useTheme();
+  const { isDarkMode, toggleDarkMode } = useTheme();
 
   const [showServiceRequest, setShowServiceRequest] = useState(false);
   const [selectedServiceType, setSelectedServiceType] = useState<string | null>(null);
@@ -55,7 +56,7 @@ const Dashboard = () => {
   };
 
   const handleSignOut = () => {
-    setUser(null);
+    // Clear user data from localStorage and navigate
     localStorage.removeItem('user');
     navigate('/user');
   };
@@ -86,7 +87,7 @@ const Dashboard = () => {
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <div>
-              <h1 className="text-2xl font-bold">{t('welcome')} {user?.name}</h1>
+              <h1 className="text-2xl font-bold">{t('welcome')} {user?.username || 'User'}</h1>
               <p className="text-muted-foreground">{t('dashboard-desc')}</p>
             </div>
           </div>
@@ -96,7 +97,7 @@ const Dashboard = () => {
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="h-9">
                   <span className="sr-only">Toggle Theme</span>
-                  {theme === "dark" ? (
+                  {isDarkMode ? (
                     <SunIcon className="h-4 w-4" />
                   ) : (
                     <MoonIcon className="h-4 w-4" />
@@ -106,14 +107,8 @@ const Dashboard = () => {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Theme</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => setTheme("light")}>
-                  Light
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme("dark")}>
-                  Dark
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme("system")}>
-                  System
+                <DropdownMenuItem onClick={toggleDarkMode}>
+                  {isDarkMode ? 'Light' : 'Dark'}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
