@@ -1,85 +1,93 @@
 
 import React from 'react';
-import { Button } from "@/components/ui/button";
-import { useTheme } from "@/contexts/ThemeContext";
-import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from '@/components/ui/button';
+import { Settings, MapPin, Globe, Siren, Clock } from 'lucide-react';
 
 interface DashboardHeaderProps {
-  user: any;
-  language: string;
-  onLanguageChange: (language: 'en' | 'bg') => void;
-  onSignOut: () => void;
+  language: 'en' | 'bg';
   t: (key: string) => string;
+  onEmergencyClick: () => void;
+  onLocationClick: () => void;
+  onSettingsClick: () => void;
+  onLanguageToggle: () => void;
+  onOngoingRequestsClick: () => void;
 }
 
 const DashboardHeader: React.FC<DashboardHeaderProps> = ({
-  user,
   language,
-  onLanguageChange,
-  onSignOut,
-  t
+  t,
+  onEmergencyClick,
+  onLocationClick,
+  onSettingsClick,
+  onLanguageToggle,
+  onOngoingRequestsClick
 }) => {
-  const { isDarkMode, toggleDarkMode } = useTheme();
-
   return (
-    <div className="flex justify-between items-center">
-      <div className="flex items-center gap-6">
-        <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
-        <div>
-          <h1 className="text-2xl font-bold">{t('welcome')} {user?.username || 'User'}</h1>
-          <p className="text-muted-foreground">{t('dashboard-desc')}</p>
+    <>
+      {/* Header */}
+      <header className="bg-green-600 text-white p-3 sm:p-4 flex justify-between items-center sticky top-0 z-10">
+        <h1 className="text-xl font-semibold font-clash text-white dark:text-black">RoadSaver</h1>
+        <div className="flex gap-1 sm:gap-2">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={onEmergencyClick}
+            className="text-white dark:text-black hover:bg-white/20 h-8 w-8 sm:h-10 sm:w-10"
+            title={t('emergency-services')}
+          >
+            <Siren className="h-4 w-4 sm:h-5 sm:w-5 animate-emergency-alert-flash" />
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={onLocationClick}
+            className="text-white dark:text-black hover:bg-white/20 h-8 w-8 sm:h-10 sm:w-10"
+            title={t('update-location')}
+          >
+            <MapPin className="h-4 w-4 sm:h-5 sm:w-5 animate-map-pin-bob" />
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={onSettingsClick}
+            className="text-white dark:text-black hover:bg-white/20 h-8 w-8 sm:h-10 sm:w-10"
+            title={t('settings')}
+          >
+            <Settings className="h-4 w-4 sm:h-5 sm:w-5 animate-settings-gear-turn" />
+          </Button>
+          <div className="relative">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={onLanguageToggle}
+              className="text-white dark:text-black hover:bg-white/20 h-8 w-8 sm:h-10 sm:w-10"
+              title={t('change-language')}
+            >
+              <Globe className="h-3 w-3 sm:h-4 sm:w-4 animate-globe-pulse" />
+            </Button>
+            <span className="absolute -bottom-1 -right-1 text-xs bg-white text-green-600 px-1 rounded">
+              {language.toUpperCase()}
+            </span>
+          </div>
         </div>
-      </div>
-
-      <div className="space-x-2 flex items-center">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="h-9">
-              <span className="sr-only">Toggle Theme</span>
-              {isDarkMode ? (
-                <SunIcon className="h-4 w-4" />
-              ) : (
-                <MoonIcon className="h-4 w-4" />
-              )}
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Theme</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={toggleDarkMode}>
-              {isDarkMode ? 'Light' : 'Dark'}
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="h-9">
-              {language}
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Select Language</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => onLanguageChange('en')}>
-              English
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => onLanguageChange('bg')}>
-              Bulgarian
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-
-        <Button variant="outline" onClick={onSignOut}>
-          {t('sign-out')}
-        </Button>
-      </div>
-    </div>
+      </header>
+      
+      {/* Main Content */}
+      <main className="container max-w-md mx-auto px-4 py-4 sm:py-6">
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold">{t('services')}</h2>
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={onOngoingRequestsClick}
+            className="text-xs sm:text-sm"
+          >
+            <Clock className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+            {t('ongoing-requests')}
+          </Button>
+        </div>
+      </main>
+    </>
   );
 };
 
