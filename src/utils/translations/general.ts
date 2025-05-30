@@ -1,4 +1,3 @@
-
 export const generalTranslations = {
   en: {
     'welcome': 'Welcome',
