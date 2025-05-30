@@ -35,19 +35,19 @@ const Index = () => {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-2">RoadSaver</h1>
-          <p className="text-muted-foreground">app-subtitle</p>
+          <p className="text-muted-foreground">Emergency road assistance when you need it most</p>
         </div>
         
         <div className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>user-app</CardTitle>
-              <CardDescription>for-customers</CardDescription>
+              <CardTitle>User App</CardTitle>
+              <CardDescription>For customers needing assistance</CardDescription>
             </CardHeader>
             <CardContent>
               <Link to="/user">
                 <Button className="w-full bg-green-600 hover:bg-green-700">
-                  <User className="mr-2 h-5 w-5" /> open-user-app
+                  <User className="mr-2 h-5 w-5" /> Open User App
                 </Button>
               </Link>
             </CardContent>
@@ -55,13 +55,13 @@ const Index = () => {
           
           <Card>
             <CardHeader>
-              <CardTitle>employee-app</CardTitle>
-              <CardDescription>for-service-providers</CardDescription>
+              <CardTitle>Employee App</CardTitle>
+              <CardDescription>For service providers</CardDescription>
             </CardHeader>
             <CardContent>
               <Link to="/employee">
                 <Button className="w-full bg-blue-600 hover:bg-blue-700">
-                  <Car className="mr-2 h-5 w-5" /> open-employee-app
+                  <Car className="mr-2 h-5 w-5" /> Open Employee App
                 </Button>
               </Link>
             </CardContent>
