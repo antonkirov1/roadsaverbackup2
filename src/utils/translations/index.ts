@@ -15,7 +15,7 @@ import { generalTranslations } from './general';
 import { uiTranslations } from './ui';
 import { themeTranslations } from './theme';
 
-// Combine all translation categories
+// Combine all translation categories properly
 export const translations = {
   ...authGeneralTranslations,
   ...authLoginTranslations,
@@ -36,11 +36,23 @@ export const translations = {
 
 export type Language = 'en' | 'bg';
 
-// Keep the same useTranslation hook to maintain compatibility
+// Fixed useTranslation hook with debugging
 export const useTranslation = (language: Language) => {
   return (key: string): string => {
     const translation = translations[key];
-    if (!translation) return key;
-    return translation[language] || key;
+    
+    // Debug logging to help identify issues
+    if (!translation) {
+      console.log('Translation not found for key:', key);
+      return key;
+    }
+    
+    const result = translation[language];
+    if (!result) {
+      console.log('Language not found for key:', key, 'language:', language, 'available:', Object.keys(translation));
+      return translation['en'] || key; // Fallback to English
+    }
+    
+    return result;
   };
 };
