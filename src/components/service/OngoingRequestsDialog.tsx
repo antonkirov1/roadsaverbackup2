@@ -53,7 +53,7 @@ const OngoingRequestsDialog: React.FC<OngoingRequestsDialogProps> = ({ open, onC
             {!ongoingRequest ? (
               <div className="text-center py-8 text-muted-foreground">
                 <Clock className="h-12 w-12 mx-auto mb-3 opacity-50" />
-                <p>{t('no-ongoing-requests')}</p>
+                <p>{t('No ongoing requests')}</p>
               </div>
             ) : (
               <div className="relative">
