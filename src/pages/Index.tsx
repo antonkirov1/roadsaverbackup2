@@ -41,19 +41,19 @@ const Index = () => {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-2">RoadSaver</h1>
-          <p className="text-muted-foreground">{t('app-subtitle')}</p>
+          <p className="text-muted-foreground">{t('Road assistance, when you need it most.')}</p>
         </div>
         
         <div className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>{t('user-app')}</CardTitle>
-              <CardDescription>{t('for-customers')}</CardDescription>
+              <CardTitle>{t('User App')}</CardTitle>
+              <CardDescription>{t('For customers needing assistance')}</CardDescription>
             </CardHeader>
             <CardContent>
               <Link to="/user">
                 <Button className="w-full bg-green-600 hover:bg-green-700">
-                  <User className="mr-2 h-5 w-5" /> {t('open-user-app')}
+                  <User className="mr-2 h-5 w-5" /> {t('Open User App')}
                 </Button>
               </Link>
             </CardContent>
@@ -61,13 +61,13 @@ const Index = () => {
           
           <Card>
             <CardHeader>
-              <CardTitle>{t('employee-app')}</CardTitle>
-              <CardDescription>{t('for-service-providers')}</CardDescription>
+              <CardTitle>{t('Employee App')}</CardTitle>
+              <CardDescription>{t('For service providers')}</CardDescription>
             </CardHeader>
             <CardContent>
               <Link to="/employee">
                 <Button className="w-full bg-blue-600 hover:bg-blue-700">
-                  <Car className="mr-2 h-5 w-5" /> {t('open-employee-app')}
+                  <Car className="mr-2 h-5 w-5" /> {t('Open Employee App')}
                 </Button>
               </Link>
             </CardContent>
