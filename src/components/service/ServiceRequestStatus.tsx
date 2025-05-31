@@ -3,7 +3,8 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useApp } from '@/contexts/AppContext';
 import { useTranslation } from '@/utils/translations';
-import { MapPin, Clock, CheckCircle, XCircle, Phone } from 'lucide-react';
+import { Clock, CheckCircle, XCircle, Phone } from 'lucide-react';
+import GoogleMap from '@/components/GoogleMap';
 
 interface ServiceRequestStatusProps {
   message: string;
@@ -88,25 +89,25 @@ const ServiceRequestStatus: React.FC<ServiceRequestStatusProps> = ({
         <p className="text-sm text-muted-foreground">{message}</p>
       </div>
 
-      {/* Location Information */}
+      {/* Google Maps showing locations */}
       <div className="bg-secondary rounded-lg p-4">
-        <h3 className="font-semibold mb-3 flex items-center gap-2">
-          <MapPin className="h-4 w-4" />
-          Location Information
-        </h3>
-        <div className="space-y-2">
-          <div>
-            <p className="text-sm font-medium">Your Location:</p>
-            <p className="text-sm text-muted-foreground">
-              {userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)}
-            </p>
+        <h3 className="font-semibold mb-3">Live Location Tracking</h3>
+        <div className="rounded-lg overflow-hidden">
+          <GoogleMap
+            userLocation={userLocation}
+            employeeLocation={employeeLocation}
+            height="250px"
+          />
+        </div>
+        <div className="mt-3 space-y-1 text-sm text-muted-foreground">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-green-500"></div>
+            <span>Your location</span>
           </div>
           {employeeLocation && (
-            <div>
-              <p className="text-sm font-medium">Employee Location:</p>
-              <p className="text-sm text-muted-foreground">
-                {employeeLocation.lat.toFixed(4)}, {employeeLocation.lng.toFixed(4)}
-              </p>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+              <span>Employee location</span>
             </div>
           )}
         </div>
