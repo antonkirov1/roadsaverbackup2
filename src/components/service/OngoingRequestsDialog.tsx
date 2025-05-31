@@ -45,7 +45,7 @@ const OngoingRequestsDialog: React.FC<OngoingRequestsDialogProps> = ({ open, onC
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Clock className="h-5 w-5" />
-              {t('ongoing-requests')}
+              {t('Ongoing Requests')}
             </DialogTitle>
           </DialogHeader>
           
