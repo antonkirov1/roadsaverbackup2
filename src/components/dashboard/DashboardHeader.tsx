@@ -50,7 +50,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
           <h2 className="text-xl sm:text-2xl font-bold">{t('services')}</h2>
           <Button variant="outline" size="sm" onClick={onOngoingRequestsClick} className="text-xs font-normal sm:text-base">
             <Clock className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-            {t('ongoing-requests')}
+            {t('Ongoing Requests')}
           </Button>
         </div>
       </main>
