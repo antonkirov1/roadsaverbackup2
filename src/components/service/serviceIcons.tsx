@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Fuel, Wrench, Phone, AlertTriangle, Mail, Disc3, BatteryCharging } from 'lucide-react';
 import { loadImage, removeBackground } from '@/utils/imageProcessing';
@@ -98,8 +97,15 @@ export const processBackgroundRemoval = async (type: ServiceType, callback: (url
 export const getServiceIconAndTitle = (type: ServiceType, t: (key: string) => string, processedTowTruckIconUrl: string | null, iconSizeClass: string): ServiceIconData => {
   const config = iconConfigurations[type];
   
-  // Add console log to debug icon loading
+  // Enhanced debug logging specifically for out-of-fuel
   console.log(`Loading icon for ${type}, SVG URL: ${config.customSvgUrl}`);
+  if (type === 'out-of-fuel') {
+    console.log('Out of fuel icon - detailed debug:', {
+      svgPath: config.customSvgUrl,
+      fullUrl: window.location.origin + config.customSvgUrl,
+      animationClass: config.animationClass
+    });
+  }
   
   // Handle icons with custom SVGs
   if (config.customSvgUrl) {
@@ -107,12 +113,36 @@ export const getServiceIconAndTitle = (type: ServiceType, t: (key: string) => st
       icon: <img 
         src={config.customSvgUrl} 
         alt={t(type)} 
-        className={`w-8 h-8 sm:w-10 sm:h-10 ${config.animationClass} object-contain filter-icon-color ${type === 'car-battery' ? 'car-battery-icon' : ''}`}
-        onLoad={() => console.log(`Successfully loaded custom SVG for ${type}`)}
+        className={`w-8 h-8 sm:w-10 sm:w-10 ${config.animationClass} object-contain filter-icon-color ${type === 'car-battery' ? 'car-battery-icon' : ''}`}
+        onLoad={() => {
+          console.log(`✅ Successfully loaded custom SVG for ${type}`);
+          if (type === 'out-of-fuel') {
+            console.log('✅ Out of fuel icon loaded successfully!');
+          }
+        }}
         onError={(e) => {
-          console.error(`Failed to load custom SVG for ${type} at path: ${config.customSvgUrl}`, e);
-          console.log(`Falling back to Lucide icon for ${type}`);
-          (e.target as HTMLImageElement).style.display = 'none';
+          console.error(`❌ Failed to load custom SVG for ${type} at path: ${config.customSvgUrl}`, e);
+          if (type === 'out-of-fuel') {
+            console.error('❌ Out of fuel icon failed to load - check if file exists at:', config.customSvgUrl);
+          }
+          console.log(`🔄 Falling back to Lucide icon for ${type}`);
+          // Hide the broken image and show fallback instead
+          const imgElement = e.target as HTMLImageElement;
+          const fallbackIcon = document.createElement('div');
+          const LucideIcon = config.fallbackLucideIcon;
+          imgElement.style.display = 'none';
+          
+          // Create fallback Lucide icon
+          const fallbackElement = (
+            <LucideIcon className={`${iconSizeClass} ${config.animationClass} text-black dark:text-white`} />
+          );
+          
+          // Replace with fallback
+          if (imgElement.parentNode) {
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = `<svg class="${iconSizeClass} ${config.animationClass} text-black dark:text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7v10c0 5.55 3.84 9.95 9 11 5.16-1.05 9-5.45 9-11V7l-10-5z"/></svg>`;
+            imgElement.parentNode.replaceChild(wrapper.firstChild!, imgElement);
+          }
         }}
       />,
       title: t(type),
