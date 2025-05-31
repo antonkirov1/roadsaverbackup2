@@ -37,7 +37,7 @@ const Index = () => {
         <div className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>{t('user-app')}</CardTitle>
+              <CardTitle>{t('User App')}</CardTitle>
               <CardDescription>{t('For customers needing assistance.')}</CardDescription>
             </CardHeader>
             <CardContent>
@@ -51,7 +51,7 @@ const Index = () => {
           
           <Card>
             <CardHeader>
-              <CardTitle>{t('employee-app')}</CardTitle>
+              <CardTitle>{t('Employee App')}</CardTitle>
               <CardDescription>{t('For service providers.')}</CardDescription>
             </CardHeader>
             <CardContent>
