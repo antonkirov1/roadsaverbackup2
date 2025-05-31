@@ -69,7 +69,8 @@ export const useServiceRequest = (
         setShowPriceQuote,
         setShowRealTimeUpdate,
         setStatus,
-        setDeclineReason
+        setDeclineReason,
+        setEmployeeLocation
       );
     }, 1500);
   };

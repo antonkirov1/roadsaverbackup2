@@ -6,6 +6,17 @@ import { useApp } from '@/contexts/AppContext';
 export const useRequestSimulation = () => {
   const { setOngoingRequest, addToHistory } = useApp();
 
+  const generateEmployeeLocation = (userLocation: { lat: number; lng: number }) => {
+    // Generate a random location within 2-5 km radius of user location
+    const radius = (Math.random() * 3 + 2) / 111; // Convert km to degrees (rough approximation)
+    const angle = Math.random() * 2 * Math.PI;
+    
+    return {
+      lat: userLocation.lat + radius * Math.cos(angle),
+      lng: userLocation.lng + radius * Math.sin(angle)
+    };
+  };
+
   const simulateEmployeeResponse = (
     requestId: string,
     timestamp: string,
@@ -15,17 +26,36 @@ export const useRequestSimulation = () => {
     setShowPriceQuote: (show: boolean) => void,
     setShowRealTimeUpdate: (show: boolean) => void,
     setStatus: (status: 'pending' | 'accepted' | 'declined') => void,
-    setDeclineReason: (reason: string) => void
+    setDeclineReason: (reason: string) => void,
+    setEmployeeLocation?: (location: { lat: number; lng: number }) => void
   ) => {
     const isAccepted = Math.random() > 0.3;
     
     setTimeout(() => {
       if (isAccepted) {
+        // Generate employee location immediately when request is being processed
+        const employeeLocation = generateEmployeeLocation(userLocation);
+        if (setEmployeeLocation) {
+          setEmployeeLocation(employeeLocation);
+        }
+        
         // Generate random price quote
         const randomPrice = Math.floor(Math.random() * 100) + 50; // 50-150 BGN
         setPriceQuote(randomPrice);
         setShowPriceQuote(true);
         setShowRealTimeUpdate(false);
+        
+        // Update ongoing request with employee location
+        const updatedRequest = {
+          id: requestId,
+          type,
+          status: 'pending' as const,
+          timestamp: new Date().toLocaleString(),
+          location: 'Sofia Center, Bulgaria',
+          employeeLocation: employeeLocation
+        };
+        
+        setOngoingRequest(updatedRequest);
         
         toast({
           title: "Price Quote Received",
