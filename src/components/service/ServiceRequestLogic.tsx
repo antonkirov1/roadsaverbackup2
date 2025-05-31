@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { toast } from "@/components/ui/use-toast";
 import { useApp } from '@/contexts/AppContext';
@@ -12,7 +11,7 @@ export const useServiceRequest = (
   type: ServiceType,
   userLocation: { lat: number; lng: number }
 ) => {
-  const { setOngoingRequest } = useApp();
+  const { setOngoingRequest, ongoingRequest } = useApp();
   const { validateMessage } = useServiceValidation();
   const { simulateEmployeeResponse } = useRequestSimulation();
   const {
@@ -30,6 +29,8 @@ export const useServiceRequest = (
   const [employeeLocation, setEmployeeLocation] = useState<{ lat: number; lng: number } | undefined>(undefined);
   const [status, setStatus] = useState<'pending' | 'accepted' | 'declined'>('pending');
   const [declineReason, setDeclineReason] = useState('');
+  const [currentEmployeeName, setCurrentEmployeeName] = useState<string>('');
+  const [declinedEmployees, setDeclinedEmployees] = useState<string[]>(ongoingRequest?.declinedEmployees || []);
 
   const handleSubmit = () => {
     if (!validateMessage(message, type)) {
@@ -48,7 +49,8 @@ export const useServiceRequest = (
         type,
         status: 'pending' as const,
         timestamp: new Date().toLocaleString(),
-        location: 'Sofia Center, Bulgaria'
+        location: 'Sofia Center, Bulgaria',
+        declinedEmployees: declinedEmployees
       };
       
       setOngoingRequest(ongoingRequest);
@@ -70,13 +72,62 @@ export const useServiceRequest = (
         setShowRealTimeUpdate,
         setStatus,
         setDeclineReason,
-        setEmployeeLocation
+        setEmployeeLocation,
+        setCurrentEmployeeName,
+        declinedEmployees
       );
     }, 1500);
   };
 
   const handleAcceptQuote = () => acceptQuote(type, userLocation, setShowPriceQuote, setShowRealTimeUpdate, setStatus, setEmployeeLocation);
-  const handleDeclineQuote = () => declineQuote(setShowPriceQuote);
+  
+  const handleDeclineQuote = (isSecondDecline: boolean = false) => {
+    if (isSecondDecline && currentEmployeeName) {
+      // Add current employee to declined list
+      const updatedDeclinedEmployees = [...declinedEmployees, currentEmployeeName];
+      setDeclinedEmployees(updatedDeclinedEmployees);
+      
+      // Keep the request active but trigger a new employee response
+      setShowPriceQuote(false);
+      setShowRealTimeUpdate(true);
+      
+      // Update ongoing request with declined employee
+      const updatedRequest = {
+        ...ongoingRequest,
+        declinedEmployees: updatedDeclinedEmployees
+      };
+      setOngoingRequest(updatedRequest);
+      
+      toast({
+        title: "Quote Declined",
+        description: "Looking for another available employee..."
+      });
+      
+      // Simulate new employee response after a delay
+      setTimeout(() => {
+        const requestId = Date.now().toString();
+        const timestamp = new Date().toISOString();
+        
+        simulateEmployeeResponse(
+          requestId,
+          timestamp,
+          type,
+          userLocation,
+          setPriceQuote,
+          setShowPriceQuote,
+          setShowRealTimeUpdate,
+          setStatus,
+          setDeclineReason,
+          setEmployeeLocation,
+          setCurrentEmployeeName,
+          updatedDeclinedEmployees
+        );
+      }, 2000);
+    } else {
+      declineQuote(setShowPriceQuote);
+    }
+  };
+  
   const handleCancelRequest = () => cancelRequest(setShowPriceQuote);
 
   return {
@@ -90,6 +141,8 @@ export const useServiceRequest = (
     employeeLocation,
     status,
     declineReason,
+    currentEmployeeName,
+    declinedEmployees,
     handleSubmit,
     handleAcceptQuote,
     handleDeclineQuote,

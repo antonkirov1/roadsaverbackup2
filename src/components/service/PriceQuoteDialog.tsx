@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import {
   Dialog,
@@ -31,9 +32,10 @@ interface PriceQuoteDialogProps {
   serviceType: string;
   priceQuote: number;
   onAccept: () => void;
-  onDecline: () => void;
+  onDecline: (isSecondDecline?: boolean) => void;
   onCancelRequest: () => void;
   hasDeclinedOnce?: boolean;
+  employeeName?: string;
 }
 
 const PriceQuoteDialog: React.FC<PriceQuoteDialogProps> = ({
@@ -44,7 +46,8 @@ const PriceQuoteDialog: React.FC<PriceQuoteDialogProps> = ({
   onAccept,
   onDecline,
   onCancelRequest,
-  hasDeclinedOnce = false
+  hasDeclinedOnce = false,
+  employeeName = 'Employee'
 }) => {
   const { language } = useApp();
   const t = useTranslation(language);
@@ -66,8 +69,8 @@ const PriceQuoteDialog: React.FC<PriceQuoteDialogProps> = ({
     if (!hasDeclinedOnce) {
       setShowDeclineConfirm(true);
     } else {
-      // If already declined once, decline directly
-      onDecline();
+      // Second decline - trigger the new behavior
+      onDecline(true);
     }
   };
 
@@ -113,7 +116,7 @@ const PriceQuoteDialog: React.FC<PriceQuoteDialogProps> = ({
           <div className="space-y-4 text-center py-6">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto"></div>
             <p className="text-sm text-gray-600">
-              The employee has been notified of your decline and may send a revised quote...
+              {employeeName} has been notified of your decline and may send a revised quote...
             </p>
           </div>
           
@@ -149,7 +152,7 @@ const PriceQuoteDialog: React.FC<PriceQuoteDialogProps> = ({
             
             <div className="rounded-md bg-green-50 dark:bg-green-900/20 p-3">
               <h3 className="font-medium mb-2">
-                {hasDeclinedOnce ? 'Revised Price Quote' : 'Price Quote'}
+                Price Quote from: {employeeName}
               </h3>
               <p className="text-2xl font-bold text-green-600 dark:text-green-400">
                 {priceQuote.toFixed(2)} BGN
@@ -181,8 +184,7 @@ const PriceQuoteDialog: React.FC<PriceQuoteDialogProps> = ({
             {hasDeclinedOnce && (
               <div className="rounded-md bg-blue-50 dark:bg-blue-900/20 p-3">
                 <p className="text-sm text-blue-700 dark:text-blue-300">
-                  This is a revised quote based on your previous decline. 
-                  {!hasDeclinedOnce && ' You can decline once more if needed.'}
+                  This is a revised quote from {employeeName} based on your previous decline.
                 </p>
               </div>
             )}
@@ -218,7 +220,7 @@ const PriceQuoteDialog: React.FC<PriceQuoteDialogProps> = ({
           <AlertDialogHeader>
             <AlertDialogTitle>Decline Price Quote?</AlertDialogTitle>
             <AlertDialogDescription>
-              The employee will be notified and may send you a revised quote. If they don't respond with a new quote, your request will be declined.
+              {employeeName} will be notified and may send you a revised quote. If they don't respond with a new quote, your request will be declined.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

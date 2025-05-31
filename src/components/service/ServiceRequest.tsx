@@ -39,6 +39,7 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
     employeeLocation,
     status,
     declineReason,
+    currentEmployeeName,
     handleSubmit,
     handleAcceptQuote,
     handleDeclineQuote,
@@ -69,12 +70,13 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
     setShowCancelConfirmDialog(false);
   };
 
-  const handleDecline = () => {
-    if (!hasDeclinedOnce) {
+  const handleDecline = (isSecondDecline: boolean = false) => {
+    if (!hasDeclinedOnce && !isSecondDecline) {
       setHasDeclinedOnce(true);
       // Don't close the dialog yet, wait for potential revision
     } else {
-      handleDeclineQuote();
+      // This is the second decline - call the special decline logic
+      handleDeclineQuote(true);
     }
   };
 
@@ -130,6 +132,7 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
         onDecline={handleDecline}
         onCancelRequest={handleCancelRequest}
         hasDeclinedOnce={hasDeclinedOnce}
+        employeeName={currentEmployeeName}
       />
 
       {showCancelConfirmDialog && (

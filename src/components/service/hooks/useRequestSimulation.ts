@@ -17,6 +17,28 @@ export const useRequestSimulation = () => {
     };
   };
 
+  const generateEmployeeName = (declinedEmployees: string[] = []) => {
+    const employeeNames = [
+      'John Smith',
+      'Maria Petrova',
+      'Dimitar Georgiev',
+      'Elena Vasileva',
+      'Nikolay Ivanov',
+      'Ana Koleva',
+      'Georgi Todorov',
+      'Svetlana Mihaylova'
+    ];
+    
+    // Filter out declined employees
+    const availableEmployees = employeeNames.filter(name => !declinedEmployees.includes(name));
+    
+    if (availableEmployees.length === 0) {
+      return 'Support Team'; // Fallback if all employees are declined
+    }
+    
+    return availableEmployees[Math.floor(Math.random() * availableEmployees.length)];
+  };
+
   const simulateEmployeeResponse = (
     requestId: string,
     timestamp: string,
@@ -27,7 +49,9 @@ export const useRequestSimulation = () => {
     setShowRealTimeUpdate: (show: boolean) => void,
     setStatus: (status: 'pending' | 'accepted' | 'declined') => void,
     setDeclineReason: (reason: string) => void,
-    setEmployeeLocation?: (location: { lat: number; lng: number }) => void
+    setEmployeeLocation?: (location: { lat: number; lng: number }) => void,
+    setCurrentEmployeeName?: (name: string) => void,
+    declinedEmployees: string[] = []
   ) => {
     const isAccepted = Math.random() > 0.3;
     
@@ -39,27 +63,35 @@ export const useRequestSimulation = () => {
           setEmployeeLocation(employeeLocation);
         }
         
+        // Generate employee name (excluding declined ones)
+        const employeeName = generateEmployeeName(declinedEmployees);
+        if (setCurrentEmployeeName) {
+          setCurrentEmployeeName(employeeName);
+        }
+        
         // Generate random price quote
         const randomPrice = Math.floor(Math.random() * 100) + 50; // 50-150 BGN
         setPriceQuote(randomPrice);
         setShowPriceQuote(true);
         setShowRealTimeUpdate(false);
         
-        // Update ongoing request with employee location
+        // Update ongoing request with employee location and name
         const updatedRequest = {
           id: requestId,
           type,
           status: 'pending' as const,
           timestamp: new Date().toLocaleString(),
           location: 'Sofia Center, Bulgaria',
-          employeeLocation: employeeLocation
+          employeeLocation: employeeLocation,
+          currentEmployeeName: employeeName,
+          declinedEmployees: declinedEmployees
         };
         
         setOngoingRequest(updatedRequest);
         
         toast({
           title: "Price Quote Received",
-          description: `You received a price quote of ${randomPrice} BGN.`
+          description: `You received a price quote of ${randomPrice} BGN from ${employeeName}.`
         });
         
       } else {
@@ -68,7 +100,8 @@ export const useRequestSimulation = () => {
           type,
           status: 'declined' as const,
           timestamp: new Date().toLocaleString(),
-          location: 'Sofia Center, Bulgaria'
+          location: 'Sofia Center, Bulgaria',
+          declinedEmployees: declinedEmployees
         };
         
         setOngoingRequest(declinedRequest);
@@ -111,5 +144,5 @@ export const useRequestSimulation = () => {
     }, 30000);
   };
 
-  return { simulateEmployeeResponse, simulateServiceCompletion };
+  return { simulateEmployeeResponse, simulateServiceCompletion, generateEmployeeName };
 };
