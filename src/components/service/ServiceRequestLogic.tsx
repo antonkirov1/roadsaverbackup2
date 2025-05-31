@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { toast } from "@/components/ui/use-toast";
 import { useApp } from '@/contexts/AppContext';
@@ -31,6 +32,8 @@ export const useServiceRequest = (
   const [declineReason, setDeclineReason] = useState('');
   const [currentEmployeeName, setCurrentEmployeeName] = useState<string>('');
   const [declinedEmployees, setDeclinedEmployees] = useState<string[]>(ongoingRequest?.declinedEmployees || []);
+  const [hasDeclinedOnce, setHasDeclinedOnce] = useState(false);
+  const [lastEmployeeName, setLastEmployeeName] = useState<string>('');
 
   const handleSubmit = () => {
     if (!validateMessage(message, type)) {
@@ -73,7 +76,14 @@ export const useServiceRequest = (
         setStatus,
         setDeclineReason,
         setEmployeeLocation,
-        setCurrentEmployeeName,
+        (employeeName: string) => {
+          setCurrentEmployeeName(employeeName);
+          // Reset decline counter if this is a new employee
+          if (employeeName !== lastEmployeeName) {
+            setHasDeclinedOnce(false);
+            setLastEmployeeName(employeeName);
+          }
+        },
         declinedEmployees
       );
     }, 1500);
@@ -90,6 +100,9 @@ export const useServiceRequest = (
       // Keep the request active but trigger a new employee response
       setShowPriceQuote(false);
       setShowRealTimeUpdate(true);
+      
+      // Reset decline counter for the next employee
+      setHasDeclinedOnce(false);
       
       // Update ongoing request with declined employee
       const updatedRequest = {
@@ -119,11 +132,18 @@ export const useServiceRequest = (
           setStatus,
           setDeclineReason,
           setEmployeeLocation,
-          setCurrentEmployeeName,
+          (employeeName: string) => {
+            setCurrentEmployeeName(employeeName);
+            // Reset decline counter for new employee
+            setHasDeclinedOnce(false);
+            setLastEmployeeName(employeeName);
+          },
           updatedDeclinedEmployees
         );
       }, 2000);
     } else {
+      // First decline - just set the flag
+      setHasDeclinedOnce(true);
       declineQuote(setShowPriceQuote);
     }
   };
@@ -143,6 +163,7 @@ export const useServiceRequest = (
     declineReason,
     currentEmployeeName,
     declinedEmployees,
+    hasDeclinedOnce,
     handleSubmit,
     handleAcceptQuote,
     handleDeclineQuote,
