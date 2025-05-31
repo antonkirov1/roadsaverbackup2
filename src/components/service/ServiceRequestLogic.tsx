@@ -74,7 +74,7 @@ export const useServiceRequest = (
     }, 1500);
   };
 
-  const handleAcceptQuote = () => acceptQuote(type, employeeLocation, setShowPriceQuote, setShowRealTimeUpdate, setStatus);
+  const handleAcceptQuote = () => acceptQuote(type, userLocation, setShowPriceQuote, setShowRealTimeUpdate, setStatus, setEmployeeLocation);
   const handleDeclineQuote = () => declineQuote(setShowPriceQuote);
   const handleCancelRequest = () => cancelRequest(setShowPriceQuote);
 

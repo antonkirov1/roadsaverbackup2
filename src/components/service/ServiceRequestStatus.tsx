@@ -104,7 +104,8 @@ const ServiceRequestStatus: React.FC<ServiceRequestStatusProps> = ({
             <div className="w-3 h-3 rounded-full bg-green-500"></div>
             <span>Your location</span>
           </div>
-          {employeeLocation && (
+          {/* Always show employee location legend when status is accepted */}
+          {(status === 'accepted' || employeeLocation) && (
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-blue-500"></div>
               <span>Employee location</span>
