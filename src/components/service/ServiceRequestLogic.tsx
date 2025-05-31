@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { toast } from "@/components/ui/use-toast";
 import { useApp } from '@/contexts/AppContext';
@@ -94,17 +95,18 @@ export const useServiceRequest = (
       const updatedDeclinedEmployees = [...declinedEmployees, currentEmployeeName];
       setDeclinedEmployees(updatedDeclinedEmployees);
       
-      // Keep the request active but trigger a new employee response
+      // Reset all states for new employee search
       setShowPriceQuote(false);
       setShowRealTimeUpdate(true);
-      
-      // Reset decline counter for the next employee
-      setHasDeclinedOnce(false);
+      setStatus('pending');
+      setHasDeclinedOnce(false); // Reset decline counter
+      setPriceQuote(0); // Reset price quote
       
       // Update ongoing request with declined employee
       const updatedRequest = {
         ...ongoingRequest,
-        declinedEmployees: updatedDeclinedEmployees
+        declinedEmployees: updatedDeclinedEmployees,
+        status: 'pending' as const
       };
       setOngoingRequest(updatedRequest);
       
