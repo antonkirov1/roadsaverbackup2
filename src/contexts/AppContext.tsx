@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { useTranslation } from '@/utils/translations';
@@ -11,14 +10,13 @@ interface User {
 
 interface OngoingRequest {
   id: string;
-  type: string;
+  type: 'flat-tyre' | 'out-of-fuel' | 'other-car-problems' | 'tow-truck' | 'emergency' | 'support' | 'car-battery';
   status: 'pending' | 'accepted' | 'declined';
   timestamp: string;
   location: string;
-  employeeId?: string;
-  employeeName?: string;
-  employeePhone?: string;
   employeeLocation?: { lat: number; lng: number };
+  currentEmployeeName?: string;
+  declinedEmployees?: string[];
 }
 
 interface CompletedRequest {
