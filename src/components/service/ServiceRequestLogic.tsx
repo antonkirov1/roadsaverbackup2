@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { toast } from "@/components/ui/use-toast";
 import { useApp } from '@/contexts/AppContext';
@@ -78,11 +77,9 @@ export const useServiceRequest = (
         setEmployeeLocation,
         (employeeName: string) => {
           setCurrentEmployeeName(employeeName);
-          // Reset decline counter if this is a new employee
-          if (employeeName !== lastEmployeeName) {
-            setHasDeclinedOnce(false);
-            setLastEmployeeName(employeeName);
-          }
+          // Reset decline counter for every new employee
+          setHasDeclinedOnce(false);
+          setLastEmployeeName(employeeName);
         },
         declinedEmployees
       );
@@ -134,7 +131,7 @@ export const useServiceRequest = (
           setEmployeeLocation,
           (employeeName: string) => {
             setCurrentEmployeeName(employeeName);
-            // Reset decline counter for new employee
+            // Reset decline counter for every new employee
             setHasDeclinedOnce(false);
             setLastEmployeeName(employeeName);
           },

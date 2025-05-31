@@ -40,6 +40,7 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
     status,
     declineReason,
     currentEmployeeName,
+    hasDeclinedOnce,
     handleSubmit,
     handleAcceptQuote,
     handleDeclineQuote,
@@ -48,7 +49,6 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
   } = useServiceRequest(type, userLocation);
 
   const [showCancelConfirmDialog, setShowCancelConfirmDialog] = useState(false);
-  const [hasDeclinedOnce, setHasDeclinedOnce] = useState(false);
 
   const handleAttemptClose = () => {
     // If price quote is showing, just close the dialog but keep the request in price quote state
@@ -71,9 +71,10 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
   };
 
   const handleDecline = (isSecondDecline: boolean = false) => {
+    // Use the hasDeclinedOnce from the centralized state
     if (!hasDeclinedOnce && !isSecondDecline) {
-      setHasDeclinedOnce(true);
-      // Don't close the dialog yet, wait for potential revision
+      // First decline - this will be handled by handleDeclineQuote
+      handleDeclineQuote(false);
     } else {
       // This is the second decline - call the special decline logic
       handleDeclineQuote(true);
