@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -7,35 +6,25 @@ import { User, Car, Globe } from 'lucide-react';
 import { useApp } from '@/contexts/AppContext';
 import { useTranslation } from '@/utils/translations';
 import ThemeToggle from '@/components/ui/theme-toggle';
-
 const Index = () => {
-  const { language, setLanguage } = useApp();
+  const {
+    language,
+    setLanguage
+  } = useApp();
   const t = useTranslation(language);
-  
   const handleLanguageToggle = () => {
     const newLanguage = language === 'en' ? 'bg' : 'en';
     setLanguage(newLanguage);
     console.log('Language changed to:', newLanguage);
     console.log('Testing translation:', t('app-subtitle'));
   };
-  
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-green-600/20 to-background p-4 font-clash">
+  return <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-green-600/20 to-background p-4 font-clash">
       {/* Top right controls */}
       <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
         <ThemeToggle showLabels={false} size="sm" />
         <div className="relative">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={handleLanguageToggle}
-            className="h-10 w-10 bg-green-600 text-white hover:bg-green-700"
-          >
-            <Globe className="h-4 w-4" />
-          </Button>
-          <span className="absolute -bottom-1 -right-1 text-xs bg-white text-green-600 px-1 rounded">
-            {language.toUpperCase()}
-          </span>
+          
+          
         </div>
       </div>
 
@@ -75,8 +64,6 @@ const Index = () => {
           </Card>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
