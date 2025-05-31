@@ -17,7 +17,7 @@ export const useRequestActions = () => {
   };
 
   const handleAcceptQuote = (
-    type: string,
+    type: 'flat-tyre' | 'out-of-fuel' | 'other-car-problems' | 'tow-truck' | 'emergency' | 'support' | 'car-battery',
     userLocation: { lat: number; lng: number },
     setShowPriceQuote: (show: boolean) => void,
     setShowRealTimeUpdate: (show: boolean) => void,

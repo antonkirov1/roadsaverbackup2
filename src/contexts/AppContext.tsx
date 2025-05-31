@@ -17,6 +17,8 @@ interface OngoingRequest {
   employeeLocation?: { lat: number; lng: number };
   currentEmployeeName?: string;
   declinedEmployees?: string[];
+  employeeName?: string;
+  employeePhone?: string;
 }
 
 interface CompletedRequest {

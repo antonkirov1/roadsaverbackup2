@@ -42,7 +42,7 @@ export const useRequestSimulation = () => {
   const simulateEmployeeResponse = (
     requestId: string,
     timestamp: string,
-    type: string,
+    type: 'flat-tyre' | 'out-of-fuel' | 'other-car-problems' | 'tow-truck' | 'emergency' | 'support' | 'car-battery',
     userLocation: { lat: number; lng: number },
     setPriceQuote: (price: number) => void,
     setShowPriceQuote: (show: boolean) => void,
@@ -84,7 +84,9 @@ export const useRequestSimulation = () => {
           location: 'Sofia Center, Bulgaria',
           employeeLocation: employeeLocation,
           currentEmployeeName: employeeName,
-          declinedEmployees: declinedEmployees
+          declinedEmployees: declinedEmployees,
+          employeeName: employeeName,
+          employeePhone: '+359 888 123 456'
         };
         
         setOngoingRequest(updatedRequest);
