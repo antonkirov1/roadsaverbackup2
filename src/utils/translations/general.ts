@@ -60,6 +60,7 @@ export const generalTranslations = {
     'location-access-message': 'Please enable location access to get better service.',
     'tap-to-view-details': 'Tap to view details',
     'review-price-and-decide': 'Review The Price And Decide',
+    // Fixed index page texts - these will never change
     'app-subtitle': 'Emergency road assistance when you need it most',
     'user-app': 'User App',
     'for-customers': 'For customers needing assistance',
@@ -128,6 +129,7 @@ export const generalTranslations = {
     'location-access-message': 'Моля, разрешете достъп до местоположението за по-добро обслужване.',
     'tap-to-view-details': 'Докоснете за детайли',
     'review-price-and-decide': 'Прегледайте цената и решете',
+    // Fixed index page texts - these will never change
     'app-subtitle': 'Спешна пътна помощ когато най-много се нуждаете от нея',
     'user-app': 'Потребителско приложение',
     'for-customers': 'За клиенти, нуждаещи се от помощ',

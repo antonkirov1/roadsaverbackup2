@@ -12,6 +12,12 @@ const Index = () => {
   const { language, setLanguage } = useApp();
   const t = useTranslation(language);
   
+  const handleLanguageToggle = () => {
+    const newLanguage = language === 'en' ? 'bg' : 'en';
+    setLanguage(newLanguage);
+    console.log('Language changed to:', newLanguage);
+  };
+  
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-green-600/20 to-background p-4 font-clash">
       {/* Top right controls */}
@@ -21,7 +27,7 @@ const Index = () => {
           <Button 
             variant="ghost" 
             size="icon" 
-            onClick={() => setLanguage(language === 'en' ? 'bg' : 'en')}
+            onClick={handleLanguageToggle}
             className="h-10 w-10 bg-green-600 text-white hover:bg-green-700"
           >
             <Globe className="h-4 w-4" />
