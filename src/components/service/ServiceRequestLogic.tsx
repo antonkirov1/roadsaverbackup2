@@ -143,7 +143,11 @@ export const useServiceRequest = (
     } else {
       // First decline - just set the flag
       setHasDeclinedOnce(true);
-      declineQuote(setShowPriceQuote);
+      // Don't call declineQuote here as it cancels the request
+      toast({
+        title: "Quote Declined",
+        description: "You can decline once more or accept the quote."
+      });
     }
   };
   
