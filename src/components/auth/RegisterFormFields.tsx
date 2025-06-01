@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { AlertCircle, CheckCircle2 } from "lucide-react";
 import RegisterFormFieldInput from './RegisterFormFieldInput';
@@ -46,6 +45,10 @@ interface RegisterFormFieldsProps {
   secretAnswer1Error: string;
   isSecretQuestion1Valid: boolean;
   isSecretAnswer1Valid: boolean;
+  customQuestion1: string;
+  handleCustomQuestion1Change: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  customQuestion1Error: string;
+  isCustomQuestion1Valid: boolean;
   
   secretQuestion2: string;
   handleSecretQuestion2Change: (value: string) => void;
@@ -55,6 +58,10 @@ interface RegisterFormFieldsProps {
   secretAnswer2Error: string;
   isSecretQuestion2Valid: boolean;
   isSecretAnswer2Valid: boolean;
+  customQuestion2: string;
+  handleCustomQuestion2Change: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  customQuestion2Error: string;
+  isCustomQuestion2Valid: boolean;
   
   t: (key: string) => string;
 }
@@ -68,8 +75,10 @@ const RegisterFormFields: React.FC<RegisterFormFieldsProps> = ({
   gender, setGender,
   secretQuestion1, handleSecretQuestion1Change, secretAnswer1, setSecretAnswer1,
   secretQuestion1Error, secretAnswer1Error, isSecretQuestion1Valid, isSecretAnswer1Valid,
+  customQuestion1, handleCustomQuestion1Change, customQuestion1Error, isCustomQuestion1Valid,
   secretQuestion2, handleSecretQuestion2Change, secretAnswer2, setSecretAnswer2,
   secretQuestion2Error, secretAnswer2Error, isSecretQuestion2Valid, isSecretAnswer2Valid,
+  customQuestion2, handleCustomQuestion2Change, customQuestion2Error, isCustomQuestion2Valid,
   t
 }) => {
   const renderValidationIcon = (isValid: boolean, error: string) => {
@@ -177,6 +186,10 @@ const RegisterFormFields: React.FC<RegisterFormFieldsProps> = ({
         answerError={secretAnswer1Error}
         isQuestionValid={isSecretQuestion1Valid}
         isAnswerValid={isSecretAnswer1Valid}
+        customQuestion={customQuestion1}
+        onCustomQuestionChange={handleCustomQuestion1Change}
+        customQuestionError={customQuestion1Error}
+        isCustomQuestionValid={isCustomQuestion1Valid}
         t={t}
       />
 
@@ -190,6 +203,10 @@ const RegisterFormFields: React.FC<RegisterFormFieldsProps> = ({
         answerError={secretAnswer2Error}
         isQuestionValid={isSecretQuestion2Valid}
         isAnswerValid={isSecretAnswer2Valid}
+        customQuestion={customQuestion2}
+        onCustomQuestionChange={handleCustomQuestion2Change}
+        customQuestionError={customQuestion2Error}
+        isCustomQuestionValid={isCustomQuestion2Valid}
         t={t}
       />
     </div>

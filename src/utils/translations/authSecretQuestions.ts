@@ -29,6 +29,10 @@ export const authSecretQuestionsTranslations: TranslationGroup = {
     en: 'Enter your answer',
     bg: 'Въведете вашия отговор'
   },
+  'enter-your-custom-question': {
+    en: 'Enter your custom question',
+    bg: 'Въведете вашия персонален въпрос'
+  },
   'secret-answer-required': {
     en: 'Answer is required',
     bg: 'Отговорът е задължителен'
@@ -40,5 +44,13 @@ export const authSecretQuestionsTranslations: TranslationGroup = {
   'secret-question-required': {
     en: 'Please select a question',
     bg: 'Моля, изберете въпрос'
+  },
+  'custom-question-required': {
+    en: 'Please enter your custom question',
+    bg: 'Моля, въведете вашия персонален въпрос'
+  },
+  'custom-question-too-short': {
+    en: 'Custom question must be at least 5 characters',
+    bg: 'Персоналният въпрос трябва да е поне 5 символа'
   }
 };

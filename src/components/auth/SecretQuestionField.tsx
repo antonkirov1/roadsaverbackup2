@@ -2,6 +2,7 @@
 import React from 'react';
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 import RegisterFormFieldInput from './RegisterFormFieldInput';
 import { AlertCircle, CheckCircle2 } from "lucide-react";
 
@@ -15,6 +16,10 @@ interface SecretQuestionFieldProps {
   answerError: string;
   isQuestionValid: boolean;
   isAnswerValid: boolean;
+  customQuestion: string;
+  onCustomQuestionChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  customQuestionError: string;
+  isCustomQuestionValid: boolean;
   t: (key: string) => string;
 }
 
@@ -42,6 +47,10 @@ const SecretQuestionField: React.FC<SecretQuestionFieldProps> = ({
   answerError,
   isQuestionValid,
   isAnswerValid,
+  customQuestion,
+  onCustomQuestionChange,
+  customQuestionError,
+  isCustomQuestionValid,
   t
 }) => {
   const renderValidationIcon = (isValid: boolean, error: string) => {
@@ -49,6 +58,8 @@ const SecretQuestionField: React.FC<SecretQuestionFieldProps> = ({
     if (isValid) return <CheckCircle2 className="h-5 w-5 text-green-500" />;
     return null;
   };
+
+  const isCustomSelected = selectedQuestion === 'custom';
 
   return (
     <div className="space-y-4">
@@ -78,6 +89,29 @@ const SecretQuestionField: React.FC<SecretQuestionFieldProps> = ({
         </div>
         {questionError && <p className="text-red-500 text-xs mt-1">{questionError}</p>}
       </div>
+
+      {isCustomSelected && (
+        <div className="space-y-2">
+          <Label htmlFor={`custom-question-${questionNumber}`}>
+            {t('create-your-own-question')}:
+          </Label>
+          <div className="relative">
+            <Input
+              id={`custom-question-${questionNumber}`}
+              type="text"
+              placeholder={t('enter-your-custom-question')}
+              value={customQuestion}
+              onChange={onCustomQuestionChange}
+              className={`border-2 focus:ring-green-600 focus:border-green-600 ${customQuestionError ? 'border-red-500' : isCustomQuestionValid ? 'border-green-500' : ''}`}
+              required
+            />
+            <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+              {renderValidationIcon(isCustomQuestionValid, customQuestionError)}
+            </div>
+          </div>
+          {customQuestionError && <p className="text-red-500 text-xs mt-1">{customQuestionError}</p>}
+        </div>
+      )}
 
       <RegisterFormFieldInput
         id={`secret-answer-${questionNumber}`}

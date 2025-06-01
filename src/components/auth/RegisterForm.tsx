@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -108,9 +107,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
         password, 
         gender, 
         phoneNumber: phoneNumber,
-        secretQuestion1: secretQuestions.secretQuestion1,
+        secretQuestion1: secretQuestions.getQuestion1Text(),
         secretAnswer1: secretQuestions.secretAnswer1,
-        secretQuestion2: secretQuestions.secretQuestion2,
+        secretQuestion2: secretQuestions.getQuestion2Text(),
         secretAnswer2: secretQuestions.secretAnswer2
       });
       setIsLoading(false);
@@ -184,6 +183,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
                 secretAnswer1Error={secretQuestions.secretAnswer1Error}
                 isSecretQuestion1Valid={secretQuestions.isSecretQuestion1Valid}
                 isSecretAnswer1Valid={secretQuestions.isSecretAnswer1Valid}
+                customQuestion1={secretQuestions.customQuestion1}
+                handleCustomQuestion1Change={secretQuestions.handleCustomQuestion1Change}
+                customQuestion1Error={secretQuestions.customQuestion1Error}
+                isCustomQuestion1Valid={secretQuestions.isCustomQuestion1Valid}
                 
                 secretQuestion2={secretQuestions.secretQuestion2}
                 handleSecretQuestion2Change={secretQuestions.handleSecretQuestion2Change}
@@ -193,6 +196,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
                 secretAnswer2Error={secretQuestions.secretAnswer2Error}
                 isSecretQuestion2Valid={secretQuestions.isSecretQuestion2Valid}
                 isSecretAnswer2Valid={secretQuestions.isSecretAnswer2Valid}
+                customQuestion2={secretQuestions.customQuestion2}
+                handleCustomQuestion2Change={secretQuestions.handleCustomQuestion2Change}
+                customQuestion2Error={secretQuestions.customQuestion2Error}
+                isCustomQuestion2Valid={secretQuestions.isCustomQuestion2Valid}
                 
                 t={t}
               />

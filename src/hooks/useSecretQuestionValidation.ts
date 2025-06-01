@@ -33,3 +33,21 @@ export const useSecretQuestionDropdownValidation = (t: (key: string) => string) 
     [t]
   );
 };
+
+export const useCustomQuestionValidation = (t: (key: string) => string) => {
+  return useFieldValidation<string>(
+    '',
+    [
+      (question) => {
+        if (!question || question.trim().length === 0) {
+          return { isValid: false, errorMessage: t('custom-question-required') };
+        }
+        if (question.trim().length < 5) {
+          return { isValid: false, errorMessage: t('custom-question-too-short') };
+        }
+        return { isValid: true, errorMessage: null };
+      }
+    ],
+    [t]
+  );
+};
