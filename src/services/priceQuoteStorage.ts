@@ -32,6 +32,8 @@ export interface StorePriceQuoteSnapshotData {
 class PriceQuoteStorageService {
   async storePriceQuoteSnapshot(data: StorePriceQuoteSnapshotData): Promise<string | null> {
     try {
+      const status = data.status || 'pending';
+      
       const { data: result, error } = await supabase
         .from('price_quote_snapshots')
         .insert([{
@@ -44,7 +46,7 @@ class PriceQuoteStorageService {
           total_price: data.totalPrice,
           employee_name: data.employeeName,
           snapshot_data: data.snapshotData,
-          status: (data.status || 'pending') as 'pending' | 'accepted' | 'declined' | 'finished'
+          status: status
         }])
         .select('id')
         .single();
