@@ -1,7 +1,6 @@
 
 import React, { useCallback, useState, useEffect } from 'react';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
-import GoogleMapsSetup from './GoogleMapsSetup';
 
 interface MapProps {
   userLocation?: { lat: number; lng: number };
@@ -32,7 +31,6 @@ const MapComponent: React.FC<MapProps> = ({
 }) => {
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [apiKey, setApiKey] = useState<string>('');
-  const [showSetup, setShowSetup] = useState(false);
 
   // Check for stored API key on component mount
   useEffect(() => {
@@ -59,18 +57,17 @@ const MapComponent: React.FC<MapProps> = ({
     setMap(null);
   }, []);
 
-  const handleApiKeySet = (newApiKey: string) => {
-    setApiKey(newApiKey);
-    setShowSetup(false);
-    // Force reload the page to reinitialize the maps with the new API key
-    window.location.reload();
-  };
-
-  // Show setup only if there's an error and no API key
-  if (loadError && !apiKey) {
+  // Show error message if there's a load error
+  if (loadError) {
     return (
-      <div style={{ height }} className="w-full flex items-center justify-center p-4">
-        <GoogleMapsSetup onApiKeySet={handleApiKeySet} />
+      <div 
+        style={{ height }} 
+        className="w-full bg-red-50 border border-red-200 rounded-lg flex items-center justify-center p-4"
+      >
+        <div className="text-red-600 text-center">
+          <p className="font-medium">Unable to load Google Maps</p>
+          <p className="text-sm">Please check your internet connection or try refreshing the page.</p>
+        </div>
       </div>
     );
   }
