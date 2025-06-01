@@ -22,15 +22,16 @@ export const useServiceRequest = (
     handleContactSupport
   } = useRequestActions();
 
+  // Initialize states with values from ongoing request if it exists
   const [message, setMessage] = useState(serviceMessages[type] || '');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showRealTimeUpdate, setShowRealTimeUpdate] = useState(false);
   const [showPriceQuote, setShowPriceQuote] = useState(false);
-  const [priceQuote, setPriceQuote] = useState<number>(0);
+  const [priceQuote, setPriceQuote] = useState<number>(ongoingRequest?.priceQuote || 0);
   const [employeeLocation, setEmployeeLocation] = useState<{ lat: number; lng: number } | undefined>(undefined);
   const [status, setStatus] = useState<'pending' | 'accepted' | 'declined'>('pending');
   const [declineReason, setDeclineReason] = useState('');
-  const [currentEmployeeName, setCurrentEmployeeName] = useState<string>('');
+  const [currentEmployeeName, setCurrentEmployeeName] = useState<string>(ongoingRequest?.employeeName || '');
   const [declinedEmployees, setDeclinedEmployees] = useState<string[]>(ongoingRequest?.declinedEmployees || []);
   const [hasDeclinedOnce, setHasDeclinedOnce] = useState(false);
   const [lastEmployeeName, setLastEmployeeName] = useState<string>('');
@@ -72,11 +73,16 @@ export const useServiceRequest = (
         userLocation,
         (quote: number) => {
           setPriceQuote(quote);
-          // Update ongoing request with the price quote - this is the key fix
-          setOngoingRequest(prev => prev ? { 
-            ...prev, 
-            priceQuote: quote 
-          } : null);
+          // Immediately update ongoing request with the price quote
+          setOngoingRequest(prev => {
+            if (!prev) return null;
+            const updatedRequest = { 
+              ...prev, 
+              priceQuote: quote 
+            };
+            console.log('Setting price quote in ongoing request:', quote, updatedRequest);
+            return updatedRequest;
+          });
         },
         setShowPriceQuote,
         setShowRealTimeUpdate,
@@ -142,10 +148,15 @@ export const useServiceRequest = (
           (quote: number) => {
             setPriceQuote(quote);
             // Update ongoing request with the new price quote
-            setOngoingRequest(prev => prev ? { 
-              ...prev, 
-              priceQuote: quote 
-            } : null);
+            setOngoingRequest(prev => {
+              if (!prev) return null;
+              const updatedRequest = { 
+                ...prev, 
+                priceQuote: quote 
+              };
+              console.log('Setting new price quote in ongoing request:', quote, updatedRequest);
+              return updatedRequest;
+            });
           },
           setShowPriceQuote,
           setShowRealTimeUpdate,
@@ -186,11 +197,11 @@ export const useServiceRequest = (
     showRealTimeUpdate,
     showPriceQuote,
     setShowPriceQuote,
-    priceQuote,
+    priceQuote: ongoingRequest?.priceQuote || priceQuote, // Always prefer the ongoing request price
     employeeLocation,
     status,
     declineReason,
-    currentEmployeeName,
+    currentEmployeeName: ongoingRequest?.employeeName || currentEmployeeName, // Always prefer the ongoing request employee
     declinedEmployees,
     hasDeclinedOnce,
     handleSubmit,
