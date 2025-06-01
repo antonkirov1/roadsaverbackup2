@@ -70,7 +70,11 @@ export const useServiceRequest = (
         timestamp,
         type,
         userLocation,
-        setPriceQuote,
+        (quote: number) => {
+          setPriceQuote(quote);
+          // Update ongoing request with the price quote
+          setOngoingRequest(prev => prev ? { ...prev, priceQuote: quote } : null);
+        },
         setShowPriceQuote,
         setShowRealTimeUpdate,
         setStatus,
@@ -78,6 +82,8 @@ export const useServiceRequest = (
         setEmployeeLocation,
         (employeeName: string) => {
           setCurrentEmployeeName(employeeName);
+          // Update ongoing request with employee name
+          setOngoingRequest(prev => prev ? { ...prev, employeeName: employeeName } : null);
           // Reset decline counter for every new employee
           setHasDeclinedOnce(false);
           setLastEmployeeName(employeeName);
@@ -102,11 +108,13 @@ export const useServiceRequest = (
       setHasDeclinedOnce(false); // Reset decline counter
       setPriceQuote(0); // Reset price quote
       
-      // Update ongoing request with declined employee
+      // Update ongoing request with declined employee and reset price quote
       const updatedRequest = {
         ...ongoingRequest,
         declinedEmployees: updatedDeclinedEmployees,
-        status: 'pending' as const
+        status: 'pending' as const,
+        priceQuote: undefined,
+        employeeName: undefined
       };
       setOngoingRequest(updatedRequest);
       
@@ -125,7 +133,11 @@ export const useServiceRequest = (
           timestamp,
           type,
           userLocation,
-          setPriceQuote,
+          (quote: number) => {
+            setPriceQuote(quote);
+            // Update ongoing request with the new price quote
+            setOngoingRequest(prev => prev ? { ...prev, priceQuote: quote } : null);
+          },
           setShowPriceQuote,
           setShowRealTimeUpdate,
           setStatus,
@@ -133,6 +145,8 @@ export const useServiceRequest = (
           setEmployeeLocation,
           (employeeName: string) => {
             setCurrentEmployeeName(employeeName);
+            // Update ongoing request with new employee name
+            setOngoingRequest(prev => prev ? { ...prev, employeeName: employeeName } : null);
             // Reset decline counter for every new employee
             setHasDeclinedOnce(false);
             setLastEmployeeName(employeeName);
