@@ -1,3 +1,4 @@
+import { startTransition } from "react";
 
 interface TranslationEntry {
   en: string;
@@ -23,48 +24,50 @@ export const serviceTranslations: TranslationGroup = {
     bg: 'Други проблеми с колата'
   },
   'car-battery': {
-    en: 'Car Battery Problems/ My car doesn\'t start',
-    bg: 'Проблеми с акумулатора/ Колата не запалва'
+    en: 'Car Battery Problems/My car would not start.',
+    bg: 'Проблеми с акумулатора/Колата ми не пали.'
   },
   'tow-truck': {
-    en: 'I Need A Tow Truck',
-    bg: 'Нужен ми е влекач'
+    en: 'I Need A Tow Truck.',
+    bg: 'Нужен ми е влекач.'
   },
   'emergency': {
     en: 'Call Emergency Services',
-    bg: 'Спешни служби'
+    bg: 'Свържете се със Спешните служби'
   },
   'support': {
     en: 'Contact Support',
-    bg: 'Свържете се с поддръжка'
+    bg: 'Свържете се с поддръжката'
   },
   'flat-tyre-desc': {
-    en: 'Get help changing a flat tyre',
-    bg: 'Помощ за смяна на гума'
+    en: 'Get help changing a flat tyre.',
+    bg: 'Получете помощ за смяна на сукана гума.'
   },
   'out-of-fuel-desc': {
     en: 'Request fuel delivery',
     bg: 'Доставка на гориво'
   },
   'other-car-problems-desc': {
-    en: 'Get help with various car problems',
-    bg: 'Помощ за други проблеми'
+    en: 'Get help with various car problems.',
+    bg: 'Получете помощ при други проблеми с автомобила ви.'
   },
   'car-battery-desc': {
-    en: 'Get help with your car battery issues',
-    bg: 'Помощ за акумулатора'
+    en: 'Get help with your car battery issues or starting issues',
+    bg: 'Помощ при проблеми с акумулатора, или ако колата ви не пали.'
+    
+    
   },
   'tow-truck-desc': {
-    en: 'Request towing service',
+    en: 'Request a towing service',
     bg: 'Заявка за влекач'
   },
   'emergency-desc': {
     en: 'Contact emergency services',
-    bg: 'Спешни служби'
+    bg: 'Свържете се със Спешни служби'
   },
   'support-desc': {
-    en: 'Speak with our support team',
-    bg: 'Говорете с нашия екип за поддръжка'
+    en: 'Speak with our support team.',
+    bg: 'Говорете с нашия екип за поддръжка.'
   },
   'service': {
     en: 'Service',
@@ -87,8 +90,8 @@ export const serviceTranslations: TranslationGroup = {
     bg: 'Заявка за услуга:'
   },
   'new-service-request': {
-    en: 'You have received a new service request',
-    bg: 'Получихте нова заявка за услуга'
+    en: 'You have received a new service request.',
+    bg: 'Получихте нова заявка за услуга.'
   },
   'decline-service-request': {
     en: 'Decline Service Request',
@@ -99,12 +102,12 @@ export const serviceTranslations: TranslationGroup = {
     bg: 'От:'
   },
   'write-email': {
-    en: 'Write us an email',
-    bg: 'Напишете ни имейл'
+    en: 'Write us an email.',
+    bg: 'Напишете ни имейл.'
   },
   'give-call': {
-    en: 'Give us a call',
-    bg: 'Обадете ни се'
+    en: 'Give us a call.',
+    bg: 'Обадете ни се.'
   },
   'contact-options': {
     en: 'Contact Options',
@@ -115,8 +118,8 @@ export const serviceTranslations: TranslationGroup = {
     bg: 'Нова заявка'
   },
   'outside-hours': {
-    en: 'For service requests outside of working hours, please contact support',
-    bg: 'За заявки за услуги извън работното време, моля свържете се с поддръжката'
+    en: 'For service requests outside of working hours, please contact support.',
+    bg: 'За заявки за услуги извън работното време, моля свържете се с поддръжката.'
   },
   'phone-number': {
     en: 'Phone number:',
