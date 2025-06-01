@@ -53,7 +53,8 @@ export const useRequestSimulation = () => {
     setCurrentEmployeeName?: (name: string) => void,
     declinedEmployees: string[] = []
   ) => {
-    const isAccepted = Math.random() > 0.3;
+    // Always accept for simulation purposes when looking for new employees
+    const isAccepted = true;
     
     setTimeout(() => {
       if (isAccepted) {
@@ -97,6 +98,7 @@ export const useRequestSimulation = () => {
         });
         
       } else {
+        // This branch is kept for consistency but won't be used in the current flow
         const declinedRequest = {
           id: requestId,
           type,
