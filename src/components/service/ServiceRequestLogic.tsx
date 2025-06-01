@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { toast } from "@/components/ui/use-toast";
 import { useApp } from '@/contexts/AppContext';
@@ -29,21 +30,20 @@ export const useServiceRequest = (
   const [showRealTimeUpdate, setShowRealTimeUpdate] = useState(false);
   const [showPriceQuote, setShowPriceQuote] = useState(false);
   const [priceQuote, setPriceQuote] = useState<number>(0);
-  const [originalPriceQuote, setOriginalPriceQuote] = useState<number>(0); // Store the very first price quote
+  const [originalPriceQuote, setOriginalPriceQuote] = useState<number>(0);
   const [employeeLocation, setEmployeeLocation] = useState<{ lat: number; lng: number } | undefined>(undefined);
   const [status, setStatus] = useState<'pending' | 'accepted' | 'declined'>('pending');
   const [declineReason, setDeclineReason] = useState('');
   const [currentEmployeeName, setCurrentEmployeeName] = useState<string>('');
   const [declinedEmployees, setDeclinedEmployees] = useState<string[]>([]);
   const [hasDeclinedOnce, setHasDeclinedOnce] = useState(false);
-  const [lastEmployeeName, setLastEmployeeName] = useState<string>('');
+  const [employeeRevisionAttempts, setEmployeeRevisionAttempts] = useState<{[key: string]: number}>({});
 
   // Update local states when ongoing request changes
   useEffect(() => {
     if (ongoingRequest) {
       if (ongoingRequest.priceQuote !== undefined) {
         setPriceQuote(ongoingRequest.priceQuote);
-        // Set original price quote if it hasn't been set yet
         if (originalPriceQuote === 0) {
           setOriginalPriceQuote(ongoingRequest.priceQuote);
         }
@@ -55,7 +55,6 @@ export const useServiceRequest = (
         setDeclinedEmployees(ongoingRequest.declinedEmployees);
       }
       
-      // Load stored snapshot if it exists
       if (ongoingRequest.id) {
         loadSnapshot(ongoingRequest.id);
       }
@@ -73,14 +72,18 @@ export const useServiceRequest = (
       const requestId = Date.now().toString();
       const timestamp = new Date().toISOString();
       
-      // Create ongoing request
+      // Reset tracking for new request
+      setDeclinedEmployees([]);
+      setEmployeeRevisionAttempts({});
+      setHasDeclinedOnce(false);
+      
       const newOngoingRequest = {
         id: requestId,
         type,
         status: 'pending' as const,
         timestamp: new Date().toLocaleString(),
         location: 'Sofia Center, Bulgaria',
-        declinedEmployees: declinedEmployees
+        declinedEmployees: []
       };
       
       setOngoingRequest(newOngoingRequest);
@@ -102,20 +105,16 @@ export const useServiceRequest = (
           setPriceQuote(quote);
           setOriginalPriceQuote(quote);
           
-          // Store the price quote snapshot when employee responds
-          const employeeName = `Employee ${Math.floor(Math.random() * 1000)}`;
+          const employeeName = currentEmployeeName;
           await storeSnapshot(requestId, type, quote, employeeName, false);
           
-          // Update ongoing request with the price quote
           setOngoingRequest(prev => {
             if (!prev) return null;
-            const updatedRequest = { 
+            return { 
               ...prev, 
               priceQuote: quote,
               employeeName: employeeName
             };
-            console.log('Setting price quote in ongoing request:', quote, updatedRequest);
-            return updatedRequest;
           });
         },
         setShowPriceQuote,
@@ -131,9 +130,8 @@ export const useServiceRequest = (
             employeeName: employeeName 
           } : null);
           setHasDeclinedOnce(false);
-          setLastEmployeeName(employeeName);
         },
-        declinedEmployees
+        []
       );
     }, 1500);
   };
@@ -142,24 +140,21 @@ export const useServiceRequest = (
   
   const handleDeclineQuote = (isSecondDecline: boolean = false) => {
     if (isSecondDecline && currentEmployeeName) {
-      // Add current employee to declined list
+      // Second decline - move to new employee
       const updatedDeclinedEmployees = [...declinedEmployees, currentEmployeeName];
       setDeclinedEmployees(updatedDeclinedEmployees);
       
-      // Reset all states for new employee search but PRESERVE the original price quote
+      // Reset states for new employee search
       setShowPriceQuote(false);
       setShowRealTimeUpdate(true);
       setStatus('pending');
-      setHasDeclinedOnce(false); // Reset decline counter
-      // ALWAYS use the original price quote - never let it change
+      setHasDeclinedOnce(false);
       setPriceQuote(originalPriceQuote);
       
-      // Update ongoing request with declined employee but keep the ORIGINAL price quote
       const updatedRequest = {
         ...ongoingRequest,
         declinedEmployees: updatedDeclinedEmployees,
         status: 'pending' as const,
-        // Always preserve the original price quote
         priceQuote: originalPriceQuote,
         employeeName: undefined
       };
@@ -170,7 +165,7 @@ export const useServiceRequest = (
         description: "Looking for another available employee..."
       });
       
-      // Simulate new employee response after a delay
+      // Simulate new employee response
       setTimeout(() => {
         const requestId = Date.now().toString();
         const timestamp = new Date().toISOString();
@@ -181,18 +176,14 @@ export const useServiceRequest = (
           type,
           userLocation,
           (quote: number) => {
-            console.log('New employee would send quote:', quote, 'but using original:', originalPriceQuote);
-            // ALWAYS use the original price quote, ignore the new quote
+            console.log('New employee quote:', quote, 'using original:', originalPriceQuote);
             setPriceQuote(originalPriceQuote);
-            // Update ongoing request with the ORIGINAL price quote
             setOngoingRequest(prev => {
               if (!prev) return null;
-              const updatedRequest = { 
+              return { 
                 ...prev, 
                 priceQuote: originalPriceQuote 
               };
-              console.log('Preserving original price quote in ongoing request:', originalPriceQuote, updatedRequest);
-              return updatedRequest;
             });
           },
           setShowPriceQuote,
@@ -203,32 +194,58 @@ export const useServiceRequest = (
           (employeeName: string) => {
             console.log('New employee assigned:', employeeName);
             setCurrentEmployeeName(employeeName);
-            // Update ongoing request with new employee name
             setOngoingRequest(prev => prev ? { 
               ...prev, 
               employeeName: employeeName 
             } : null);
-            // Reset decline counter for every new employee
             setHasDeclinedOnce(false);
-            setLastEmployeeName(employeeName);
           },
           updatedDeclinedEmployees
         );
       }, 2000);
-    } else {
-      // First decline - just set the flag
+    } else if (!hasDeclinedOnce) {
+      // First decline - employee gets one chance to revise
       setHasDeclinedOnce(true);
-      // Don't call declineQuote here as it cancels the request
-      toast({
-        title: "Quote Declined",
-        description: "You can decline once more or accept the quote."
-      });
+      const currentAttempts = employeeRevisionAttempts[currentEmployeeName] || 0;
+      
+      if (currentAttempts === 0) {
+        // Employee hasn't sent a revision yet, give them a chance
+        setEmployeeRevisionAttempts(prev => ({
+          ...prev,
+          [currentEmployeeName]: 1
+        }));
+        
+        toast({
+          title: "Quote Declined",
+          description: `${currentEmployeeName} will send you a revised quote.`
+        });
+        
+        // Simulate employee sending revised quote
+        setTimeout(() => {
+          const revisedQuote = Math.max(10, originalPriceQuote - Math.floor(Math.random() * 15) - 5);
+          setPriceQuote(revisedQuote);
+          setOngoingRequest(prev => prev ? { 
+            ...prev, 
+            priceQuote: revisedQuote 
+          } : null);
+          
+          toast({
+            title: "Revised Quote Received",
+            description: `${currentEmployeeName} sent a revised quote of ${revisedQuote} BGN.`
+          });
+        }, 3000);
+      } else {
+        // Employee already sent a revision, proceed to second decline
+        toast({
+          title: "Quote Declined",
+          description: "You can decline once more or accept the quote."
+        });
+      }
     }
   };
   
   const handleCancelRequest = () => cancelRequest(setShowPriceQuote);
 
-  // New function to show stored price quote
   const showStoredPriceQuote = () => {
     if (storedSnapshot) {
       setShowPriceQuote(true);

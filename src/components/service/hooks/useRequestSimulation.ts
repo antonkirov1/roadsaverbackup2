@@ -19,14 +19,26 @@ export const useRequestSimulation = () => {
 
   const generateEmployeeName = (declinedEmployees: string[] = []) => {
     const employeeNames = [
-      'John Smith',
-      'Maria Petrova',
-      'Dimitar Georgiev',
-      'Elena Vasileva',
-      'Nikolay Ivanov',
-      'Ana Koleva',
+      'Alexander Petrov',
+      'Maria Dimitrova',
+      'Nikolay Georgiev',
+      'Elena Stoeva',
+      'Dimitar Ivanov',
+      'Svetlana Koleva',
       'Georgi Todorov',
-      'Svetlana Mihaylova'
+      'Ana Mihaylova',
+      'Plamen Atanasov',
+      'Valentina Popova',
+      'Stefan Kostov',
+      'Desislava Yaneva',
+      'Hristo Marinov',
+      'Gabriela Ilieva',
+      'Borislav Dimitrov',
+      'Radoslava Petrova',
+      'Kaloyan Stanev',
+      'Milena Vasileva',
+      'Veselin Nikolov',
+      'Teodora Hristova'
     ];
     
     // Filter out declined employees
