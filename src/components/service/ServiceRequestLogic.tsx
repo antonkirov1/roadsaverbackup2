@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { toast } from "@/components/ui/use-toast";
 import { useApp } from '@/contexts/AppContext';
@@ -135,14 +134,14 @@ export const useServiceRequest = (
       setShowRealTimeUpdate(true);
       setStatus('pending');
       setHasDeclinedOnce(false); // Reset decline counter
-      setPriceQuote(0); // Reset price quote
+      // DON'T reset price quote - keep the original quote from the previous employee
       
-      // Update ongoing request with declined employee and reset price quote
+      // Update ongoing request with declined employee but keep the price quote
       const updatedRequest = {
         ...ongoingRequest,
         declinedEmployees: updatedDeclinedEmployees,
         status: 'pending' as const,
-        priceQuote: undefined,
+        // Keep the existing price quote instead of clearing it
         employeeName: undefined
       };
       setOngoingRequest(updatedRequest);
