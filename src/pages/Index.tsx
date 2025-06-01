@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { User, Car, Globe } from 'lucide-react';
+import { User, Car, Globe, Database } from 'lucide-react';
 import { useApp } from '@/contexts/AppContext';
 import { useTranslation } from '@/utils/translations';
 import ThemeToggle from '@/components/ui/theme-toggle';
@@ -73,6 +73,20 @@ const Index = () => {
               <Link to="/employee">
                 <Button className="w-full bg-blue-600 hover:bg-blue-700">
                   <Car className="mr-2 h-5 w-5" /> {t('open-employee-app')}
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Database Migration</CardTitle>
+              <CardDescription>Manage user and employee account databases</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Link to="/migration">
+                <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                  <Database className="mr-2 h-5 w-5" /> Open Migration Panel
                 </Button>
               </Link>
             </CardContent>

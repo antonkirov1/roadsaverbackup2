@@ -2,6 +2,102 @@
 export interface Database {
   public: {
     Tables: {
+      new_user_accounts: {
+        Row: {
+          id: string;
+          username: string;
+          email: string;
+          password_hash: string;
+          phone_number: string | null;
+          gender: string | null;
+          created_at: string;
+          processed_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          username: string;
+          email: string;
+          password_hash: string;
+          phone_number?: string | null;
+          gender?: string | null;
+          created_at?: string;
+          processed_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          username?: string;
+          email?: string;
+          password_hash?: string;
+          phone_number?: string | null;
+          gender?: string | null;
+          created_at?: string;
+          processed_at?: string | null;
+        };
+      };
+      existing_user_accounts: {
+        Row: {
+          id: string;
+          auth_user_id: string | null;
+          username: string;
+          email: string;
+          phone_number: string | null;
+          gender: string | null;
+          created_at: string;
+          migrated_from_new_accounts: string | null;
+        };
+        Insert: {
+          id?: string;
+          auth_user_id?: string | null;
+          username: string;
+          email: string;
+          phone_number?: string | null;
+          gender?: string | null;
+          created_at?: string;
+          migrated_from_new_accounts?: string | null;
+        };
+        Update: {
+          id?: string;
+          auth_user_id?: string | null;
+          username?: string;
+          email?: string;
+          phone_number?: string | null;
+          gender?: string | null;
+          created_at?: string;
+          migrated_from_new_accounts?: string | null;
+        };
+      };
+      employee_accounts: {
+        Row: {
+          id: string;
+          auth_user_id: string | null;
+          username: string;
+          email: string;
+          phone_number: string | null;
+          employee_role: string | null;
+          status: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          auth_user_id?: string | null;
+          username: string;
+          email: string;
+          phone_number?: string | null;
+          employee_role?: string | null;
+          status?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          auth_user_id?: string | null;
+          username?: string;
+          email?: string;
+          phone_number?: string | null;
+          employee_role?: string | null;
+          status?: string | null;
+          created_at?: string;
+        };
+      };
       price_quote_snapshots: {
         Row: {
           id: string;

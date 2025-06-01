@@ -9,6 +9,39 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      employee_accounts: {
+        Row: {
+          auth_user_id: string | null
+          created_at: string
+          email: string
+          employee_role: string | null
+          id: string
+          phone_number: string | null
+          status: string | null
+          username: string
+        }
+        Insert: {
+          auth_user_id?: string | null
+          created_at?: string
+          email: string
+          employee_role?: string | null
+          id?: string
+          phone_number?: string | null
+          status?: string | null
+          username: string
+        }
+        Update: {
+          auth_user_id?: string | null
+          created_at?: string
+          email?: string
+          employee_role?: string | null
+          id?: string
+          phone_number?: string | null
+          status?: string | null
+          username?: string
+        }
+        Relationships: []
+      }
       employee_finished_requests: {
         Row: {
           created_at: string | null
@@ -43,6 +76,72 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      existing_user_accounts: {
+        Row: {
+          auth_user_id: string | null
+          created_at: string
+          email: string
+          gender: string | null
+          id: string
+          migrated_from_new_accounts: string | null
+          phone_number: string | null
+          username: string
+        }
+        Insert: {
+          auth_user_id?: string | null
+          created_at?: string
+          email: string
+          gender?: string | null
+          id?: string
+          migrated_from_new_accounts?: string | null
+          phone_number?: string | null
+          username: string
+        }
+        Update: {
+          auth_user_id?: string | null
+          created_at?: string
+          email?: string
+          gender?: string | null
+          id?: string
+          migrated_from_new_accounts?: string | null
+          phone_number?: string | null
+          username?: string
+        }
+        Relationships: []
+      }
+      new_user_accounts: {
+        Row: {
+          created_at: string
+          email: string
+          gender: string | null
+          id: string
+          password_hash: string
+          phone_number: string | null
+          processed_at: string | null
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          gender?: string | null
+          id?: string
+          password_hash: string
+          phone_number?: string | null
+          processed_at?: string | null
+          username: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          gender?: string | null
+          id?: string
+          password_hash?: string
+          phone_number?: string | null
+          processed_at?: string | null
+          username?: string
+        }
+        Relationships: []
       }
       price_quote_snapshots: {
         Row: {
@@ -129,7 +228,19 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      create_employee_account: {
+        Args: {
+          p_username: string
+          p_email: string
+          p_phone_number?: string
+          p_employee_role?: string
+        }
+        Returns: string
+      }
+      migrate_new_user_to_existing: {
+        Args: { user_record_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
