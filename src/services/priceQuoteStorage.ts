@@ -1,5 +1,5 @@
 
-import { supabase } from '@/utils/supabase';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface PriceQuoteSnapshot {
   id: string;

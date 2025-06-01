@@ -45,7 +45,9 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
     handleAcceptQuote,
     handleDeclineQuote,
     handleCancelRequest,
-    handleContactSupport
+    handleContactSupport,
+    storedSnapshot,
+    showStoredPriceQuote
   } = useServiceRequest(type, userLocation);
 
   const [showCancelConfirmDialog, setShowCancelConfirmDialog] = useState(false);
@@ -135,6 +137,8 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
             onClose={handleAttemptClose}
             onReviewPriceQuote={handleReviewPriceQuote}
             hasPriceQuote={actualPriceQuote >= 0}
+            hasStoredSnapshot={!!storedSnapshot}
+            onShowStoredPriceQuote={showStoredPriceQuote}
           />
         )}
       </ServiceRequestDialog>

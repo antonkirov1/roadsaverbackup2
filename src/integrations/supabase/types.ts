@@ -9,7 +9,121 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      employee_finished_requests: {
+        Row: {
+          created_at: string | null
+          employee_id: string
+          employee_username: string
+          id: string
+          request_id: string
+          snapshot_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          employee_id: string
+          employee_username: string
+          id?: string
+          request_id: string
+          snapshot_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          employee_id?: string
+          employee_username?: string
+          id?: string
+          request_id?: string
+          snapshot_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employee_finished_requests_snapshot_id_fkey"
+            columns: ["snapshot_id"]
+            isOneToOne: false
+            referencedRelation: "price_quote_snapshots"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      price_quote_snapshots: {
+        Row: {
+          created_at: string | null
+          employee_id: string | null
+          employee_name: string
+          id: string
+          price_quote: number
+          request_id: string
+          service_fee: number
+          service_type: string
+          snapshot_data: Json
+          status: string | null
+          total_price: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          employee_id?: string | null
+          employee_name: string
+          id?: string
+          price_quote: number
+          request_id: string
+          service_fee: number
+          service_type: string
+          snapshot_data: Json
+          status?: string | null
+          total_price: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          employee_id?: string | null
+          employee_name?: string
+          id?: string
+          price_quote?: number
+          request_id?: string
+          service_fee?: number
+          service_type?: string
+          snapshot_data?: Json
+          status?: string | null
+          total_price?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_finished_requests: {
+        Row: {
+          created_at: string | null
+          id: string
+          request_id: string
+          snapshot_id: string | null
+          user_id: string
+          username: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          request_id: string
+          snapshot_id?: string | null
+          user_id: string
+          username: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          request_id?: string
+          snapshot_id?: string | null
+          user_id?: string
+          username?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_finished_requests_snapshot_id_fkey"
+            columns: ["snapshot_id"]
+            isOneToOne: false
+            referencedRelation: "price_quote_snapshots"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
