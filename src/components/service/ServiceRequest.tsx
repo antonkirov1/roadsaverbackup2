@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import ServiceRequestDialog from './ServiceRequestDialog';
 import ServiceRequestForm from './ServiceRequestForm';
@@ -52,14 +51,15 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
   const [showCancelConfirmDialog, setShowCancelConfirmDialog] = useState(false);
 
   // Get the actual price quote and employee name from ongoing request if available
-  const actualPriceQuote = ongoingRequest?.priceQuote || priceQuote;
-  const actualEmployeeName = ongoingRequest?.employeeName || currentEmployeeName;
+  // Use nullish coalescing (??) instead of logical OR (||) to properly handle 0 values
+  const actualPriceQuote = ongoingRequest?.priceQuote ?? priceQuote;
+  const actualEmployeeName = ongoingRequest?.employeeName ?? currentEmployeeName;
 
   // Effect to automatically show price quote if there's an ongoing request with a pending status
   // or if explicitly requested via shouldShowPriceQuote prop
   useEffect(() => {
     if (open && ongoingRequest && ongoingRequest.status === 'pending') {
-      if (shouldShowPriceQuote || ongoingRequest.priceQuote > 0) {
+      if (shouldShowPriceQuote || (ongoingRequest.priceQuote !== undefined && ongoingRequest.priceQuote >= 0)) {
         setShowPriceQuote(true);
       }
     }
@@ -134,7 +134,7 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
             onContactSupport={handleContactSupport}
             onClose={handleAttemptClose}
             onReviewPriceQuote={handleReviewPriceQuote}
-            hasPriceQuote={actualPriceQuote > 0}
+            hasPriceQuote={actualPriceQuote >= 0}
           />
         )}
       </ServiceRequestDialog>
