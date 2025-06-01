@@ -32,7 +32,7 @@ export interface StorePriceQuoteSnapshotData {
 class PriceQuoteStorageService {
   async storePriceQuoteSnapshot(data: StorePriceQuoteSnapshotData): Promise<string | null> {
     try {
-      const status = data.status || 'pending';
+      const status: 'pending' | 'accepted' | 'declined' | 'finished' = data.status || 'pending';
       
       const { data: result, error } = await supabase
         .from('price_quote_snapshots')
