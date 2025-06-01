@@ -4,7 +4,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import RegisterFormFieldInput from './RegisterFormFieldInput';
-import { AlertCircle, CheckCircle2 } from "lucide-react";
+import { AlertCircle, CheckCircle2, ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface SecretQuestionFieldProps {
   questionNumber: number;
@@ -61,57 +62,72 @@ const SecretQuestionField: React.FC<SecretQuestionFieldProps> = ({
 
   const isCustomSelected = selectedQuestion === 'custom';
 
+  const handleBackToDropdown = () => {
+    onQuestionChange('');
+  };
+
   return (
     <div className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor={`secret-question-${questionNumber}`}>
           {t('secret-question')} {questionNumber}:
         </Label>
-        <div className="relative">
-          <Select value={selectedQuestion} onValueChange={onQuestionChange}>
-            <SelectTrigger className={`border-2 focus:ring-green-600 focus:border-green-600 ${questionError ? 'border-red-500' : isQuestionValid ? 'border-green-500' : ''}`}>
-              <SelectValue placeholder={t('select-question')} />
-            </SelectTrigger>
-            <SelectContent className="bg-white border border-gray-200 shadow-lg z-50">
-              {secretQuestions.map((question, index) => (
-                <SelectItem key={index} value={question} className="hover:bg-gray-100">
-                  {question}
-                </SelectItem>
-              ))}
-              <SelectItem value="custom" className="hover:bg-gray-100">
-                - {t('create-your-own-question')} -
-              </SelectItem>
-            </SelectContent>
-          </Select>
-          <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-            {renderValidationIcon(isQuestionValid, questionError)}
-          </div>
-        </div>
-        {questionError && <p className="text-red-500 text-xs mt-1">{questionError}</p>}
-      </div>
-
-      {isCustomSelected && (
-        <div className="space-y-2">
-          <Label htmlFor={`custom-question-${questionNumber}`}>
-            {t('create-your-own-question')}:
-          </Label>
+        
+        {!isCustomSelected ? (
           <div className="relative">
-            <Input
-              id={`custom-question-${questionNumber}`}
-              type="text"
-              placeholder={t('enter-your-custom-question')}
-              value={customQuestion}
-              onChange={onCustomQuestionChange}
-              className={`border-2 focus:ring-green-600 focus:border-green-600 ${customQuestionError ? 'border-red-500' : isCustomQuestionValid ? 'border-green-500' : ''}`}
-              required
-            />
+            <Select value={selectedQuestion} onValueChange={onQuestionChange}>
+              <SelectTrigger className={`border-2 focus:ring-green-600 focus:border-green-600 ${questionError ? 'border-red-500' : isQuestionValid ? 'border-green-500' : ''}`}>
+                <SelectValue placeholder={t('select-question')} />
+              </SelectTrigger>
+              <SelectContent className="bg-white border border-gray-200 shadow-lg z-50">
+                {secretQuestions.map((question, index) => (
+                  <SelectItem key={index} value={question} className="hover:bg-gray-100">
+                    {question}
+                  </SelectItem>
+                ))}
+                <SelectItem value="custom" className="hover:bg-gray-100">
+                  - {t('create-your-own-question')} -
+                </SelectItem>
+              </SelectContent>
+            </Select>
             <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-              {renderValidationIcon(isCustomQuestionValid, customQuestionError)}
+              {renderValidationIcon(isQuestionValid, questionError)}
             </div>
           </div>
-          {customQuestionError && <p className="text-red-500 text-xs mt-1">{customQuestionError}</p>}
-        </div>
-      )}
+        ) : (
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 mb-2">
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={handleBackToDropdown}
+                className="p-1 h-auto text-green-600 hover:text-green-700"
+              >
+                <ArrowLeft className="h-4 w-4 mr-1" />
+                {t('back-to-questions')}
+              </Button>
+            </div>
+            <div className="relative">
+              <Input
+                id={`custom-question-${questionNumber}`}
+                type="text"
+                placeholder={t('enter-your-custom-question')}
+                value={customQuestion}
+                onChange={onCustomQuestionChange}
+                className={`border-2 focus:ring-green-600 focus:border-green-600 ${customQuestionError ? 'border-red-500' : isCustomQuestionValid ? 'border-green-500' : ''}`}
+                required
+              />
+              <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                {renderValidationIcon(isCustomQuestionValid, customQuestionError)}
+              </div>
+            </div>
+            {customQuestionError && <p className="text-red-500 text-xs mt-1">{customQuestionError}</p>}
+          </div>
+        )}
+        
+        {!isCustomSelected && questionError && <p className="text-red-500 text-xs mt-1">{questionError}</p>}
+      </div>
 
       <RegisterFormFieldInput
         id={`secret-answer-${questionNumber}`}

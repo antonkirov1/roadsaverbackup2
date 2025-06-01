@@ -33,6 +33,10 @@ export const authSecretQuestionsTranslations: TranslationGroup = {
     en: 'Enter your custom question',
     bg: 'Въведете вашия персонален въпрос'
   },
+  'back-to-questions': {
+    en: 'Back to questions',
+    bg: 'Обратно към въпросите'
+  },
   'secret-answer-required': {
     en: 'Answer is required',
     bg: 'Отговорът е задължителен'
