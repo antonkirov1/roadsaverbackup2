@@ -46,7 +46,7 @@ class PriceQuoteStorageService {
           total_price: data.totalPrice,
           employee_name: data.employeeName,
           snapshot_data: data.snapshotData,
-          status: status
+          status: status as 'pending' | 'accepted' | 'declined' | 'finished'
         }])
         .select('id')
         .single();
