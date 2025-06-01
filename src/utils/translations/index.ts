@@ -1,3 +1,4 @@
+
 import { authGeneralTranslations } from './authGeneral';
 import { authLoginTranslations } from './authLogin';
 import { authRegisterTranslations } from './authRegister';
