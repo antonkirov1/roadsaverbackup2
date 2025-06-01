@@ -1,9 +1,8 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useApp } from '@/contexts/AppContext';
 import { useTranslation } from '@/utils/translations';
-import { Clock, CheckCircle, XCircle, Phone } from 'lucide-react';
+import { Clock, CheckCircle, XCircle, Phone, FileText } from 'lucide-react';
 import GoogleMap from '@/components/GoogleMap';
 
 interface ServiceRequestStatusProps {
@@ -16,6 +15,8 @@ interface ServiceRequestStatusProps {
   onClose: () => void;
   onReviewPriceQuote?: () => void;
   hasPriceQuote?: boolean;
+  hasStoredSnapshot?: boolean;
+  onShowStoredPriceQuote?: () => void;
 }
 
 const ServiceRequestStatus: React.FC<ServiceRequestStatusProps> = ({
@@ -27,7 +28,9 @@ const ServiceRequestStatus: React.FC<ServiceRequestStatusProps> = ({
   onContactSupport,
   onClose,
   onReviewPriceQuote,
-  hasPriceQuote = false
+  hasPriceQuote = false,
+  hasStoredSnapshot = false,
+  onShowStoredPriceQuote
 }) => {
   const { language } = useApp();
   const t = useTranslation(language);
@@ -70,17 +73,28 @@ const ServiceRequestStatus: React.FC<ServiceRequestStatusProps> = ({
           </div>
         </div>
         
-        {/* Add Review Price Quote button for pending requests with price quotes */}
-        {status === 'pending' && hasPriceQuote && onReviewPriceQuote && (
-          <div className="mt-4">
+        {/* Review Price Quote buttons */}
+        <div className="mt-4 space-y-2">
+          {status === 'pending' && hasPriceQuote && onReviewPriceQuote && (
             <Button 
               onClick={onReviewPriceQuote}
-              className="bg-green-600 hover:bg-green-700 text-white px-6 py-2"
+              className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 w-full"
             >
               Review the price and decide
             </Button>
-          </div>
-        )}
+          )}
+          
+          {hasStoredSnapshot && onShowStoredPriceQuote && (
+            <Button 
+              onClick={onShowStoredPriceQuote}
+              variant="outline"
+              className="border-blue-500 text-blue-600 hover:bg-blue-50 px-6 py-2 w-full flex items-center gap-2"
+            >
+              <FileText className="h-4 w-4" />
+              View Stored Price Quote
+            </Button>
+          )}
+        </div>
       </div>
 
       {/* Request Details */}

@@ -6,6 +6,7 @@ import { ServiceType } from './types/serviceRequestState';
 import { useServiceValidation } from './hooks/useServiceValidation';
 import { useRequestSimulation } from './hooks/useRequestSimulation';
 import { useRequestActions } from './hooks/useRequestActions';
+import { usePriceQuoteSnapshot } from '@/hooks/usePriceQuoteSnapshot';
 
 export const useServiceRequest = (
   type: ServiceType,
@@ -20,6 +21,7 @@ export const useServiceRequest = (
     handleCancelRequest: cancelRequest,
     handleContactSupport
   } = useRequestActions();
+  const { storeSnapshot, loadSnapshot, storedSnapshot } = usePriceQuoteSnapshot();
 
   // Initialize states with values from ongoing request if it exists
   const [message, setMessage] = useState(serviceMessages[type] || '');
@@ -52,8 +54,13 @@ export const useServiceRequest = (
       if (ongoingRequest.declinedEmployees) {
         setDeclinedEmployees(ongoingRequest.declinedEmployees);
       }
+      
+      // Load stored snapshot if it exists
+      if (ongoingRequest.id) {
+        loadSnapshot(ongoingRequest.id);
+      }
     }
-  }, [ongoingRequest, originalPriceQuote]);
+  }, [ongoingRequest, originalPriceQuote, loadSnapshot]);
 
   const handleSubmit = () => {
     if (!validateMessage(message, type)) {
@@ -90,17 +97,22 @@ export const useServiceRequest = (
         timestamp,
         type,
         userLocation,
-        (quote: number) => {
+        async (quote: number) => {
           console.log('Employee sent quote:', quote);
           setPriceQuote(quote);
-          // Store the original price quote only on the first response
           setOriginalPriceQuote(quote);
-          // Immediately update ongoing request with the price quote
+          
+          // Store the price quote snapshot when employee responds
+          const employeeName = `Employee ${Math.floor(Math.random() * 1000)}`;
+          await storeSnapshot(requestId, type, quote, employeeName, false);
+          
+          // Update ongoing request with the price quote
           setOngoingRequest(prev => {
             if (!prev) return null;
             const updatedRequest = { 
               ...prev, 
-              priceQuote: quote 
+              priceQuote: quote,
+              employeeName: employeeName
             };
             console.log('Setting price quote in ongoing request:', quote, updatedRequest);
             return updatedRequest;
@@ -114,12 +126,10 @@ export const useServiceRequest = (
         (employeeName: string) => {
           console.log('Employee assigned:', employeeName);
           setCurrentEmployeeName(employeeName);
-          // Update ongoing request with employee name
           setOngoingRequest(prev => prev ? { 
             ...prev, 
             employeeName: employeeName 
           } : null);
-          // Reset decline counter for every new employee
           setHasDeclinedOnce(false);
           setLastEmployeeName(employeeName);
         },
@@ -218,6 +228,13 @@ export const useServiceRequest = (
   
   const handleCancelRequest = () => cancelRequest(setShowPriceQuote);
 
+  // New function to show stored price quote
+  const showStoredPriceQuote = () => {
+    if (storedSnapshot) {
+      setShowPriceQuote(true);
+    }
+  };
+
   return {
     message,
     setMessage,
@@ -236,6 +253,8 @@ export const useServiceRequest = (
     handleAcceptQuote,
     handleDeclineQuote,
     handleCancelRequest,
-    handleContactSupport
+    handleContactSupport,
+    storedSnapshot,
+    showStoredPriceQuote
   };
 };
