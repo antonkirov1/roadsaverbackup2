@@ -1,3 +1,4 @@
+
 import { supabase } from '@/integrations/supabase/client';
 
 export interface PriceQuoteSnapshot {
@@ -31,7 +32,7 @@ export interface StorePriceQuoteSnapshotData {
 class PriceQuoteStorageService {
   async storePriceQuoteSnapshot(data: StorePriceQuoteSnapshotData): Promise<string | null> {
     try {
-      const status: 'pending' | 'accepted' | 'declined' | 'finished' = data.status || 'pending';
+      const status = (data.status || 'pending') as 'pending' | 'accepted' | 'declined' | 'finished';
       
       const { data: result, error } = await supabase
         .from('price_quote_snapshots')
@@ -45,7 +46,7 @@ class PriceQuoteStorageService {
           total_price: data.totalPrice,
           employee_name: data.employeeName,
           snapshot_data: data.snapshotData,
-          status: status as 'pending' | 'accepted' | 'declined' | 'finished'
+          status: status
         }])
         .select('id')
         .single();
