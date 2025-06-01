@@ -19,6 +19,7 @@ interface OngoingRequest {
   declinedEmployees?: string[];
   employeeName?: string;
   employeePhone?: string;
+  priceQuote?: number;
 }
 
 interface CompletedRequest {
