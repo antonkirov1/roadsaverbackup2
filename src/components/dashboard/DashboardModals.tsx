@@ -27,6 +27,7 @@ interface DashboardModalsProps {
   onLanguageChange: (language: 'en' | 'bg') => void;
   onViewRequest: () => void;
   onReviewPriceQuote: () => void;
+  shouldShowPriceQuote?: boolean;
 }
 
 const DashboardModals: React.FC<DashboardModalsProps> = ({
@@ -46,7 +47,8 @@ const DashboardModals: React.FC<DashboardModalsProps> = ({
   onLocationChange,
   onLanguageChange,
   onViewRequest,
-  onReviewPriceQuote
+  onReviewPriceQuote,
+  shouldShowPriceQuote = false
 }) => {
   return (
     <>
@@ -57,6 +59,7 @@ const DashboardModals: React.FC<DashboardModalsProps> = ({
           open={!!selectedService}
           onClose={onServiceRequestClose}
           userLocation={userLocation}
+          shouldShowPriceQuote={shouldShowPriceQuote}
         />
       )}
       

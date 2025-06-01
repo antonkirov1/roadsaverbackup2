@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/contexts/AppContext';
@@ -92,6 +91,7 @@ const Dashboard: React.FC = () => {
   const handleViewRequest = () => {
     if (ongoingRequest) {
       setSelectedService(ongoingRequest.type as ServiceType);
+      setShouldShowPriceQuote(false);
     }
   };
 
@@ -141,6 +141,7 @@ const Dashboard: React.FC = () => {
         onLanguageChange={setLanguage}
         onViewRequest={handleViewRequest}
         onReviewPriceQuote={handleReviewPriceQuote}
+        shouldShowPriceQuote={shouldShowPriceQuote}
       />
 
       <ExitConfirmDialog

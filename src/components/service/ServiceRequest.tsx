@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import ServiceRequestDialog from './ServiceRequestDialog';
 import ServiceRequestForm from './ServiceRequestForm';
@@ -23,9 +22,10 @@ interface ServiceRequestProps {
   open: boolean;
   onClose: () => void;
   userLocation: { lat: number; lng: number };
+  shouldShowPriceQuote?: boolean;
 }
 
-const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, userLocation }) => {
+const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, userLocation, shouldShowPriceQuote = false }) => {
   const { language, ongoingRequest } = useApp();
   const t = useTranslation(language);
   const {
@@ -51,11 +51,14 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
   const [showCancelConfirmDialog, setShowCancelConfirmDialog] = useState(false);
 
   // Effect to automatically show price quote if there's an ongoing request with a pending status
+  // or if explicitly requested via shouldShowPriceQuote prop
   useEffect(() => {
-    if (open && ongoingRequest && ongoingRequest.status === 'pending' && priceQuote > 0) {
-      setShowPriceQuote(true);
+    if (open && ongoingRequest && ongoingRequest.status === 'pending') {
+      if (shouldShowPriceQuote || priceQuote > 0) {
+        setShowPriceQuote(true);
+      }
     }
-  }, [open, ongoingRequest, priceQuote, setShowPriceQuote]);
+  }, [open, ongoingRequest, priceQuote, shouldShowPriceQuote, setShowPriceQuote]);
 
   const handleAttemptClose = () => {
     // If price quote is showing, just close the dialog but keep the request in price quote state
