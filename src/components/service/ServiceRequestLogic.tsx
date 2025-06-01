@@ -72,8 +72,11 @@ export const useServiceRequest = (
         userLocation,
         (quote: number) => {
           setPriceQuote(quote);
-          // Update ongoing request with the price quote
-          setOngoingRequest(prev => prev ? { ...prev, priceQuote: quote } : null);
+          // Update ongoing request with the price quote - this is the key fix
+          setOngoingRequest(prev => prev ? { 
+            ...prev, 
+            priceQuote: quote 
+          } : null);
         },
         setShowPriceQuote,
         setShowRealTimeUpdate,
@@ -83,7 +86,10 @@ export const useServiceRequest = (
         (employeeName: string) => {
           setCurrentEmployeeName(employeeName);
           // Update ongoing request with employee name
-          setOngoingRequest(prev => prev ? { ...prev, employeeName: employeeName } : null);
+          setOngoingRequest(prev => prev ? { 
+            ...prev, 
+            employeeName: employeeName 
+          } : null);
           // Reset decline counter for every new employee
           setHasDeclinedOnce(false);
           setLastEmployeeName(employeeName);
@@ -136,7 +142,10 @@ export const useServiceRequest = (
           (quote: number) => {
             setPriceQuote(quote);
             // Update ongoing request with the new price quote
-            setOngoingRequest(prev => prev ? { ...prev, priceQuote: quote } : null);
+            setOngoingRequest(prev => prev ? { 
+              ...prev, 
+              priceQuote: quote 
+            } : null);
           },
           setShowPriceQuote,
           setShowRealTimeUpdate,
@@ -146,7 +155,10 @@ export const useServiceRequest = (
           (employeeName: string) => {
             setCurrentEmployeeName(employeeName);
             // Update ongoing request with new employee name
-            setOngoingRequest(prev => prev ? { ...prev, employeeName: employeeName } : null);
+            setOngoingRequest(prev => prev ? { 
+              ...prev, 
+              employeeName: employeeName 
+            } : null);
             // Reset decline counter for every new employee
             setHasDeclinedOnce(false);
             setLastEmployeeName(employeeName);
