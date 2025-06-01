@@ -27,6 +27,7 @@ export const useServiceRequest = (
   const [showRealTimeUpdate, setShowRealTimeUpdate] = useState(false);
   const [showPriceQuote, setShowPriceQuote] = useState(false);
   const [priceQuote, setPriceQuote] = useState<number>(0);
+  const [originalPriceQuote, setOriginalPriceQuote] = useState<number>(0); // Store the very first price quote
   const [employeeLocation, setEmployeeLocation] = useState<{ lat: number; lng: number } | undefined>(undefined);
   const [status, setStatus] = useState<'pending' | 'accepted' | 'declined'>('pending');
   const [declineReason, setDeclineReason] = useState('');
@@ -40,6 +41,10 @@ export const useServiceRequest = (
     if (ongoingRequest) {
       if (ongoingRequest.priceQuote !== undefined) {
         setPriceQuote(ongoingRequest.priceQuote);
+        // Set original price quote if it hasn't been set yet
+        if (originalPriceQuote === 0) {
+          setOriginalPriceQuote(ongoingRequest.priceQuote);
+        }
       }
       if (ongoingRequest.employeeName) {
         setCurrentEmployeeName(ongoingRequest.employeeName);
@@ -48,7 +53,7 @@ export const useServiceRequest = (
         setDeclinedEmployees(ongoingRequest.declinedEmployees);
       }
     }
-  }, [ongoingRequest]);
+  }, [ongoingRequest, originalPriceQuote]);
 
   const handleSubmit = () => {
     if (!validateMessage(message, type)) {
@@ -88,6 +93,8 @@ export const useServiceRequest = (
         (quote: number) => {
           console.log('Employee sent quote:', quote);
           setPriceQuote(quote);
+          // Store the original price quote only on the first response
+          setOriginalPriceQuote(quote);
           // Immediately update ongoing request with the price quote
           setOngoingRequest(prev => {
             if (!prev) return null;
@@ -129,19 +136,21 @@ export const useServiceRequest = (
       const updatedDeclinedEmployees = [...declinedEmployees, currentEmployeeName];
       setDeclinedEmployees(updatedDeclinedEmployees);
       
-      // Reset all states for new employee search
+      // Reset all states for new employee search but PRESERVE the original price quote
       setShowPriceQuote(false);
       setShowRealTimeUpdate(true);
       setStatus('pending');
       setHasDeclinedOnce(false); // Reset decline counter
-      // DON'T reset price quote - keep the original quote from the previous employee
+      // ALWAYS use the original price quote - never let it change
+      setPriceQuote(originalPriceQuote);
       
-      // Update ongoing request with declined employee but keep the price quote
+      // Update ongoing request with declined employee but keep the ORIGINAL price quote
       const updatedRequest = {
         ...ongoingRequest,
         declinedEmployees: updatedDeclinedEmployees,
         status: 'pending' as const,
-        // Keep the existing price quote instead of clearing it
+        // Always preserve the original price quote
+        priceQuote: originalPriceQuote,
         employeeName: undefined
       };
       setOngoingRequest(updatedRequest);
@@ -162,16 +171,17 @@ export const useServiceRequest = (
           type,
           userLocation,
           (quote: number) => {
-            console.log('New employee sent quote:', quote);
-            setPriceQuote(quote);
-            // Update ongoing request with the new price quote
+            console.log('New employee would send quote:', quote, 'but using original:', originalPriceQuote);
+            // ALWAYS use the original price quote, ignore the new quote
+            setPriceQuote(originalPriceQuote);
+            // Update ongoing request with the ORIGINAL price quote
             setOngoingRequest(prev => {
               if (!prev) return null;
               const updatedRequest = { 
                 ...prev, 
-                priceQuote: quote 
+                priceQuote: originalPriceQuote 
               };
-              console.log('Setting new price quote in ongoing request:', quote, updatedRequest);
+              console.log('Preserving original price quote in ongoing request:', originalPriceQuote, updatedRequest);
               return updatedRequest;
             });
           },
@@ -215,7 +225,7 @@ export const useServiceRequest = (
     showRealTimeUpdate,
     showPriceQuote,
     setShowPriceQuote,
-    priceQuote: ongoingRequest?.priceQuote !== undefined ? ongoingRequest.priceQuote : priceQuote,
+    priceQuote: originalPriceQuote > 0 ? originalPriceQuote : (ongoingRequest?.priceQuote ?? priceQuote),
     employeeLocation,
     status,
     declineReason,
