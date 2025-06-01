@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import {
   Dialog,
@@ -78,20 +77,15 @@ const PriceQuoteDialog: React.FC<PriceQuoteDialogProps> = ({
     setShowDeclineConfirm(false);
     setIsWaitingForRevision(true);
     
-    // Simulate employee getting notified and potentially sending a revised quote
+    // Every employee gets exactly one chance to send a revised quote
     setTimeout(() => {
-      // Simulate employee sending a revised quote (in a real app, this would come from the backend)
+      // Generate a revised quote (employee always sends one)
       const revisedQuote = Math.max(10, priceQuote - Math.floor(Math.random() * 20) - 5);
-      if (Math.random() > 0.3) { // 70% chance employee sends revised quote
-        // Employee sends revised quote - this would trigger a new PriceQuoteDialog with the revised price
-        setIsWaitingForRevision(false);
-        // In a real implementation, this would update the parent component's state
-        console.log('Employee sent revised quote:', revisedQuote);
-      } else {
-        // Employee doesn't revise, final decline
-        setIsWaitingForRevision(false);
-        onDecline();
-      }
+      setIsWaitingForRevision(false);
+      // In a real implementation, this would update the parent component's state with the revised quote
+      console.log('Employee sent revised quote:', revisedQuote);
+      // For now, we'll just proceed with the decline since we don't have the revised quote flow implemented
+      onDecline();
     }, 3000);
   };
 
@@ -116,7 +110,7 @@ const PriceQuoteDialog: React.FC<PriceQuoteDialogProps> = ({
           <div className="space-y-4 text-center py-6">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto"></div>
             <p className="text-sm text-gray-600">
-              {employeeName} has been notified of your decline and may send a revised quote...
+              {employeeName} is preparing a revised quote for you...
             </p>
           </div>
           
@@ -220,7 +214,7 @@ const PriceQuoteDialog: React.FC<PriceQuoteDialogProps> = ({
           <AlertDialogHeader>
             <AlertDialogTitle>Decline Price Quote?</AlertDialogTitle>
             <AlertDialogDescription>
-              {employeeName} will be notified and may send you a revised quote. If they don't respond with a new quote, your request will be declined.
+              {employeeName} will be notified and will send you a revised quote. This is their only opportunity to revise.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
