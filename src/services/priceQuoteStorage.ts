@@ -86,7 +86,7 @@ class PriceQuoteStorageService {
         totalPrice: data.total_price,
         employeeName: data.employee_name,
         snapshotData: data.snapshot_data,
-        status: data.status,
+        status: data.status as 'pending' | 'accepted' | 'declined' | 'finished',
         createdAt: data.created_at
       };
     } catch (error) {
