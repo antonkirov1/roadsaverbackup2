@@ -23,7 +23,7 @@ export const serviceTranslations: TranslationGroup = {
     en: 'Other Car Problems',
     bg: 'Други проблеми с колата'
   },
-  'car-battery': {
+  'car-battery-problems': {
     en: 'Car Battery Problems/My car would not start.',
     bg: 'Проблеми с акумулатора/Колата ми не пали.'
   },
@@ -52,7 +52,7 @@ export const serviceTranslations: TranslationGroup = {
     bg: 'Получете помощ при други проблеми с автомобила ви.'
   },
   'car-battery-desc': {
-    en: 'Get help with your car battery issues or starting issues',
+    en: 'Get help with your car battery issues or with ignition issues.',
     bg: 'Помощ при проблеми с акумулатора, или ако колата ви не пали.'
     
     
