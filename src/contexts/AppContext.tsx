@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { toast } from '@/components/ui/use-toast';
 import { useTranslation } from '@/utils/translations';
@@ -39,7 +40,7 @@ interface AppContextType {
   language: 'en' | 'bg';
   userLocation: { lat: number; lng: number };
   ongoingRequest: OngoingRequest | null;
-  setOngoingRequest: (request: OngoingRequest | null) => void;
+  setOngoingRequest: (request: OngoingRequest | null | ((prev: OngoingRequest | null) => OngoingRequest | null)) => void;
   addToHistory: (request: CompletedRequest) => void;
   requestHistory: CompletedRequest[];
   login: (user: User) => void;
@@ -57,7 +58,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [user, setUser] = useState<User | null>(null);
   const [language, setLanguageState] = useState<'en' | 'bg'>('en');
   const [userLocation, setUserLocationState] = useState(defaultLocation);
-  const [ongoingRequest, setOngoingRequest] = useState<OngoingRequest | null>(null);
+  const [ongoingRequest, setOngoingRequestState] = useState<OngoingRequest | null>(null);
   const [requestHistory, setRequestHistory] = useState<CompletedRequest[]>([]);
   
   // Try to get user location on initial load
@@ -96,6 +97,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   
   const setUserLocation = (location: { lat: number; lng: number }) => {
     setUserLocationState(location);
+  };
+  
+  const setOngoingRequest = (request: OngoingRequest | null | ((prev: OngoingRequest | null) => OngoingRequest | null)) => {
+    if (typeof request === 'function') {
+      setOngoingRequestState(prev => request(prev));
+    } else {
+      setOngoingRequestState(request);
+    }
   };
   
   const addToHistory = (request: CompletedRequest) => {
