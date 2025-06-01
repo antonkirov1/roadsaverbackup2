@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from "@/components/ui/use-toast";
 import { useApp } from '@/contexts/AppContext';
 import { serviceMessages } from './constants/serviceMessages';
@@ -27,14 +27,29 @@ export const useServiceRequest = (
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showRealTimeUpdate, setShowRealTimeUpdate] = useState(false);
   const [showPriceQuote, setShowPriceQuote] = useState(false);
-  const [priceQuote, setPriceQuote] = useState<number>(ongoingRequest?.priceQuote || 0);
+  const [priceQuote, setPriceQuote] = useState<number>(0);
   const [employeeLocation, setEmployeeLocation] = useState<{ lat: number; lng: number } | undefined>(undefined);
   const [status, setStatus] = useState<'pending' | 'accepted' | 'declined'>('pending');
   const [declineReason, setDeclineReason] = useState('');
-  const [currentEmployeeName, setCurrentEmployeeName] = useState<string>(ongoingRequest?.employeeName || '');
-  const [declinedEmployees, setDeclinedEmployees] = useState<string[]>(ongoingRequest?.declinedEmployees || []);
+  const [currentEmployeeName, setCurrentEmployeeName] = useState<string>('');
+  const [declinedEmployees, setDeclinedEmployees] = useState<string[]>([]);
   const [hasDeclinedOnce, setHasDeclinedOnce] = useState(false);
   const [lastEmployeeName, setLastEmployeeName] = useState<string>('');
+
+  // Update local states when ongoing request changes
+  useEffect(() => {
+    if (ongoingRequest) {
+      if (ongoingRequest.priceQuote !== undefined) {
+        setPriceQuote(ongoingRequest.priceQuote);
+      }
+      if (ongoingRequest.employeeName) {
+        setCurrentEmployeeName(ongoingRequest.employeeName);
+      }
+      if (ongoingRequest.declinedEmployees) {
+        setDeclinedEmployees(ongoingRequest.declinedEmployees);
+      }
+    }
+  }, [ongoingRequest]);
 
   const handleSubmit = () => {
     if (!validateMessage(message, type)) {
@@ -48,7 +63,7 @@ export const useServiceRequest = (
       const timestamp = new Date().toISOString();
       
       // Create ongoing request
-      const ongoingRequest = {
+      const newOngoingRequest = {
         id: requestId,
         type,
         status: 'pending' as const,
@@ -57,7 +72,7 @@ export const useServiceRequest = (
         declinedEmployees: declinedEmployees
       };
       
-      setOngoingRequest(ongoingRequest);
+      setOngoingRequest(newOngoingRequest);
       setStatus('pending');
       setIsSubmitting(false);
       setShowRealTimeUpdate(true);
@@ -72,6 +87,7 @@ export const useServiceRequest = (
         type,
         userLocation,
         (quote: number) => {
+          console.log('Employee sent quote:', quote);
           setPriceQuote(quote);
           // Immediately update ongoing request with the price quote
           setOngoingRequest(prev => {
@@ -90,6 +106,7 @@ export const useServiceRequest = (
         setDeclineReason,
         setEmployeeLocation,
         (employeeName: string) => {
+          console.log('Employee assigned:', employeeName);
           setCurrentEmployeeName(employeeName);
           // Update ongoing request with employee name
           setOngoingRequest(prev => prev ? { 
@@ -146,6 +163,7 @@ export const useServiceRequest = (
           type,
           userLocation,
           (quote: number) => {
+            console.log('New employee sent quote:', quote);
             setPriceQuote(quote);
             // Update ongoing request with the new price quote
             setOngoingRequest(prev => {
@@ -164,6 +182,7 @@ export const useServiceRequest = (
           setDeclineReason,
           setEmployeeLocation,
           (employeeName: string) => {
+            console.log('New employee assigned:', employeeName);
             setCurrentEmployeeName(employeeName);
             // Update ongoing request with new employee name
             setOngoingRequest(prev => prev ? { 
@@ -197,11 +216,11 @@ export const useServiceRequest = (
     showRealTimeUpdate,
     showPriceQuote,
     setShowPriceQuote,
-    priceQuote: ongoingRequest?.priceQuote || priceQuote, // Always prefer the ongoing request price
+    priceQuote: ongoingRequest?.priceQuote !== undefined ? ongoingRequest.priceQuote : priceQuote,
     employeeLocation,
     status,
     declineReason,
-    currentEmployeeName: ongoingRequest?.employeeName || currentEmployeeName, // Always prefer the ongoing request employee
+    currentEmployeeName: ongoingRequest?.employeeName || currentEmployeeName,
     declinedEmployees,
     hasDeclinedOnce,
     handleSubmit,
