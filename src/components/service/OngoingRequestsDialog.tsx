@@ -16,9 +16,15 @@ interface OngoingRequestsDialogProps {
   open: boolean;
   onClose: () => void;
   onViewRequest: () => void;
+  onReviewPriceQuote: () => void;
 }
 
-const OngoingRequestsDialog: React.FC<OngoingRequestsDialogProps> = ({ open, onClose, onViewRequest }) => {
+const OngoingRequestsDialog: React.FC<OngoingRequestsDialogProps> = ({ 
+  open, 
+  onClose, 
+  onViewRequest,
+  onReviewPriceQuote
+}) => {
   const { language, ongoingRequest } = useApp();
   const t = useTranslation(language);
   const [showEmployeeLocation, setShowEmployeeLocation] = useState(false);
@@ -35,6 +41,11 @@ const OngoingRequestsDialog: React.FC<OngoingRequestsDialogProps> = ({ open, onC
 
   const handleRequestClick = () => {
     onViewRequest();
+    onClose();
+  };
+
+  const handleReviewPriceQuote = () => {
+    onReviewPriceQuote();
     onClose();
   };
 
@@ -120,7 +131,7 @@ const OngoingRequestsDialog: React.FC<OngoingRequestsDialogProps> = ({ open, onC
                   <Button 
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleRequestClick();
+                      handleReviewPriceQuote();
                     }}
                     className="w-full mt-3 bg-green-600 hover:bg-green-700 text-white"
                   >

@@ -22,6 +22,7 @@ const Dashboard: React.FC = () => {
   const [showLocationPicker, setShowLocationPicker] = useState(false);
   const [showOngoingRequests, setShowOngoingRequests] = useState(false);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
+  const [shouldShowPriceQuote, setShouldShowPriceQuote] = useState(false);
   
   // Redirect to auth if not authenticated
   useEffect(() => {
@@ -71,6 +72,7 @@ const Dashboard: React.FC = () => {
   
   const handleRequestClose = () => {
     setSelectedService(null);
+    setShouldShowPriceQuote(false);
   };
   
   const handleLocationChange = (location: { lat: number; lng: number }) => {
@@ -92,6 +94,20 @@ const Dashboard: React.FC = () => {
       setSelectedService(ongoingRequest.type as ServiceType);
     }
   };
+
+  const handleReviewPriceQuote = () => {
+    if (ongoingRequest) {
+      setSelectedService(ongoingRequest.type as ServiceType);
+      setShouldShowPriceQuote(true);
+    }
+  };
+
+  // Effect to handle showing price quote when coming from ongoing requests
+  useEffect(() => {
+    if (selectedService && shouldShowPriceQuote) {
+      // This will be handled by the ServiceRequest component
+    }
+  }, [selectedService, shouldShowPriceQuote]);
   
   return (
     <div className="min-h-screen bg-background pb-16 font-clash">
@@ -124,6 +140,7 @@ const Dashboard: React.FC = () => {
         onLocationChange={handleLocationChange}
         onLanguageChange={setLanguage}
         onViewRequest={handleViewRequest}
+        onReviewPriceQuote={handleReviewPriceQuote}
       />
 
       <ExitConfirmDialog

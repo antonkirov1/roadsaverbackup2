@@ -26,6 +26,7 @@ interface DashboardModalsProps {
   onLocationChange: (location: { lat: number; lng: number }) => void;
   onLanguageChange: (language: 'en' | 'bg') => void;
   onViewRequest: () => void;
+  onReviewPriceQuote: () => void;
 }
 
 const DashboardModals: React.FC<DashboardModalsProps> = ({
@@ -44,7 +45,8 @@ const DashboardModals: React.FC<DashboardModalsProps> = ({
   onOngoingRequestsClose,
   onLocationChange,
   onLanguageChange,
-  onViewRequest
+  onViewRequest,
+  onReviewPriceQuote
 }) => {
   return (
     <>
@@ -82,6 +84,7 @@ const DashboardModals: React.FC<DashboardModalsProps> = ({
           open={showOngoingRequests}
           onClose={onOngoingRequestsClose}
           onViewRequest={onViewRequest}
+          onReviewPriceQuote={onReviewPriceQuote}
         />
       )}
       
