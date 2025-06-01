@@ -1,4 +1,3 @@
-
 import { authGeneralTranslations } from './authGeneral';
 import { authLoginTranslations } from './authLogin';
 import { authRegisterTranslations } from './authRegister';
@@ -14,6 +13,7 @@ import { settingsTranslations } from './settings';
 import { generalTranslations } from './general';
 import { uiTranslations } from './ui';
 import { themeTranslations } from './theme';
+import { authSecretQuestionsTranslations } from './authSecretQuestions';
 
 // Combine all translation categories properly
 export const translations = {
@@ -32,6 +32,7 @@ export const translations = {
   ...generalTranslations,
   ...uiTranslations,
   ...themeTranslations,
+  ...authSecretQuestionsTranslations,
 };
 
 export type Language = 'en' | 'bg';

@@ -1,15 +1,15 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card"; // Removed CardHeader, CardDescription, CardFooter
+import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
 import { Globe, CheckCircle2, AlertCircle } from "lucide-react";
 import { useApp } from '@/contexts/AppContext';
 import { useTranslation } from '@/utils/translations';
 import RegisterFormFieldInput from './RegisterFormFieldInput';
 import RegisterGenderSelector from './RegisterGenderSelector';
-import RegisterFormHeader from './RegisterFormHeader'; // New import
-import RegisterFormActions from './RegisterFormActions'; // New import
+import RegisterFormHeader from './RegisterFormHeader';
+import RegisterFormActions from './RegisterFormActions';
+import SecretQuestionField from './SecretQuestionField';
 import {
   useUsernameValidation,
   useEmailValidation,
@@ -17,9 +17,23 @@ import {
   usePasswordValidation,
   useConfirmPasswordValidation
 } from '@/hooks/useAuthValidation';
+import {
+  useSecretQuestionValidation,
+  useSecretQuestionDropdownValidation
+} from '@/hooks/useSecretQuestionValidation';
 
 interface RegisterFormProps {
-  onRegister: (userData: { username: string; email: string; password: string; gender?: string; phoneNumber?: string }) => void;
+  onRegister: (userData: { 
+    username: string; 
+    email: string; 
+    password: string; 
+    gender?: string; 
+    phoneNumber?: string;
+    secretQuestion1?: string;
+    secretAnswer1?: string;
+    secretQuestion2?: string;
+    secretAnswer2?: string;
+  }) => void;
   onCancel: () => void;
 }
 
@@ -66,10 +80,56 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Secret Question 1
+  const [secretQuestion1, setSecretQuestion1] = useState('');
+  const {
+    value: secretAnswer1,
+    setValue: setSecretAnswer1,
+    error: secretAnswer1Error,
+    isValid: isSecretAnswer1Valid
+  } = useSecretQuestionValidation(t);
+
+  const {
+    value: secretQuestion1Validation,
+    setValue: setSecretQuestion1Validation,
+    error: secretQuestion1Error,
+    isValid: isSecretQuestion1Valid
+  } = useSecretQuestionDropdownValidation(t);
+
+  // Secret Question 2
+  const [secretQuestion2, setSecretQuestion2] = useState('');
+  const {
+    value: secretAnswer2,
+    setValue: setSecretAnswer2,
+    error: secretAnswer2Error,
+    isValid: isSecretAnswer2Valid
+  } = useSecretQuestionValidation(t);
+
+  const {
+    value: secretQuestion2Validation,
+    setValue: setSecretQuestion2Validation,
+    error: secretQuestion2Error,
+    isValid: isSecretQuestion2Valid
+  } = useSecretQuestionDropdownValidation(t);
+
+  const handleSecretQuestion1Change = (value: string) => {
+    setSecretQuestion1(value);
+    setSecretQuestion1Validation(value);
+  };
+
+  const handleSecretQuestion2Change = (value: string) => {
+    setSecretQuestion2(value);
+    setSecretQuestion2Validation(value);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!isUsernameValid || !isEmailValid || !isPasswordValid || !isConfirmPasswordValid || !isPhoneValid || !gender) {
+    const isSecretQuestionsValid = isSecretQuestion1Valid && isSecretAnswer1Valid && 
+                                  isSecretQuestion2Valid && isSecretAnswer2Valid;
+    
+    if (!isUsernameValid || !isEmailValid || !isPasswordValid || !isConfirmPasswordValid || 
+        !isPhoneValid || !gender || !isSecretQuestionsValid) {
       toast({
         title: t("error-title"),
         description: t("fill-all-fields"),
@@ -90,7 +150,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
         email, 
         password, 
         gender, 
-        phoneNumber: phoneNumber
+        phoneNumber: phoneNumber,
+        secretQuestion1,
+        secretAnswer1,
+        secretQuestion2,
+        secretAnswer2
       });
       setIsLoading(false);
     }, 1500);
@@ -106,7 +170,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
     setShowPassword(!showPassword);
   };
 
-  const isOverallFormValid = isUsernameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid && isPhoneValid && !!gender;
+  const isOverallFormValid = isUsernameValid && isEmailValid && isPasswordValid && 
+                            isConfirmPasswordValid && isPhoneValid && !!gender &&
+                            isSecretQuestion1Valid && isSecretAnswer1Valid &&
+                            isSecretQuestion2Valid && isSecretAnswer2Valid;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-600/10 to-background font-clash">
@@ -217,6 +284,32 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onCancel }) => 
                 currentShowPasswordState={showPassword}
                 t={t}
                 required
+              />
+              
+              <SecretQuestionField
+                questionNumber={1}
+                selectedQuestion={secretQuestion1}
+                onQuestionChange={handleSecretQuestion1Change}
+                answer={secretAnswer1}
+                onAnswerChange={(e) => setSecretAnswer1(e.target.value)}
+                questionError={secretQuestion1Error}
+                answerError={secretAnswer1Error}
+                isQuestionValid={isSecretQuestion1Valid}
+                isAnswerValid={isSecretAnswer1Valid}
+                t={t}
+              />
+
+              <SecretQuestionField
+                questionNumber={2}
+                selectedQuestion={secretQuestion2}
+                onQuestionChange={handleSecretQuestion2Change}
+                answer={secretAnswer2}
+                onAnswerChange={(e) => setSecretAnswer2(e.target.value)}
+                questionError={secretQuestion2Error}
+                answerError={secretAnswer2Error}
+                isQuestionValid={isSecretQuestion2Valid}
+                isAnswerValid={isSecretAnswer2Valid}
+                t={t}
               />
             </CardContent>
             
