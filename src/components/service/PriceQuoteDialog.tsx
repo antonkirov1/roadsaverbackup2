@@ -37,17 +37,22 @@ const PriceQuoteDialog: React.FC<PriceQuoteDialogProps> = ({
   const [showDeclineConfirm, setShowDeclineConfirm] = useState(false);
   const [isWaitingForRevision, setIsWaitingForRevision] = useState(false);
 
+  console.log('PriceQuoteDialog props:', { open, serviceType, priceQuote, employeeName, hasDeclinedOnce });
+
   const handleCancelRequest = () => {
+    console.log('handleCancelRequest called');
     setShowCancelConfirm(true);
   };
 
   const confirmCancel = () => {
+    console.log('confirmCancel called');
     onCancelRequest();
     setShowCancelConfirm(false);
     onClose();
   };
 
   const handleDecline = () => {
+    console.log('handleDecline called, hasDeclinedOnce:', hasDeclinedOnce);
     if (!hasDeclinedOnce) {
       setShowDeclineConfirm(true);
     } else {
@@ -57,6 +62,7 @@ const PriceQuoteDialog: React.FC<PriceQuoteDialogProps> = ({
   };
 
   const confirmDecline = () => {
+    console.log('confirmDecline called');
     setShowDeclineConfirm(false);
     setIsWaitingForRevision(true);
     
@@ -70,6 +76,11 @@ const PriceQuoteDialog: React.FC<PriceQuoteDialogProps> = ({
       // For now, we'll just proceed with the decline since we don't have the revised quote flow implemented
       onDecline();
     }, 3000);
+  };
+
+  const handleAccept = () => {
+    console.log('handleAccept called');
+    onAccept();
   };
 
   // Allow dialog to close when clicking outside or pressing escape - this will keep the request active
@@ -105,7 +116,7 @@ const PriceQuoteDialog: React.FC<PriceQuoteDialogProps> = ({
             priceQuote={priceQuote}
             employeeName={employeeName}
             hasDeclinedOnce={hasDeclinedOnce}
-            onAccept={onAccept}
+            onAccept={handleAccept}
             onDecline={handleDecline}
             onCancelRequest={handleCancelRequest}
           />

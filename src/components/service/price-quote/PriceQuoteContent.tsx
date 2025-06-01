@@ -30,6 +30,8 @@ const PriceQuoteContent: React.FC<PriceQuoteContentProps> = ({
   const serviceFee = 5;
   const totalPrice = priceQuote + serviceFee;
 
+  console.log('PriceQuoteContent props:', { serviceType, priceQuote, employeeName, hasDeclinedOnce });
+
   return (
     <div className="space-y-4">
       <div className="rounded-md bg-secondary p-3">
@@ -39,7 +41,7 @@ const PriceQuoteContent: React.FC<PriceQuoteContentProps> = ({
       
       <div className="rounded-md bg-green-50 dark:bg-green-900/20 p-3">
         <h3 className="font-medium mb-2">
-          Price Quote from: {employeeName}
+          Price Quote from: {employeeName || 'Employee'}
         </h3>
         <PriceBreakdown
           priceQuote={priceQuote}
@@ -51,27 +53,36 @@ const PriceQuoteContent: React.FC<PriceQuoteContentProps> = ({
       {hasDeclinedOnce && (
         <div className="rounded-md bg-blue-50 dark:bg-blue-900/20 p-3">
           <p className="text-sm text-blue-700 dark:text-blue-300">
-            This is a revised quote from {employeeName} based on your previous decline.
+            This is a revised quote from {employeeName || 'the employee'} based on your previous decline.
           </p>
         </div>
       )}
       
       <div className="flex flex-col gap-2 mt-6">
         <Button 
-          onClick={onAccept}
+          onClick={() => {
+            console.log('Accept button clicked');
+            onAccept();
+          }}
           className="bg-green-600 hover:bg-green-700 text-white"
         >
           Accept
         </Button>
         <Button 
-          onClick={onDecline}
+          onClick={() => {
+            console.log('Decline button clicked, hasDeclinedOnce:', hasDeclinedOnce);
+            onDecline();
+          }}
           variant="outline"
           className="border-yellow-500 text-yellow-600 hover:bg-yellow-50"
         >
           {hasDeclinedOnce ? 'Final Decline' : 'Decline'}
         </Button>
         <Button 
-          onClick={onCancelRequest}
+          onClick={() => {
+            console.log('Cancel button clicked');
+            onCancelRequest();
+          }}
           variant="outline"
           className="border-red-500 text-red-600 hover:bg-red-50"
         >

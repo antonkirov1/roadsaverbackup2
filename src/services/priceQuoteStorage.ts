@@ -112,7 +112,7 @@ class PriceQuoteStorageService {
       // Update snapshot status to finished
       const { error: updateError } = await supabase
         .from('price_quote_snapshots')
-        .update({ status: 'finished' as 'pending' | 'accepted' | 'declined' | 'finished' })
+        .update({ status: 'finished' as const })
         .eq('id', snapshot.id);
 
       if (updateError) {
