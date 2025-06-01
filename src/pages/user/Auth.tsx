@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoginForm from '@/components/auth/LoginForm';
@@ -20,7 +19,7 @@ const Auth: React.FC = () => {
   
   const handleLogin = (credentials: { username: string; password: string }) => {
     login({ username: credentials.username });
-    navigate('/dashboard');
+    navigate('/user/dashboard'); // Fixed: Changed from '/dashboard' to '/user/dashboard'
     toast({
       title: t("login-successful"),
       description: t("welcome-to-roadsaver")
@@ -29,7 +28,7 @@ const Auth: React.FC = () => {
   
   const handleRegister = (userData: { username: string; email: string; password: string; gender?: string; phoneNumber?: string }) => {
     login({ username: userData.username, email: userData.email });
-    navigate('/dashboard');
+    navigate('/user/dashboard'); // Fixed: Changed from '/dashboard' to '/user/dashboard'
     toast({
       title: t("registration-successful"),
       description: t("account-created-welcome")
