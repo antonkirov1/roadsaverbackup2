@@ -140,7 +140,7 @@ const ServiceRequestStatus: React.FC<ServiceRequestStatusProps> = ({
         <div className="bg-green-50 border border-green-200 rounded-lg p-4">
           <h3 className="font-semibold text-green-800 mb-2">Service Accepted</h3>
           <p className="text-sm text-green-700">
-            Your request has been accepted! The employee will contact you shortly.
+            Your request has been accepted! Our employee will be at your location shortly.
           </p>
         </div>
       )}

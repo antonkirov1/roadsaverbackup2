@@ -19,7 +19,7 @@ const Index = () => {
     const newLanguage = language === 'en' ? 'bg' : 'en';
     setLanguage(newLanguage);
     console.log('Language changed to:', newLanguage);
-    console.log('Testing translation:', t('app-subtitle'));
+    console.log('Testing translation:', t('Road Assistance'));
   };
 
   return (
