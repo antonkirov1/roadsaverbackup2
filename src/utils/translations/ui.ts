@@ -8,7 +8,8 @@ interface TranslationGroup {
   [key: string]: TranslationEntry;
 }
 
-const uiTranslations: TranslationGroup = {
+// UI elements and buttons translations
+export const uiTranslations: TranslationGroup = {
   'cancel': {
     en: 'Cancel',
     bg: 'Отказ'
@@ -81,9 +82,4 @@ const uiTranslations: TranslationGroup = {
     en: 'Yes, Cancel',
     bg: 'Да, отмени'
   },
-};
-
-export const ui = {
-  en: Object.fromEntries(Object.entries(uiTranslations).map(([key, value]) => [key, value.en])),
-  bg: Object.fromEntries(Object.entries(uiTranslations).map(([key, value]) => [key, value.bg]))
 };

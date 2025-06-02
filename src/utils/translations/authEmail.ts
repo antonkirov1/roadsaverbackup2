@@ -8,7 +8,7 @@ interface TranslationGroup {
   [key: string]: TranslationEntry;
 }
 
-const authEmailTranslations: TranslationGroup = {
+export const authEmailTranslations: TranslationGroup = {
   'email': {
     en: 'Email',
     bg: 'Имейл'
@@ -43,7 +43,3 @@ const authEmailTranslations: TranslationGroup = {
   }
 };
 
-export const authEmail = {
-  en: Object.fromEntries(Object.entries(authEmailTranslations).map(([key, value]) => [key, value.en])),
-  bg: Object.fromEntries(Object.entries(authEmailTranslations).map(([key, value]) => [key, value.bg]))
-};

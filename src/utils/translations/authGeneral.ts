@@ -8,7 +8,7 @@ interface TranslationGroup {
   [key: string]: TranslationEntry;
 }
 
-const authGeneralTranslations: TranslationGroup = {
+export const authGeneralTranslations: TranslationGroup = {
   'logged-out': {
     en: 'Logged Out',
     bg: 'Излязохте'
@@ -59,7 +59,3 @@ const authGeneralTranslations: TranslationGroup = {
   }
 };
 
-export const authGeneral = {
-  en: Object.fromEntries(Object.entries(authGeneralTranslations).map(([key, value]) => [key, value.en])),
-  bg: Object.fromEntries(Object.entries(authGeneralTranslations).map(([key, value]) => [key, value.bg]))
-};

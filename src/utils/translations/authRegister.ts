@@ -8,7 +8,7 @@ interface TranslationGroup {
   [key: string]: TranslationEntry;
 }
 
-const authRegisterTranslations: TranslationGroup = {
+export const authRegisterTranslations: TranslationGroup = {
   'create-account': {
     en: 'Create Account',
     bg: 'Създаване на акаунт'
@@ -41,9 +41,4 @@ const authRegisterTranslations: TranslationGroup = {
     en: 'Must be at least 8 characters with 1 uppercase letter',
     bg: 'Трябва да е поне 8 символа с 1 главна буква'
   }
-};
-
-export const authRegister = {
-  en: Object.fromEntries(Object.entries(authRegisterTranslations).map(([key, value]) => [key, value.en])),
-  bg: Object.fromEntries(Object.entries(authRegisterTranslations).map(([key, value]) => [key, value.bg]))
 };

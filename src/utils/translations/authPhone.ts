@@ -8,7 +8,7 @@ interface TranslationGroup {
   [key: string]: TranslationEntry;
 }
 
-const authPhoneTranslations: TranslationGroup = {
+export const authPhoneTranslations: TranslationGroup = {
   'phone-number-label': {
     en: 'Phone Number',
     bg: 'Телефонен номер'
@@ -39,7 +39,3 @@ const authPhoneTranslations: TranslationGroup = {
   }
 };
 
-export const authPhone = {
-  en: Object.fromEntries(Object.entries(authPhoneTranslations).map(([key, value]) => [key, value.en])),
-  bg: Object.fromEntries(Object.entries(authPhoneTranslations).map(([key, value]) => [key, value.bg]))
-};
