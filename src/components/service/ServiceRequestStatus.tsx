@@ -1,8 +1,9 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useApp } from '@/contexts/AppContext';
 import { useTranslation } from '@/utils/translations';
-import { Clock, CheckCircle, XCircle, Phone, FileText } from 'lucide-react';
+import { Clock, CheckCircle, XCircle, Phone, FileText, MapPin } from 'lucide-react';
 import GoogleMap from '@/components/GoogleMap';
 
 interface ServiceRequestStatusProps {
@@ -17,6 +18,7 @@ interface ServiceRequestStatusProps {
   hasPriceQuote?: boolean;
   hasStoredSnapshot?: boolean;
   onShowStoredPriceQuote?: () => void;
+  estimatedArrival?: string;
 }
 
 const ServiceRequestStatus: React.FC<ServiceRequestStatusProps> = ({
@@ -30,7 +32,8 @@ const ServiceRequestStatus: React.FC<ServiceRequestStatusProps> = ({
   onReviewPriceQuote,
   hasPriceQuote = false,
   hasStoredSnapshot = false,
-  onShowStoredPriceQuote
+  onShowStoredPriceQuote,
+  estimatedArrival
 }) => {
   const { language } = useApp();
   const t = useTranslation(language);
@@ -72,6 +75,16 @@ const ServiceRequestStatus: React.FC<ServiceRequestStatusProps> = ({
             {status.charAt(0).toUpperCase() + status.slice(1)}
           </div>
         </div>
+        
+        {/* ETA Display */}
+        {status === 'accepted' && estimatedArrival && estimatedArrival !== '00:00:00' && (
+          <div className="mt-3 bg-blue-50 border border-blue-200 rounded-lg p-3">
+            <div className="flex items-center justify-center gap-2 text-blue-800">
+              <Clock className="h-4 w-4" />
+              <span className="font-medium">Estimated Arrival: {estimatedArrival}</span>
+            </div>
+          </div>
+        )}
         
         {/* Review Price Quote buttons */}
         <div className="mt-4 space-y-2">

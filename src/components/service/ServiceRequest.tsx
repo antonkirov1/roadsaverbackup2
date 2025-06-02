@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import ServiceRequestDialog from './ServiceRequestDialog';
 import ServiceRequestForm from './ServiceRequestForm';
@@ -47,7 +48,8 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
     handleCancelRequest,
     handleContactSupport,
     storedSnapshot,
-    showStoredPriceQuote
+    showStoredPriceQuote,
+    estimatedArrival
   } = useServiceRequest(type, userLocation);
 
   const [showCancelConfirmDialog, setShowCancelConfirmDialog] = useState(false);
@@ -139,6 +141,7 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
             hasPriceQuote={actualPriceQuote >= 0}
             hasStoredSnapshot={!!storedSnapshot}
             onShowStoredPriceQuote={showStoredPriceQuote}
+            estimatedArrival={estimatedArrival}
           />
         )}
       </ServiceRequestDialog>
