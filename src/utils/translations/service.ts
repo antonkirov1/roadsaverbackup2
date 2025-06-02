@@ -1,4 +1,3 @@
-import { startTransition } from "react";
 
 interface TranslationEntry {
   en: string;
@@ -54,8 +53,6 @@ export const serviceTranslations: TranslationGroup = {
   'car-battery-desc': {
     en: 'Get help with your car battery issues or with ignition issues.',
     bg: 'Помощ при проблеми с акумулатора, или ако колата ви не пали.'
-    
-    
   },
   'tow-truck-desc': {
     en: 'Request a towing service',
