@@ -13,9 +13,10 @@ interface LoginFormProps {
   onLogin: (credentials: { username: string; password: string }) => void;
   onCreateAccount?: () => void;
   isEmployee?: boolean;
+  isAdmin?: boolean;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onCreateAccount, isEmployee = false }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onCreateAccount, isEmployee = false, isAdmin = false }) => {
   const { language } = useApp();
   const t = useTranslation(language);
   const [username, setUsername] = useState('');
@@ -37,7 +38,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onCreateAccount, isEmplo
 
     setIsLoading(true);
     
-    // For demo purposes, we'll simulate authentication
+    // For admin authentication, pass credentials directly to parent handler
+    if (isAdmin) {
+      onLogin({ username, password });
+      setIsLoading(false);
+      return;
+    }
+    
+    // For demo purposes, we'll simulate authentication for other user types
     setTimeout(() => {
       // Check for test accounts
       if (isEmployee && username === 'admin' && password === 'Admin1') {
@@ -55,15 +63,21 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onCreateAccount, isEmplo
     }, 1000);
   };
 
-  const primaryColor = isEmployee ? 'blue' : 'green';
+  const primaryColor = isEmployee ? 'blue' : isAdmin ? 'purple' : 'green';
   const focusClasses = isEmployee 
     ? 'focus:ring-blue-600 focus:border-blue-600' 
+    : isAdmin 
+    ? 'focus:ring-purple-600 focus:border-purple-600'
     : 'focus:ring-green-600 focus:border-green-600';
   const buttonClasses = isEmployee 
     ? 'bg-blue-600 hover:bg-blue-700' 
+    : isAdmin
+    ? 'bg-purple-600 hover:bg-purple-700'
     : 'bg-green-600 hover:bg-green-700';
   const outlineClasses = isEmployee 
     ? 'border-blue-600 text-blue-600 hover:bg-blue-50' 
+    : isAdmin
+    ? 'border-purple-600 text-purple-600 hover:bg-purple-50'
     : 'border-green-600 text-green-600 hover:bg-green-50';
 
   return (

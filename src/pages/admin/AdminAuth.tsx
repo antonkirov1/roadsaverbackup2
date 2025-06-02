@@ -71,6 +71,7 @@ const AdminAuth: React.FC = () => {
         
         <LoginForm 
           onLogin={handleLogin}
+          isAdmin={true}
         />
       </div>
     </div>
