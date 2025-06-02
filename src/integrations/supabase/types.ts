@@ -102,30 +102,36 @@ export type Database = {
         Row: {
           auth_user_id: string | null
           created_at: string
+          created_by_admin: boolean | null
           email: string
           gender: string | null
           id: string
           migrated_from_new_accounts: string | null
+          password_hash: string | null
           phone_number: string | null
           username: string
         }
         Insert: {
           auth_user_id?: string | null
           created_at?: string
+          created_by_admin?: boolean | null
           email: string
           gender?: string | null
           id?: string
           migrated_from_new_accounts?: string | null
+          password_hash?: string | null
           phone_number?: string | null
           username: string
         }
         Update: {
           auth_user_id?: string | null
           created_at?: string
+          created_by_admin?: boolean | null
           email?: string
           gender?: string | null
           id?: string
           migrated_from_new_accounts?: string | null
+          password_hash?: string | null
           phone_number?: string | null
           username?: string
         }

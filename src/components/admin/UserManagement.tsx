@@ -6,6 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { ArrowLeft, Plus, Edit, Eye, EyeOff } from 'lucide-react';
 import { UserAccountService } from '@/services/userAccountService';
 import { toast } from '@/components/ui/use-toast';
+import CreateUserModal from './CreateUserModal';
 import bcrypt from 'bcryptjs';
 
 interface UserAccount {
@@ -15,6 +16,7 @@ interface UserAccount {
   phone_number?: string;
   gender?: string;
   created_at: string;
+  created_by_admin?: boolean;
 }
 
 interface UserManagementProps {
@@ -25,6 +27,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ onBack }) => {
   const [users, setUsers] = useState<UserAccount[]>([]);
   const [loading, setLoading] = useState(true);
   const [showPasswords, setShowPasswords] = useState<{[key: string]: boolean}>({});
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   const loadUsers = async () => {
     try {
@@ -45,6 +48,11 @@ const UserManagement: React.FC<UserManagementProps> = ({ onBack }) => {
   useEffect(() => {
     loadUsers();
   }, []);
+
+  const handleUserCreated = () => {
+    // Reload the users list after a new user is created
+    loadUsers();
+  };
 
   const encryptPassword = async (password: string): Promise<string> => {
     const saltRounds = 10;
@@ -79,7 +87,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ onBack }) => {
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
             Existing Users ({users.length})
-            <Button>
+            <Button onClick={() => setShowCreateModal(true)} className="bg-purple-600 hover:bg-purple-700">
               <Plus className="h-4 w-4 mr-2" />
               Create New User
             </Button>
@@ -104,6 +112,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ onBack }) => {
                   <TableHead>Phone</TableHead>
                   <TableHead>Gender</TableHead>
                   <TableHead>Created</TableHead>
+                  <TableHead>Source</TableHead>
                   <TableHead>Password Tools</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
@@ -116,6 +125,13 @@ const UserManagement: React.FC<UserManagementProps> = ({ onBack }) => {
                     <TableCell>{user.phone_number || 'N/A'}</TableCell>
                     <TableCell>{user.gender || 'N/A'}</TableCell>
                     <TableCell>{new Date(user.created_at).toLocaleDateString()}</TableCell>
+                    <TableCell>
+                      <span className={`px-2 py-1 rounded-full text-xs ${
+                        user.created_by_admin ? 'bg-purple-100 text-purple-800' : 'bg-green-100 text-green-800'
+                      }`}>
+                        {user.created_by_admin ? 'Admin Created' : 'Self Registered'}
+                      </span>
+                    </TableCell>
                     <TableCell>
                       <Button
                         variant="ghost"
@@ -142,6 +158,12 @@ const UserManagement: React.FC<UserManagementProps> = ({ onBack }) => {
           )}
         </CardContent>
       </Card>
+
+      <CreateUserModal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onUserCreated={handleUserCreated}
+      />
     </div>
   );
 };

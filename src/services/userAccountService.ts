@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import bcrypt from 'bcryptjs';
 
@@ -13,6 +12,14 @@ export interface NewUserAccount {
 export interface ExistingUserAccount {
   username: string;
   email: string;
+  phone_number?: string;
+  gender?: string;
+}
+
+export interface AdminCreateUserAccount {
+  username: string;
+  email: string;
+  password: string;
   phone_number?: string;
   gender?: string;
 }
@@ -46,6 +53,39 @@ export class UserAccountService {
       return data;
     } catch (error) {
       console.error('Error in createNewUserAccount:', error);
+      throw error;
+    }
+  }
+
+  // Create a user account directly in existing_user_accounts table (admin only)
+  static async createUserByAdmin(userData: AdminCreateUserAccount) {
+    try {
+      // Hash the password before storing
+      const saltRounds = 10;
+      const password_hash = await bcrypt.hash(userData.password, saltRounds);
+
+      const { data, error } = await supabase
+        .from('existing_user_accounts')
+        .insert({
+          username: userData.username.toLowerCase(), // Ensure lowercase
+          email: userData.email,
+          password_hash,
+          phone_number: userData.phone_number,
+          gender: userData.gender,
+          created_by_admin: true
+        })
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Error creating user account by admin:', error);
+        throw error;
+      }
+
+      console.log('User account created by admin:', data);
+      return data;
+    } catch (error) {
+      console.error('Error in createUserByAdmin:', error);
       throw error;
     }
   }
