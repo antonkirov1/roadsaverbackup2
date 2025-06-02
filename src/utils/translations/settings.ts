@@ -1,154 +1,87 @@
-interface TranslationEntry {
-  en: string;
-  bg: string;
-}
 
-interface TranslationGroup {
-  [key: string]: TranslationEntry;
-}
-
-// Settings and UI-related translations
-export const settingsTranslations: TranslationGroup = {
-  'settings': {
-    en: 'Settings',
-    bg: 'Настройки'
+export const settings = {
+  en: {
+    'settings': 'Settings',
+    'configure-preferences': 'Configure your preferences and view your account information.',
+    'account': 'Account',
+    'account-info': 'Account Information',
+    'payment': 'Payment',
+    'payment-methods': 'Payment Methods',
+    'history': 'History',
+    'request-history': 'Request History',
+    'requests-desc': 'View your completed and declined service requests',
+    'about': 'About',
+    'app-info': 'App Information',
+    'no-requests': 'No requests found',
+    'completed': 'Completed',
+    'declined': 'Declined',
+    'employee': 'Employee',
+    'total-price': 'Total Price',
+    'address': 'Address',
+    'view-on-map': 'View on Map',
+    'reason': 'Reason',
+    'username': 'Username',
+    'email': 'Email',
+    'phone': 'Phone Number',
+    'gender': 'Gender',
+    'joined-date': 'Member Since',
+    'edit-profile': 'Edit Profile',
+    'change-password': 'Change Password',
+    'logout': 'Logout',
+    'logout-confirm': 'Are you sure you want to logout?',
+    'cancel': 'Cancel',
+    'confirm': 'Confirm',
+    'save-changes': 'Save Changes',
+    'profile-updated': 'Profile Updated',
+    'profile-update-success': 'Your profile has been updated successfully.',
+    'profile-update-error': 'Failed to update profile. Please try again.',
+    'password-updated': 'Password Updated',
+    'password-update-success': 'Your password has been updated successfully.',
+    'password-update-error': 'Failed to update password. Please try again.',
+    'current-password': 'Current Password',
+    'new-password': 'New Password',
+    'confirm-new-password': 'Confirm New Password',
   },
-  'configure-preferences': {
-    en: 'Configure your preferences',
-    bg: 'Конфигурирайте вашите предпочитания'
+  bg: {
+    'settings': 'Настройки',
+    'configure-preferences': 'Конфигурирайте предпочитанията си и вижте информацията за акаунта си.',
+    'account': 'Акаунт',
+    'account-info': 'Информация за акаунта',
+    'payment': 'Плащане',
+    'payment-methods': 'Методи за плащане',
+    'history': 'История',
+    'request-history': 'История на заявките',
+    'requests-desc': 'Вижте завършените и отхвърлените заявки за услуги',
+    'about': 'Относно',
+    'app-info': 'Информация за приложението',
+    'no-requests': 'Няма намерени заявки',
+    'completed': 'Завършен',
+    'declined': 'Отхвърлен',
+    'employee': 'Служител',
+    'total-price': 'Обща цена',
+    'address': 'Адрес',
+    'view-on-map': 'Виж в картата',
+    'reason': 'Причина',
+    'username': 'Потребителско име',
+    'email': 'Имейл',
+    'phone': 'Телефонен номер',
+    'gender': 'Пол',
+    'joined-date': 'Член от',
+    'edit-profile': 'Редактиране на профила',
+    'change-password': 'Смяна на парола',
+    'logout': 'Изход',
+    'logout-confirm': 'Сигурни ли сте, че искате да излезете?',
+    'cancel': 'Отказ',
+    'confirm': 'Потвърждение',
+    'save-changes': 'Запазване на промените',
+    'profile-updated': 'Профилът е актуализиран',
+    'profile-update-success': 'Профилът ви беше актуализиран успешно.',
+    'profile-update-error': 'Неуспешна актуализация на профила. Моля, опитайте отново.',
+    'password-updated': 'Паролата е актуализирана',
+    'password-update-success': 'Паролата ви беше актуализирана успешно.',
+    'password-update-error': 'Неуспешна актуализация на паролата. Моля, опитайте отново.',
+    'current-password': 'Текуща парола',
+    'new-password': 'Нова парола',
+    'confirm-new-password': 'Потвърдете новата парола',
   },
-  'account': {
-    en: 'Account',
-    bg: 'Акаунт'
-  },
-  'about': {
-    en: 'About us',
-    bg: 'За нас'
-  },
-  'payment': {
-    en: 'Payment',
-    bg: 'Плащане'
-  },
-  'history': {
-    en: 'History',
-    bg: 'История'
-  },
-  'user-account': {
-    en: 'User Account',
-    bg: 'Потребителски акаунт'
-  },
-  'username': {
-    en: 'Username',
-    bg: 'Потребителско име'
-  },
-  'email': {
-    en: 'Email',
-    bg: 'Имейл'
-  },
-  'language': {
-    en: 'Language',
-    bg: 'Език'
-  },
-  'english': {
-    en: 'English',
-    bg: 'Английски'
-  },
-  'bulgarian': {
-    en: 'Bulgarian',
-    bg: 'Български'
-  },
-  'logout': {
-    en: 'Logout',
-    bg: 'Изход'
-  },
-  'logged-out': {
-    en: 'Logged Out',
-    bg: 'Излязохте'
-  },
-  'logged-out-msg': {
-    en: 'You have been logged out successfully',
-    bg: 'Успешно излязохте от системата'
-  },
-  'version': {
-    en: 'Version',
-    bg: 'Версия'
-  },
-  'contact-information': {
-    en: 'Contact Information',
-    bg: 'Информация за контакт'
-  },
-  'phone': {
-    en: 'Phone',
-    bg: 'Телефон'
-  },
-  'payment-options': {
-    en: 'Payment Options',
-    bg: 'Опции за плащане'
-  },
-  'payment-future-update': {
-    en: 'Payment options will be available in a future update.',
-    bg: 'Опциите за плащане ще бъдат налични в бъдеща актуализация.'
-  },
-  'add-payment-method': {
-    en: 'Add Payment Method',
-    bg: 'Добавяне на метод за плащане'
-  },
-  'request-history': {
-    en: 'Request History',
-    bg: 'История на заявките'
-  },
-  'no-requests': {
-    en: 'No requests found',
-    bg: 'Няма намерени заявки'
-  },
-  'requests-desc': {
-    en: 'View all your previous service requests',
-    bg: 'Вижте всички ваши предишни заявки за услуги'
-  },
-  'phone-number': {
-    en: 'Phone number:',
-    bg: 'Телефонен номер:'
-  },
-  'phone-number-label': {
-    en: 'Phone Number',
-    bg: 'Телефонен номер'
-  },
-  'change-account-info': {
-    en: 'Change Account Information',
-    bg: 'Промяна на информация за акаунта'
-  },
-  'account-information': { 
-    en: 'Account Information',
-    bg: 'Информация за акаунта'
-  },
-  'completed-time': {
-    en: 'Completed',
-    bg: 'Завършено в'
-  },
-  'user': {
-    en: 'User',
-    bg: 'Потребител'
-  },
-  'employee': {
-    en: 'Employee',
-    bg: 'Служител'
-  },
-  'flat-tyre': { en: 'Flat Tyre', bg: 'Спукана гума' },
-  'out-of-fuel': { en: 'Out of Fuel', bg: 'Без гориво' },
-  'car-battery': { en: 'Car Battery', bg: 'Акумулатор' },
-  'tow-truck': { en: 'Tow Truck', bg: 'Пътна помощ (влекач)' },
-  'other-car-problems': { en: 'Other Car Problems', bg: 'Други проблеми с автомобила' },
-  'completed': { en: 'Completed', bg: 'Завършена' },
-  'work-hours-line1': {
-    en: 'Emergency road assistance service work hours:',
-    bg: 'Работно време на спешна пътна помощ:'
-  },
-  'work-hours-line2': {
-    en: 'Mon - Friday from 09:00 - 17:00.',
-    bg: 'Пон - Петък от 09:00 - 17:00.'
-  },
-  'outside-hours-contact': {
-    en: 'For service requests outside of working hours,\nplease contact support',
-    bg: 'За заявки за услуги извън работно време,\nмоля, свържете се с поддръжката'
-  }
 };

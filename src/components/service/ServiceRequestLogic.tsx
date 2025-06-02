@@ -8,12 +8,13 @@ import { useServiceValidation } from './hooks/useServiceValidation';
 import { useRequestSimulation } from './hooks/useRequestSimulation';
 import { useRequestActions } from './hooks/useRequestActions';
 import { usePriceQuoteSnapshot } from '@/hooks/usePriceQuoteSnapshot';
+import { UserHistoryService } from '@/services/userHistoryService';
 
 export const useServiceRequest = (
   type: ServiceType,
   userLocation: { lat: number; lng: number }
 ) => {
-  const { setOngoingRequest, ongoingRequest } = useApp();
+  const { setOngoingRequest, ongoingRequest, user } = useApp();
   const { validateMessage } = useServiceValidation();
   const { simulateEmployeeResponse } = useRequestSimulation();
   const {
@@ -22,7 +23,7 @@ export const useServiceRequest = (
     handleCancelRequest: cancelRequest,
     handleContactSupport
   } = useRequestActions();
-  const { storeSnapshot, loadSnapshot, storedSnapshot } = usePriceQuoteSnapshot();
+  const { storeSnapshot, loadSnapshot, storedSnapshot, moveToFinished } = usePriceQuoteSnapshot();
 
   // Initialize states with values from ongoing request if it exists
   const [message, setMessage] = useState(serviceMessages[type] || '');
@@ -136,10 +137,123 @@ export const useServiceRequest = (
     }, 1500);
   };
 
-  const handleAcceptQuote = () => acceptQuote(type, userLocation, setShowPriceQuote, setShowRealTimeUpdate, setStatus, setEmployeeLocation);
+  const handleAcceptQuote = async () => {
+    if (!user || !ongoingRequest) return;
+    
+    // Start employee movement simulation
+    simulateEmployeeMovement();
+    
+    // Close the price quote dialog and show real-time update
+    setShowPriceQuote(false);
+    setShowRealTimeUpdate(true);
+    setStatus('accepted');
+    
+    // Update ongoing request
+    setOngoingRequest(prev => prev ? { 
+      ...prev, 
+      status: 'accepted' as const 
+    } : null);
+    
+    toast({
+      title: "Quote Accepted",
+      description: `${currentEmployeeName} is on the way to your location.`
+    });
+    
+    // Simulate service completion after 30-60 seconds
+    setTimeout(async () => {
+      const serviceFee = 5;
+      const totalPrice = (ongoingRequest.priceQuote || priceQuote) + serviceFee;
+      
+      // Add to user history
+      await UserHistoryService.addHistoryEntry({
+        user_id: user.username,
+        username: user.username,
+        service_type: type,
+        status: 'completed',
+        employee_name: currentEmployeeName,
+        price_paid: ongoingRequest.priceQuote || priceQuote,
+        service_fee: serviceFee,
+        total_price: totalPrice,
+        request_date: new Date().toISOString(),
+        completion_date: new Date().toISOString(),
+        address_street: 'Sofia Center, Bulgaria',
+        latitude: userLocation.lat,
+        longitude: userLocation.lng
+      });
+      
+      // Clean up old history
+      await UserHistoryService.cleanupOldHistory(user.username, user.username);
+      
+      // Move to finished requests
+      if (ongoingRequest.id) {
+        await moveToFinished(ongoingRequest.id, 'emp-' + currentEmployeeName, currentEmployeeName);
+      }
+      
+      // Clear ongoing request and close dialog
+      setOngoingRequest(null);
+      setShowRealTimeUpdate(false);
+      
+      toast({
+        title: "Service Completed",
+        description: `Your ${type} service has been completed successfully.`
+      });
+    }, Math.random() * 30000 + 30000); // 30-60 seconds
+  };
+
+  const simulateEmployeeMovement = () => {
+    if (!employeeLocation) {
+      // Set initial employee location (random nearby location)
+      const initialLat = userLocation.lat + (Math.random() - 0.5) * 0.02;
+      const initialLng = userLocation.lng + (Math.random() - 0.5) * 0.02;
+      setEmployeeLocation({ lat: initialLat, lng: initialLng });
+    }
+
+    // Simulate movement towards user every 5 seconds
+    const moveInterval = setInterval(() => {
+      setEmployeeLocation(prev => {
+        if (!prev) return prev;
+        
+        const deltaLat = userLocation.lat - prev.lat;
+        const deltaLng = userLocation.lng - prev.lng;
+        const distance = Math.sqrt(deltaLat * deltaLat + deltaLng * deltaLng);
+        
+        // If close enough, stop moving
+        if (distance < 0.001) {
+          clearInterval(moveInterval);
+          return userLocation;
+        }
+        
+        // Move 10% closer each time
+        return {
+          lat: prev.lat + deltaLat * 0.1,
+          lng: prev.lng + deltaLng * 0.1
+        };
+      });
+    }, 5000);
+
+    // Clear interval after 60 seconds
+    setTimeout(() => clearInterval(moveInterval), 60000);
+  };
   
-  const handleDeclineQuote = (isSecondDecline: boolean = false) => {
-    if (isSecondDecline && currentEmployeeName) {
+  const handleDeclineQuote = async (isSecondDecline: boolean = false) => {
+    if (!user) return;
+    
+    if (isSecondDecline || hasDeclinedOnce) {
+      // Add declined request to history
+      await UserHistoryService.addHistoryEntry({
+        user_id: user.username,
+        username: user.username,
+        service_type: type,
+        status: 'declined',
+        employee_name: currentEmployeeName,
+        request_date: new Date().toISOString(),
+        completion_date: new Date().toISOString(),
+        address_street: 'Sofia Center, Bulgaria',
+        latitude: userLocation.lat,
+        longitude: userLocation.lng,
+        decline_reason: 'User declined quote twice'
+      });
+      
       // Second decline - move to new employee
       const updatedDeclinedEmployees = [...declinedEmployees, currentEmployeeName];
       setDeclinedEmployees(updatedDeclinedEmployees);
@@ -203,44 +317,29 @@ export const useServiceRequest = (
           updatedDeclinedEmployees
         );
       }, 2000);
-    } else if (!hasDeclinedOnce) {
+    } else {
       // First decline - employee gets one chance to revise
       setHasDeclinedOnce(true);
-      const currentAttempts = employeeRevisionAttempts[currentEmployeeName] || 0;
       
-      if (currentAttempts === 0) {
-        // Employee hasn't sent a revision yet, give them a chance
-        setEmployeeRevisionAttempts(prev => ({
-          ...prev,
-          [currentEmployeeName]: 1
-        }));
+      toast({
+        title: "Quote Declined",
+        description: `${currentEmployeeName} will send you a revised quote.`
+      });
+      
+      // Simulate employee sending revised quote
+      setTimeout(() => {
+        const revisedQuote = Math.max(10, originalPriceQuote - Math.floor(Math.random() * 15) - 5);
+        setPriceQuote(revisedQuote);
+        setOngoingRequest(prev => prev ? { 
+          ...prev, 
+          priceQuote: revisedQuote 
+        } : null);
         
         toast({
-          title: "Quote Declined",
-          description: `${currentEmployeeName} will send you a revised quote.`
+          title: "Revised Quote Received",
+          description: `${currentEmployeeName} sent a revised quote of ${revisedQuote} BGN.`
         });
-        
-        // Simulate employee sending revised quote
-        setTimeout(() => {
-          const revisedQuote = Math.max(10, originalPriceQuote - Math.floor(Math.random() * 15) - 5);
-          setPriceQuote(revisedQuote);
-          setOngoingRequest(prev => prev ? { 
-            ...prev, 
-            priceQuote: revisedQuote 
-          } : null);
-          
-          toast({
-            title: "Revised Quote Received",
-            description: `${currentEmployeeName} sent a revised quote of ${revisedQuote} BGN.`
-          });
-        }, 3000);
-      } else {
-        // Employee already sent a revision, proceed to second decline
-        toast({
-          title: "Quote Declined",
-          description: "You can decline once more or accept the quote."
-        });
-      }
+      }, 3000);
     }
   };
   

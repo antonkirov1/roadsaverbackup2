@@ -1,60 +1,43 @@
 
-interface TranslationEntry {
-  en: string;
-  bg: string;
-}
-
-interface TranslationGroup {
-  [key: string]: TranslationEntry;
-}
-
-export const authSecretQuestionsTranslations: TranslationGroup = {
-  'secret-question': {
-    en: 'Secret Question',
-    bg: 'Таен въпрос'
+export const authSecretQuestions = {
+  en: {
+    'secret-question-1': 'Secret Question 1',
+    'secret-question-2': 'Secret Question 2',
+    'select-question': 'Select a question',
+    'mothers-maiden-name': 'What is your mother\'s maiden name?',
+    'first-pet-name': 'What was the name of your first pet?',
+    'birth-city': 'What city were you born in?',
+    'elementary-school': 'What was the name of your elementary school?',
+    'favorite-teacher': 'What was the name of your favorite teacher?',
+    'childhood-friend': 'What was the name of your childhood best friend?',
+    'first-car': 'What was the make of your first car?',
+    'favorite-book': 'What is your favorite book?',
+    'childhood-nickname': 'What was your childhood nickname?',
+    'favorite-food': 'What is your favorite food?',
+    'street-grew-up': 'What street did you grow up on?',
+    'fathers-middle-name': 'What is your father\'s middle name?',
+    'high-school-mascot': 'What was your high school mascot?',
+    'first-job': 'What was your first job?',
+    'dream-vacation': 'What is your dream vacation destination?',
   },
-  'your-answer': {
-    en: 'Your Answer',
-    bg: 'Вашият отговор'
+  bg: {
+    'secret-question-1': 'Секретен въпрос 1',
+    'secret-question-2': 'Секретен въпрос 2',
+    'select-question': 'Изберете въпрос',
+    'mothers-maiden-name': 'Какво е моминското име на вашата майка?',
+    'first-pet-name': 'Как се казваше първият ви домашен любимец?',
+    'birth-city': 'В кой град сте родени?',
+    'elementary-school': 'Как се казваше вашето начално училище?',
+    'favorite-teacher': 'Как се казваше любимият ви учител?',
+    'childhood-friend': 'Как се казваше най-добрият ви детски приятел?',
+    'first-car': 'Каква беше марката на първата ви кола?',
+    'favorite-book': 'Коя е любимата ви книга?',
+    'childhood-nickname': 'Какъв беше детският ви прякор?',
+    'favorite-food': 'Коя е любимата ви храна?',
+    'street-grew-up': 'На коя улица израснахте?',
+    'fathers-middle-name': 'Какво е второто име на баща ви?',
+    'high-school-mascot': 'Какъв беше талисманът на гимназията ви?',
+    'first-job': 'Каква беше първата ви работа?',
+    'dream-vacation': 'Къде е мечтаната ви ваканционна дестинация?',
   },
-  'select-question': {
-    en: '- Select -',
-    bg: '- Изберете -'
-  },
-  'create-your-own-question': {
-    en: 'Create your own question',
-    bg: 'Създайте свой въпрос'
-  },
-  'enter-your-answer': {
-    en: 'Enter your answer',
-    bg: 'Въведете вашия отговор'
-  },
-  'enter-your-custom-question': {
-    en: 'Enter your custom question',
-    bg: 'Въведете вашия персонален въпрос'
-  },
-  'back-to-questions': {
-    en: 'Back to questions',
-    bg: 'Обратно към въпросите'
-  },
-  'secret-answer-required': {
-    en: 'Answer is required',
-    bg: 'Отговорът е задължителен'
-  },
-  'secret-answer-too-short': {
-    en: 'Answer must be at least 2 characters',
-    bg: 'Отговорът трябва да е поне 2 символа'
-  },
-  'secret-question-required': {
-    en: 'Please select a question',
-    bg: 'Моля, изберете въпрос'
-  },
-  'custom-question-required': {
-    en: 'Please enter your custom question',
-    bg: 'Моля, въведете вашия персонален въпрос'
-  },
-  'custom-question-too-short': {
-    en: 'Custom question must be at least 5 characters',
-    bg: 'Персоналният въпрос трябва да е поне 5 символа'
-  }
 };

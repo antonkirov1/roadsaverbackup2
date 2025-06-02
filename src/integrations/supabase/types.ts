@@ -250,6 +250,66 @@ export type Database = {
           },
         ]
       }
+      user_history: {
+        Row: {
+          address_coordinates: unknown | null
+          address_street: string | null
+          completion_date: string
+          created_at: string
+          decline_reason: string | null
+          employee_name: string | null
+          id: string
+          latitude: number | null
+          longitude: number | null
+          price_paid: number | null
+          request_date: string
+          service_fee: number | null
+          service_type: string
+          status: string
+          total_price: number | null
+          user_id: string
+          username: string
+        }
+        Insert: {
+          address_coordinates?: unknown | null
+          address_street?: string | null
+          completion_date?: string
+          created_at?: string
+          decline_reason?: string | null
+          employee_name?: string | null
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          price_paid?: number | null
+          request_date: string
+          service_fee?: number | null
+          service_type: string
+          status: string
+          total_price?: number | null
+          user_id: string
+          username: string
+        }
+        Update: {
+          address_coordinates?: unknown | null
+          address_street?: string | null
+          completion_date?: string
+          created_at?: string
+          decline_reason?: string | null
+          employee_name?: string | null
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          price_paid?: number | null
+          request_date?: string
+          service_fee?: number | null
+          service_type?: string
+          status?: string
+          total_price?: number | null
+          user_id?: string
+          username?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
