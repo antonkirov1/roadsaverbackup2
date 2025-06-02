@@ -5,14 +5,18 @@ import { toast } from '@/components/ui/use-toast';
 import { MigrationHelper } from '@/utils/migrationHelper';
 import { UserAccountService } from '@/services/userAccountService';
 import { EmployeeAccountService } from '@/services/employeeAccountService';
-import { Database, Users, UserCheck, RefreshCw } from 'lucide-react';
+import { Database, Users, UserCheck, RefreshCw, UserCog } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+
 const MigrationPanel: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [migrationStats, setMigrationStats] = useState({
     pendingUsers: 0,
     existingUsers: 0,
-    employees: 0
+    employees: 0,
+    simulationEmployees: 0
   });
+
   const handleMigrateSampleData = async () => {
     setIsLoading(true);
     try {
@@ -41,6 +45,7 @@ const MigrationPanel: React.FC = () => {
       refreshStats();
     }
   };
+
   const handleProcessPendingUsers = async () => {
     setIsLoading(true);
     try {
@@ -69,27 +74,41 @@ const MigrationPanel: React.FC = () => {
       refreshStats();
     }
   };
+
   const refreshStats = async () => {
     try {
-      const [pendingUsers, employees] = await Promise.all([UserAccountService.getPendingNewUsers(), EmployeeAccountService.getAllEmployees()]);
+      const [pendingUsers, employees, existingUsers] = await Promise.all([
+        UserAccountService.getPendingNewUsers(), 
+        EmployeeAccountService.getAllEmployees(),
+        UserAccountService.getExistingUsers()
+      ]);
+      
+      // Get simulation employees count
+      const { data: simulationEmployees } = await supabase
+        .from('employee_simulation')
+        .select('*');
+      
       setMigrationStats({
         pendingUsers: pendingUsers.length,
-        existingUsers: 0,
-        // This would need admin access to count
-        employees: employees.length
+        existingUsers: existingUsers?.length || 0,
+        employees: employees.length,
+        simulationEmployees: simulationEmployees?.length || 0
       });
     } catch (error) {
       console.error('Error refreshing stats:', error);
     }
   };
+
   React.useEffect(() => {
     refreshStats();
   }, []);
-  return <div className="max-w-4xl mx-auto p-6 space-y-6">
+
+  return (
+    <div className="max-w-4xl mx-auto p-6 space-y-6">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold mb-2">Database Migration Panel</h1>
+        <h1 className="text-3xl font-bold mb-2">RoadSaver Account Manager Panel</h1>
         <p className="text-muted-foreground">
-          Manage user and employee account migrations
+          Manage user and employee accounts
         </p>
       </div>
 
@@ -101,9 +120,9 @@ const MigrationPanel: React.FC = () => {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{migrationStats.pendingUsers}</div>
+            <div className="text-2xl font-bold">{migrationStats.existingUsers}</div>
             <p className="text-xs text-muted-foreground">
-              In new_user_accounts table
+              Existing users
             </p>
           </CardContent>
         </Card>
@@ -116,12 +135,23 @@ const MigrationPanel: React.FC = () => {
           <CardContent>
             <div className="text-2xl font-bold">{migrationStats.employees}</div>
             <p className="text-xs text-muted-foreground">
-              In employee_accounts table
+              Existing Employees
             </p>
           </CardContent>
         </Card>
 
-        
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Simulation</CardTitle>
+            <UserCog className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{migrationStats.simulationEmployees}</div>
+            <p className="text-xs text-muted-foreground">
+              Simulation employees
+            </p>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Migration Actions */}
@@ -135,10 +165,14 @@ const MigrationPanel: React.FC = () => {
           </CardHeader>
           <CardContent>
             <Button onClick={handleMigrateSampleData} disabled={isLoading} className="w-full">
-              {isLoading ? <>
+              {isLoading ? (
+                <>
                   <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
                   Migrating...
-                </> : 'Migrate Sample Data'}
+                </>
+              ) : (
+                'Migrate Sample Data'
+              )}
             </Button>
           </CardContent>
         </Card>
@@ -151,11 +185,20 @@ const MigrationPanel: React.FC = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button onClick={handleProcessPendingUsers} disabled={isLoading || migrationStats.pendingUsers === 0} variant="outline" className="w-full">
-              {isLoading ? <>
+            <Button 
+              onClick={handleProcessPendingUsers} 
+              disabled={isLoading || migrationStats.pendingUsers === 0} 
+              variant="outline" 
+              className="w-full"
+            >
+              {isLoading ? (
+                <>
                   <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
                   Processing...
-                </> : `Process ${migrationStats.pendingUsers} Pending Users`}
+                </>
+              ) : (
+                `Process ${migrationStats.pendingUsers} Pending Users`
+              )}
             </Button>
           </CardContent>
         </Card>
@@ -175,6 +218,8 @@ const MigrationPanel: React.FC = () => {
           </CardContent>
         </Card>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default MigrationPanel;

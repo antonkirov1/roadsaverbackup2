@@ -77,6 +77,27 @@ export type Database = {
           },
         ]
       }
+      employee_simulation: {
+        Row: {
+          created_at: string
+          employee_number: number
+          full_name: string
+          id: number
+        }
+        Insert: {
+          created_at?: string
+          employee_number: number
+          full_name: string
+          id?: number
+        }
+        Update: {
+          created_at?: string
+          employee_number?: number
+          full_name?: string
+          id?: number
+        }
+        Relationships: []
+      }
       existing_user_accounts: {
         Row: {
           auth_user_id: string | null
