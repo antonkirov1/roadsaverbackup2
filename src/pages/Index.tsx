@@ -80,8 +80,8 @@ const Index = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle>Database Migration</CardTitle>
-              <CardDescription>Manage user and employee account databases</CardDescription>
+              <CardTitle>Accounts Manager</CardTitle>
+              <CardDescription>Manage user and employee accounts</CardDescription>
             </CardHeader>
             <CardContent>
               <Link to="/migration">
