@@ -71,6 +71,26 @@ export class UserAccountService {
     }
   }
 
+  // Get all existing user accounts
+  static async getExistingUsers() {
+    try {
+      const { data, error } = await supabase
+        .from('existing_user_accounts')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching existing users:', error);
+        throw error;
+      }
+
+      return data || [];
+    } catch (error) {
+      console.error('Error in getExistingUsers:', error);
+      throw error;
+    }
+  }
+
   // Migrate a user from new_user_accounts to existing_user_accounts
   static async migrateUserToExisting(userId: string) {
     try {
