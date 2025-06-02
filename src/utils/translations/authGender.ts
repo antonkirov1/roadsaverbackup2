@@ -8,7 +8,7 @@ interface TranslationGroup {
   [key: string]: TranslationEntry;
 }
 
-export const authGenderTranslations: TranslationGroup = {
+const authGenderTranslations: TranslationGroup = {
   'gender-label': {
     en: 'Gender',
     bg: 'Пол'
@@ -27,3 +27,7 @@ export const authGenderTranslations: TranslationGroup = {
   }
 };
 
+export const authGender = {
+  en: Object.fromEntries(Object.entries(authGenderTranslations).map(([key, value]) => [key, value.en])),
+  bg: Object.fromEntries(Object.entries(authGenderTranslations).map(([key, value]) => [key, value.bg]))
+};

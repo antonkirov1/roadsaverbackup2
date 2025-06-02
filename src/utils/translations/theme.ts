@@ -1,5 +1,5 @@
 
-export const themeTranslations = {
+const themeTranslations = {
   'dark-mode': {
     en: 'Dark Mode',
     bg: 'Тъмен режим'
@@ -16,4 +16,9 @@ export const themeTranslations = {
     en: 'Appearance',
     bg: 'Външен вид'
   }
+};
+
+export const theme = {
+  en: Object.fromEntries(Object.entries(themeTranslations).map(([key, value]) => [key, value.en])),
+  bg: Object.fromEntries(Object.entries(themeTranslations).map(([key, value]) => [key, value.bg]))
 };

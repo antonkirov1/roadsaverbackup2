@@ -8,8 +8,7 @@ interface TranslationGroup {
   [key: string]: TranslationEntry;
 }
 
-// Emergency services related translations
-export const emergencyTranslations: TranslationGroup = {
+const emergencyTranslations: TranslationGroup = {
   'police': {
     en: 'Police',
     bg: 'Полиция'
@@ -46,4 +45,9 @@ export const emergencyTranslations: TranslationGroup = {
     en: 'Connecting to emergency services...',
     bg: 'Свързване със спешните служби...'
   },
+};
+
+export const emergency = {
+  en: Object.fromEntries(Object.entries(emergencyTranslations).map(([key, value]) => [key, value.en])),
+  bg: Object.fromEntries(Object.entries(emergencyTranslations).map(([key, value]) => [key, value.bg]))
 };

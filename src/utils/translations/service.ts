@@ -1,4 +1,3 @@
-import { startTransition } from "react";
 
 interface TranslationEntry {
   en: string;
@@ -9,8 +8,7 @@ interface TranslationGroup {
   [key: string]: TranslationEntry;
 }
 
-// Service-related translations
-export const serviceTranslations: TranslationGroup = {
+const serviceTranslations: TranslationGroup = {
   'flat-tyre': {
     en: 'Flat Tyre',
     bg: 'Спукана гума'
@@ -54,8 +52,6 @@ export const serviceTranslations: TranslationGroup = {
   'car-battery-desc': {
     en: 'Get help with your car battery issues or with ignition issues.',
     bg: 'Помощ при проблеми с акумулатора, или ако колата ви не пали.'
-    
-    
   },
   'tow-truck-desc': {
     en: 'Request a towing service',
@@ -129,4 +125,9 @@ export const serviceTranslations: TranslationGroup = {
     en: 'Completed at',
     bg: 'Завършено в'
   }
+};
+
+export const service = {
+  en: Object.fromEntries(Object.entries(serviceTranslations).map(([key, value]) => [key, value.en])),
+  bg: Object.fromEntries(Object.entries(serviceTranslations).map(([key, value]) => [key, value.bg]))
 };

@@ -8,7 +8,7 @@ interface TranslationGroup {
   [key: string]: TranslationEntry;
 }
 
-export const authUsernameTranslations: TranslationGroup = {
+const authUsernameTranslations: TranslationGroup = {
   'username': {
     en: 'Username',
     bg: 'Потребителско име'
@@ -53,4 +53,9 @@ export const authUsernameTranslations: TranslationGroup = {
     en: 'Username updated successfully.',
     bg: 'Потребителското име е актуализирано успешно.'
   }
+};
+
+export const authUsername = {
+  en: Object.fromEntries(Object.entries(authUsernameTranslations).map(([key, value]) => [key, value.en])),
+  bg: Object.fromEntries(Object.entries(authUsernameTranslations).map(([key, value]) => [key, value.bg]))
 };
