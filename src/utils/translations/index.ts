@@ -1,20 +1,19 @@
-
-import { authGeneralTranslations } from './authGeneral';
-import { authUsernameTranslations } from './authUsername';
-import { authEmailTranslations } from './authEmail';
+import { authGeneral } from './authGeneral';
+import { authUsername } from './authUsername';
+import { authEmail } from './authEmail';
 import { authPassword } from './authPassword';
-import { authPhoneTranslations } from './authPhone';
-import { authGenderTranslations } from './authGender';
-import { authRegisterTranslations } from './authRegister';
-import { authLoginTranslations } from './authLogin';
+import { authPhone } from './authPhone';
+import { authGender } from './authGender';
+import { authRegister } from './authRegister';
+import { authLogin } from './authLogin';
 import { authSecretQuestions } from './authSecretQuestions';
-import { generalTranslations } from './general';
-import { uiTranslations } from './ui';
-import { serviceTranslations } from './service';
-import { emergencyTranslations } from './emergency';
+import { general } from './general';
+import { ui } from './ui';
+import { service } from './service';
+import { emergency } from './emergency';
 import { settings } from './settings';
 import { status } from './status';
-import { themeTranslations } from './theme';
+import { theme } from './theme';
 
 const mergeTranslations = (...translationObjects: any[]) => {
   const merged = { en: {}, bg: {} };
@@ -28,22 +27,22 @@ const mergeTranslations = (...translationObjects: any[]) => {
 };
 
 const translations = mergeTranslations(
-  authGeneralTranslations,
-  authUsernameTranslations,
-  authEmailTranslations,
+  authGeneral,
+  authUsername,
+  authEmail,
   authPassword,
-  authPhoneTranslations,
-  authGenderTranslations,
-  authRegisterTranslations,
-  authLoginTranslations,
+  authPhone,
+  authGender,
+  authRegister,
+  authLogin,
   authSecretQuestions,
-  generalTranslations,
-  uiTranslations,
-  serviceTranslations,
-  emergencyTranslations,
+  general,
+  ui,
+  service,
+  emergency,
   settings,
   status,
-  themeTranslations
+  theme
 );
 
 export const useTranslation = (language: 'en' | 'bg') => {
