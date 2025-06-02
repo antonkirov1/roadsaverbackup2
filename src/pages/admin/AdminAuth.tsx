@@ -15,8 +15,11 @@ const AdminAuth: React.FC = () => {
   const t = useTranslation(language);
   
   const handleLogin = (credentials: { username: string; password: string }) => {
-    // Check for Account Administrator credentials
-    if (credentials.username === 'account_admin' && credentials.password === 'AdminAcc93') {
+    console.log('Admin login attempt:', { username: credentials.username });
+    
+    // Check for Account Administrator credentials - exact match required
+    if (credentials.username.trim() === 'account_admin' && credentials.password === 'AdminAcc93') {
+      console.log('Admin credentials valid, logging in...');
       login({ username: credentials.username });
       navigate('/migration');
       toast({
@@ -24,9 +27,10 @@ const AdminAuth: React.FC = () => {
         description: "Welcome to RoadSaver Account Manager"
       });
     } else {
+      console.log('Invalid admin credentials provided');
       toast({
         title: t("auth-error"),
-        description: "Invalid admin credentials",
+        description: "Invalid admin credentials. Use username: account_admin and password: AdminAcc93",
         variant: "destructive",
       });
     }
@@ -58,6 +62,11 @@ const AdminAuth: React.FC = () => {
         <div className="mb-8 text-center">
           <h1 className="text-3xl sm:text-4xl font-bold mb-2">RoadSaver</h1>
           <p className="text-muted-foreground">Account Manager Panel</p>
+          <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800">
+            <p className="font-medium">Admin Credentials:</p>
+            <p>Username: account_admin</p>
+            <p>Password: AdminAcc93</p>
+          </div>
         </div>
         
         <LoginForm 
