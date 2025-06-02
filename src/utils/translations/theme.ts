@@ -1,15 +1,19 @@
 
 export const themeTranslations = {
-  en: {
-    'dark-mode': 'Dark Mode',
-    'light-mode': 'Light Mode',
-    'theme': 'Theme',
-    'appearance': 'Appearance'
+  'dark-mode': {
+    en: 'Dark Mode',
+    bg: 'Тъмен режим'
   },
-  bg: {
-    'dark-mode': 'Тъмен режим',
-    'light-mode': 'Светъл режим',
-    'theme': 'Тема',
-    'appearance': 'Външен вид'
+  'light-mode': {
+    en: 'Light Mode',
+    bg: 'Светъл режим'
+  },
+  'theme': {
+    en: 'Theme',
+    bg: 'Тема'
+  },
+  'appearance': {
+    en: 'Appearance',
+    bg: 'Външен вид'
   }
 };
