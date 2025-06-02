@@ -22,8 +22,16 @@ export const authPasswordTranslations: TranslationGroup = {
     bg: 'Въведете вашата парола'
   },
   'password-requirements': {
-    en: 'Must be at least 8 characters with 1 uppercase letter',
-    bg: 'Трябва да е поне 8 символа с 1 главна буква'
+    en: 'Must be at least 8 characters with uppercase, lowercase, numbers, and special characters',
+    bg: 'Трябва да е поне 8 символа с главни, малки букви, цифри и специални символи'
+  },
+  'password-info-title': {
+    en: 'Password Requirements',
+    bg: 'Изисквания за парола'
+  },
+  'password-info-content': {
+    en: 'Passwords must contain:\n1. A minimum of 1 upper case letter [A-Z] and\n2. A minimum of 1 lower case letter [a-z] and\n3. A minimum of 1 numeric character [0-9] and\n4. A minimum of 1 special character: ~`!@#$%^&*()-_+={}[]|\\;:"<>,./?',
+    bg: 'Паролите трябва да съдържат:\n1. Минимум 1 главна буква [A-Z] и\n2. Минимум 1 малка буква [a-z] и\n3. Минимум 1 цифра [0-9] и\n4. Минимум 1 специален символ: ~`!@#$%^&*()-_+={}[]|\\;:"<>,./?'
   },
   'create-password-placeholder': {
     en: 'Create a password',
@@ -94,4 +102,3 @@ export const authPasswordTranslations: TranslationGroup = {
     bg: 'Скрий паролата'
   }
 };
-

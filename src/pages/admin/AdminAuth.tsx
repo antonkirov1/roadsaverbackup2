@@ -15,8 +15,8 @@ const AdminAuth: React.FC = () => {
   const t = useTranslation(language);
   
   const handleLogin = (credentials: { username: string; password: string }) => {
-    // For demo purposes, check for admin credentials
-    if (credentials.username === 'admin' && credentials.password === 'admin123') {
+    // Check for Account Administrator credentials
+    if (credentials.username === 'account_admin' && credentials.password === 'AdminAcc93') {
       login({ username: credentials.username });
       navigate('/migration');
       toast({

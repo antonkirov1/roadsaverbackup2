@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { AlertCircle, CheckCircle2 } from "lucide-react";
 import RegisterFormFieldInput from './RegisterFormFieldInput';
@@ -95,11 +96,15 @@ const RegisterFormFields: React.FC<RegisterFormFieldsProps> = ({
         type="text"
         placeholder={t('enter-username')}
         value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        onChange={(e) => setUsername(e.target.value.toLowerCase())}
         error={usernameError}
         isValid={isUsernameValid}
         renderValidationIcon={renderValidationIcon}
         successMessage={t('username-valid')}
+        helperText={t('username-requirements')}
+        showInfoIcon={true}
+        infoTitle={t('username-info-title')}
+        infoContent={t('username-info-content')}
         t={t}
         required
       />
@@ -154,6 +159,9 @@ const RegisterFormFields: React.FC<RegisterFormFieldsProps> = ({
         showPasswordToggle
         onToggleShowPassword={handleToggleShowPassword}
         currentShowPasswordState={showPassword}
+        showInfoIcon={true}
+        infoTitle={t('password-info-title')}
+        infoContent={t('password-info-content')}
         t={t}
         required
         inputClassName="pr-10"

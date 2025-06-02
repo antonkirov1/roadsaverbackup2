@@ -44,3 +44,15 @@ export const useFieldValidation = <T,>(
     setIsValid,
   };
 };
+
+// Utility functions for loading blacklists
+export const loadBlacklist = async (filePath: string): Promise<string[]> => {
+  try {
+    const response = await fetch(filePath);
+    const text = await response.text();
+    return text.split('\n').map(word => word.trim().toLowerCase()).filter(word => word.length > 0);
+  } catch (error) {
+    console.error(`Failed to load blacklist from ${filePath}:`, error);
+    return [];
+  }
+};

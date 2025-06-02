@@ -3,6 +3,7 @@ import React from 'react';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
+import InfoIcon from '@/components/ui/info-icon';
 
 interface RegisterFormFieldInputProps {
   id: string;
@@ -19,10 +20,13 @@ interface RegisterFormFieldInputProps {
   showPasswordToggle?: boolean;
   onToggleShowPassword?: () => void;
   currentShowPasswordState?: boolean;
-  t: (key: string) => string; // For Eye/EyeOff accessibility and other internal text
+  t: (key: string) => string;
   required?: boolean;
   inputClassName?: string;
   validationIconContainerClassName?: string;
+  showInfoIcon?: boolean;
+  infoTitle?: string;
+  infoContent?: string;
 }
 
 const RegisterFormFieldInput: React.FC<RegisterFormFieldInputProps> = ({
@@ -44,17 +48,19 @@ const RegisterFormFieldInput: React.FC<RegisterFormFieldInputProps> = ({
   required = false,
   inputClassName = "",
   validationIconContainerClassName = "absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none",
+  showInfoIcon = false,
+  infoTitle = "",
+  infoContent = ""
 }) => {
   return (
     <div className="space-y-2">
-      <Label htmlFor={id}>
+      <Label htmlFor={id} className="flex items-center">
         {label}
-        {type === 'password' && id === "register-password" && (
-          <span className="block text-xs text-muted-foreground mt-1">
-            {t('password-requirements')}
-          </span>
+        {showInfoIcon && (
+          <InfoIcon title={infoTitle} content={infoContent} />
         )}
       </Label>
+      {helperText && <p className="text-xs text-muted-foreground">{helperText}</p>}
       <div className="relative">
         <Input
           id={id}
@@ -70,7 +76,7 @@ const RegisterFormFieldInput: React.FC<RegisterFormFieldInputProps> = ({
             type="button"
             className="absolute inset-y-0 right-0 flex items-center px-3"
             onClick={onToggleShowPassword}
-            style={{ zIndex: 1 }} // Ensure button is clickable
+            style={{ zIndex: 1 }}
             aria-label={currentShowPasswordState ? t('hide-password') : t('show-password')}
           >
             {currentShowPasswordState ? (
@@ -86,7 +92,6 @@ const RegisterFormFieldInput: React.FC<RegisterFormFieldInputProps> = ({
       </div>
       {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
       {!error && isValid && successMessage && <p className="text-green-500 text-xs mt-1">{successMessage}</p>}
-      {helperText && <p className="text-xs text-muted-foreground">{helperText}</p>}
     </div>
   );
 };

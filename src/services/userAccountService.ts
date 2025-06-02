@@ -28,7 +28,7 @@ export class UserAccountService {
       const { data, error } = await supabase
         .from('new_user_accounts')
         .insert({
-          username: userData.username,
+          username: userData.username.toLowerCase(), // Ensure lowercase
           email: userData.email,
           password_hash,
           phone_number: userData.phone_number,
@@ -161,7 +161,7 @@ export class UserAccountService {
       const { data, error } = await supabase
         .from('new_user_accounts')
         .select('password_hash')
-        .eq('username', username)
+        .eq('username', username.toLowerCase())
         .single();
 
       if (error || !data) {
@@ -173,5 +173,15 @@ export class UserAccountService {
       console.error('Error verifying password:', error);
       return false;
     }
+  }
+
+  // Password encryption/decryption utilities for admin use
+  static async encryptPassword(password: string): Promise<string> {
+    const saltRounds = 10;
+    return await bcrypt.hash(password, saltRounds);
+  }
+
+  static async verifyPassword(password: string, hashedPassword: string): Promise<boolean> {
+    return await bcrypt.compare(password, hashedPassword);
   }
 }

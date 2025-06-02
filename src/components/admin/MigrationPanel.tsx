@@ -1,79 +1,24 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/components/ui/use-toast';
-import { MigrationHelper } from '@/utils/migrationHelper';
 import { UserAccountService } from '@/services/userAccountService';
 import { EmployeeAccountService } from '@/services/employeeAccountService';
 import { Database, Users, UserCheck, RefreshCw, UserCog } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import UserManagement from './UserManagement';
+import EmployeeManagement from './EmployeeManagement';
+import SimulationManagement from './SimulationManagement';
 
 const MigrationPanel: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [currentView, setCurrentView] = useState<'dashboard' | 'users' | 'employees' | 'simulation'>('dashboard');
   const [migrationStats, setMigrationStats] = useState({
     pendingUsers: 0,
     existingUsers: 0,
     employees: 0,
     simulationEmployees: 0
   });
-
-  const handleMigrateSampleData = async () => {
-    setIsLoading(true);
-    try {
-      const success = await MigrationHelper.runCompleteMigration();
-      if (success) {
-        toast({
-          title: "Migration Successful",
-          description: "Sample user and employee data has been migrated to the database."
-        });
-      } else {
-        toast({
-          title: "Migration Issues",
-          description: "Some migration steps failed. Check console for details.",
-          variant: "destructive"
-        });
-      }
-    } catch (error) {
-      console.error('Migration error:', error);
-      toast({
-        title: "Migration Failed",
-        description: "An error occurred during migration.",
-        variant: "destructive"
-      });
-    } finally {
-      setIsLoading(false);
-      refreshStats();
-    }
-  };
-
-  const handleProcessPendingUsers = async () => {
-    setIsLoading(true);
-    try {
-      const success = await MigrationHelper.processPendingUserMigrations();
-      if (success) {
-        toast({
-          title: "Processing Complete",
-          description: "Pending users have been moved to existing accounts."
-        });
-      } else {
-        toast({
-          title: "Processing Issues",
-          description: "Some users could not be processed. Check console for details.",
-          variant: "destructive"
-        });
-      }
-    } catch (error) {
-      console.error('Processing error:', error);
-      toast({
-        title: "Processing Failed",
-        description: "An error occurred while processing pending users.",
-        variant: "destructive"
-      });
-    } finally {
-      setIsLoading(false);
-      refreshStats();
-    }
-  };
 
   const refreshStats = async () => {
     try {
@@ -103,6 +48,18 @@ const MigrationPanel: React.FC = () => {
     refreshStats();
   }, []);
 
+  if (currentView === 'users') {
+    return <UserManagement onBack={() => setCurrentView('dashboard')} />;
+  }
+
+  if (currentView === 'employees') {
+    return <EmployeeManagement onBack={() => setCurrentView('dashboard')} />;
+  }
+
+  if (currentView === 'simulation') {
+    return <SimulationManagement onBack={() => setCurrentView('dashboard')} />;
+  }
+
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
       <div className="text-center mb-8">
@@ -121,9 +78,17 @@ const MigrationPanel: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{migrationStats.existingUsers}</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-muted-foreground mb-2">
               Existing users
             </p>
+            <Button 
+              onClick={() => setCurrentView('users')} 
+              variant="outline" 
+              size="sm" 
+              className="w-full"
+            >
+              Manage Users
+            </Button>
           </CardContent>
         </Card>
 
@@ -134,9 +99,17 @@ const MigrationPanel: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{migrationStats.employees}</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-muted-foreground mb-2">
               Existing Employees
             </p>
+            <Button 
+              onClick={() => setCurrentView('employees')} 
+              variant="outline" 
+              size="sm" 
+              className="w-full"
+            >
+              Manage Employees
+            </Button>
           </CardContent>
         </Card>
 
@@ -147,77 +120,36 @@ const MigrationPanel: React.FC = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{migrationStats.simulationEmployees}</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-muted-foreground mb-2">
               Simulation employees
             </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Migration Actions */}
-      <div className="space-y-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>1. Migrate Sample Data</CardTitle>
-            <CardDescription>
-              Add sample user and employee accounts to the database for testing
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button onClick={handleMigrateSampleData} disabled={isLoading} className="w-full">
-              {isLoading ? (
-                <>
-                  <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-                  Migrating...
-                </>
-              ) : (
-                'Migrate Sample Data'
-              )}
-            </Button>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>2. Process Pending Users</CardTitle>
-            <CardDescription>
-              Move users from new_user_accounts to existing_user_accounts
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
             <Button 
-              onClick={handleProcessPendingUsers} 
-              disabled={isLoading || migrationStats.pendingUsers === 0} 
+              onClick={() => setCurrentView('simulation')} 
               variant="outline" 
+              size="sm" 
               className="w-full"
             >
-              {isLoading ? (
-                <>
-                  <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-                  Processing...
-                </>
-              ) : (
-                `Process ${migrationStats.pendingUsers} Pending Users`
-              )}
-            </Button>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>3. Refresh Statistics</CardTitle>
-            <CardDescription>
-              Update the statistics display with current database counts
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button onClick={refreshStats} disabled={isLoading} variant="secondary" className="w-full">
-              <RefreshCw className="mr-2 h-4 w-4" />
-              Refresh Stats
+              Manage Employees simulation
             </Button>
           </CardContent>
         </Card>
       </div>
+
+      {/* Refresh Stats */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Refresh Statistics</CardTitle>
+          <CardDescription>
+            Update the statistics display with current database counts
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button onClick={refreshStats} variant="secondary" className="w-full">
+            <RefreshCw className="mr-2 h-4 w-4" />
+            Refresh Stats
+          </Button>
+        </CardContent>
+      </Card>
     </div>
   );
 };
