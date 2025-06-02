@@ -12,6 +12,7 @@ import UserAuth from "./pages/user/Auth";
 import UserDashboard from "./pages/user/Dashboard";
 import EmployeeAuth from "./pages/employee/EmployeeAuth";
 import EmployeeDashboard from "./pages/employee/EmployeeDashboard";
+import AdminAuth from "./pages/admin/AdminAuth";
 import MigrationPanel from "./components/admin/MigrationPanel";
 import NotFound from "./pages/NotFound";
 
@@ -32,6 +33,7 @@ const App = () => (
                 <Route path="/user/dashboard" element={<UserDashboard />} />
                 <Route path="/employee" element={<EmployeeAuth />} />
                 <Route path="/employee/dashboard" element={<EmployeeDashboard />} />
+                <Route path="/admin" element={<AdminAuth />} />
                 <Route path="/migration" element={<MigrationPanel />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

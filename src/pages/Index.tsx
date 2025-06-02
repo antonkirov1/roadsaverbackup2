@@ -84,7 +84,7 @@ const Index = () => {
               <CardDescription>Manage user and employee accounts</CardDescription>
             </CardHeader>
             <CardContent>
-              <Link to="/migration">
+              <Link to="/admin">
                 <Button className="w-full bg-purple-600 hover:bg-purple-700">
                   <Database className="mr-2 h-5 w-5" /> Open Account Manager
                 </Button>
