@@ -1,64 +1,33 @@
-interface TranslationEntry {
-  en: string;
-  bg: string;
-}
 
-interface TranslationGroup {
-  [key: string]: TranslationEntry;
-}
-
-// Status and request-related translations
-export const statusTranslations: TranslationGroup = {
-  'pending': {
-    en: 'Pending',
-    bg: 'Чакащ'
+export const status = {
+  en: {
+    'pending': 'Pending',
+    'accepted': 'Accepted',
+    'declined': 'Declined',
+    'completed': 'Completed',
+    'new-request': 'New Request',
+    'request-accepted': 'Request Accepted',
+    'request-declined': 'Request Declined',
+    'customer-location': 'Customer Location',
+    'accept': 'Accept',
+    'decline': 'Decline',
+    'close': 'Close',
+    'completed-requests': 'Completed Requests',
+    'completed-requests-desc': 'View all completed service requests'
   },
-  'accepted': {
-    en: 'Accepted',
-    bg: 'Приет'
+  bg: {
+    'pending': 'Чакащ',
+    'accepted': 'Приет',
+    'declined': 'Отказан',
+    'completed': 'Завършен',
+    'new-request': 'Нова заявка',
+    'request-accepted': 'Заявката е приета',
+    'request-declined': 'Заявката е отказана',
+    'customer-location': 'Местоположение на клиента',
+    'accept': 'Приемам',
+    'decline': 'Отказвам',
+    'close': 'Затваряне',
+    'completed-requests': 'Завършени заявки',
+    'completed-requests-desc': 'Вижте всички завършени заявки за услуги'
   },
-  'declined': {
-    en: 'Declined',
-    bg: 'Отказан'
-  },
-  'completed': {
-    en: 'Completed',
-    bg: 'Завършен'
-  },
-  'new-request': {
-    en: 'New Request',
-    bg: 'Нова заявка'
-  },
-  'request-accepted': {
-    en: 'Request Accepted',
-    bg: 'Заявката е приета'
-  },
-  'request-declined': {
-    en: 'Request Declined',
-    bg: 'Заявката е отказана'
-  },
-  'customer-location': {
-    en: 'Customer Location',
-    bg: 'Местоположение на клиента'
-  },
-  'accept': {
-    en: 'Accept',
-    bg: 'Приемам'
-  },
-  'decline': {
-    en: 'Decline',
-    bg: 'Отказвам'
-  },
-  'close': {
-    en: 'Close',
-    bg: 'Затваряне'
-  },
-  'completed-requests': {
-    en: 'Completed Requests',
-    bg: 'Завършени заявки'
-  },
-  'completed-requests-desc': {
-    en: 'View all completed service requests',
-    bg: 'Вижте всички завършени заявки за услуги'
-  }
 };

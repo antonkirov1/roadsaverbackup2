@@ -1,3 +1,4 @@
+
 import { supabase } from '@/integrations/supabase/client';
 
 export interface UserHistoryEntry {
@@ -40,7 +41,7 @@ export class UserHistoryService {
     }
   }
 
-  static async getUserHistory(userId: string, username: string) {
+  static async getUserHistory(userId: string, username: string): Promise<UserHistoryEntry[]> {
     try {
       const { data, error } = await supabase
         .from('user_history')
@@ -55,7 +56,27 @@ export class UserHistoryService {
         throw error;
       }
 
-      return data || [];
+      // Transform the data to ensure proper typing
+      const transformedData: UserHistoryEntry[] = (data || []).map(item => ({
+        id: item.id,
+        user_id: item.user_id,
+        username: item.username,
+        service_type: item.service_type,
+        status: item.status as 'completed' | 'declined',
+        employee_name: item.employee_name,
+        price_paid: item.price_paid,
+        service_fee: item.service_fee,
+        total_price: item.total_price,
+        request_date: item.request_date,
+        completion_date: item.completion_date,
+        address_street: item.address_street,
+        latitude: item.latitude,
+        longitude: item.longitude,
+        decline_reason: item.decline_reason,
+        created_at: item.created_at
+      }));
+
+      return transformedData;
     } catch (error) {
       console.error('Error in getUserHistory:', error);
       throw error;
