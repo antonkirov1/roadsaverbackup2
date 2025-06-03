@@ -41,6 +41,7 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
     declineReason,
     currentEmployeeName,
     hasDeclinedOnce,
+    eta,
     handleSubmit,
     handleAcceptQuote,
     handleDeclineQuote,
@@ -133,6 +134,7 @@ const ServiceRequest: React.FC<ServiceRequestProps> = ({ type, open, onClose, us
             declineReason={declineReason}
             userLocation={userLocation}
             employeeLocation={employeeLocation}
+            eta={eta}
             onContactSupport={handleContactSupport}
             onClose={handleAttemptClose}
             onReviewPriceQuote={handleReviewPriceQuote}

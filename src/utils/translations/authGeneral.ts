@@ -1,4 +1,3 @@
-
 interface TranslationEntry {
   en: string;
   bg: string;

@@ -17,6 +17,7 @@ interface ServiceRequestStatusProps {
   hasPriceQuote?: boolean;
   hasStoredSnapshot?: boolean;
   onShowStoredPriceQuote?: () => void;
+  eta?: string | null;
 }
 
 const ServiceRequestStatus: React.FC<ServiceRequestStatusProps> = ({
@@ -30,7 +31,8 @@ const ServiceRequestStatus: React.FC<ServiceRequestStatusProps> = ({
   onReviewPriceQuote,
   hasPriceQuote = false,
   hasStoredSnapshot = false,
-  onShowStoredPriceQuote
+  onShowStoredPriceQuote,
+  eta,
 }) => {
   const { language } = useApp();
   const t = useTranslation(language);
@@ -123,6 +125,13 @@ const ServiceRequestStatus: React.FC<ServiceRequestStatusProps> = ({
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-blue-500"></div>
               <span>Employee location</span>
+            </div>
+          )}
+          {/* Show ETA if available */}
+          {employeeLocation && eta && (
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-blue-700">ETA:</span>
+              <span>{eta}</span>
             </div>
           )}
         </div>

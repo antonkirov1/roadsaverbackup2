@@ -1,4 +1,3 @@
-
 interface TranslationEntry {
   en: string;
   bg: string;
@@ -273,5 +272,145 @@ export const generalTranslations: TranslationGroup = {
   'open-employee-app': {
     en: 'Open Employee App',
     bg: 'Отвори служебното приложение'
+  },
+  'account-manager-title': {
+    en: 'RoadSaver Account Manager',
+    bg: 'Мениджър на акаунти RoadSaver'
+  },
+  'account-manager-desc': {
+    en: 'Manage user and employee accounts',
+    bg: 'Управлявайте потребителски и служебни акаунти'
+  },
+  'open-account-manager': {
+    en: 'Open Account Manager',
+    bg: 'Отвори мениджъра на акаунти'
+  },
+  'ongoing-requests': {
+    en: 'Ongoing Requests',
+    bg: 'Текущи заявки'
+  },
+  'update-location': {
+    en: 'Update Location',
+    bg: 'Обнови местоположението'
+  },
+  'change-language': {
+    en: 'Change Language',
+    bg: 'Смени езика'
+  },
+  'request-history': {
+    en: 'Request History',
+    bg: 'История на заявките'
+  },
+  'requests-desc': {
+    en: 'View all your previous service requests',
+    bg: 'Вижте всички ваши предишни заявки за услуги'
+  },
+  'no-requests': {
+    en: 'No requests found',
+    bg: 'Няма намерени заявки'
+  },
+  'payment-options': {
+    en: 'Payment Options',
+    bg: 'Опции за плащане'
+  },
+  'payment-options-desc': {
+    en: 'Payment options will be available in a future update.',
+    bg: 'Опциите за плащане ще бъдат налични в бъдеща актуализация.'
+  },
+  'add-payment-method': {
+    en: 'Add Payment Method',
+    bg: 'Добави метод на плащане'
+  },
+  'account-info': {
+    en: 'Account Information',
+    bg: 'Информация за акаунта'
+  },
+  'change-account-info': {
+    en: 'Change Account Information',
+    bg: 'Промяна на информацията за акаунта'
+  },
+  'about-us': {
+    en: 'About us',
+    bg: 'За нас'
+  },
+  'about-us-desc': {
+    en: 'We are committed to providing the best service possible.',
+    bg: 'Ние сме ангажирани да предоставяме най-доброто възможно обслужване.'
+  },
+  'terms-and-conditions': {
+    en: 'Terms and Conditions',
+    bg: 'Общи условия'
+  },
+  'terms-and-conditions-desc': {
+    en: 'Please read our terms and conditions before using the app.',
+    bg: 'Моля, прочетете нашите общи условия преди да използвате приложението.'
+  },
+  'privacy-policy': {
+    en: 'Privacy Policy',
+    bg: 'Политика за поверителност'
+  },
+  'privacy-policy-desc': {
+    en: 'Your privacy is important to us. Read our policy here.',
+    bg: 'Вашата поверителност е важна за нас. Прочетете нашата политика тук.'
+  },
+  'help-and-support': {
+    en: 'Help and Support',
+    bg: 'Помощ и поддръжка'
+  },
+  'help-and-support-desc': {
+    en: 'Contact us for help with any issues.',
+    bg: 'Свържете се с нас за помощ при всякакви проблеми.'
+  },
+  'faq': {
+    en: 'Frequently Asked Questions',
+    bg: 'Често задавани въпроси'
+  },
+  'faq-desc': {
+    en: 'Find answers to common questions here.',
+    bg: 'Намерете отговори на често задавани въпроси тук.'
+  },
+  'version': {
+    en: 'Version',
+    bg: 'Версия'
+  },
+  'work-hours': {
+    en: 'Emergency road assistance service work hours:',
+    bg: 'Работно време на спешната пътна помощ:'
+  },
+  'work-hours-range': {
+    en: 'Mon - Friday from 09:00 - 17:00.',
+    bg: 'Понеделник - Петък от 09:00 до 17:00.'
+  },
+  'outside-hours': {
+    en: 'For service requests outside of working hours, please contact support',
+    bg: 'За заявки извън работното време, моля свържете се с поддръжката'
+  },
+  'contact-information': {
+    en: 'Contact Information',
+    bg: 'Контактна информация'
+  },
+  'email': {
+    en: 'Email',
+    bg: 'Имейл'
+  },
+  'phone': {
+    en: 'Phone',
+    bg: 'Телефон'
+  },
+  'facebook': {
+    en: 'Facebook',
+    bg: 'Фейсбук'
+  },
+  'messenger': {
+    en: 'Messenger',
+    bg: 'Месинджър'
+  },
+  'whatsapp': {
+    en: 'WhatsApp',
+    bg: 'УатсАп'
+  },
+  'viber': {
+    en: 'Viber',
+    bg: 'Вайбър'
   }
 };

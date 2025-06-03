@@ -15,59 +15,49 @@ export const serviceTranslations: TranslationGroup = {
     en: 'Flat Tyre',
     bg: 'Спукана гума'
   },
+  'flat-tyre-desc': {
+    en: 'Get help changing a flat tyre',
+    bg: 'Получете помощ за смяна на спукана гума.'
+  },
   'out-of-fuel': {
-    en: 'Out Of Fuel',
+    en: 'Out of Fuel',
     bg: 'Без гориво'
+  },
+  'out-of-fuel-desc': {
+    en: 'Request fuel delivery',
+    bg: 'Заявете доставка на гориво'
+  },
+  'car-battery': {
+    en: 'Car Battery',
+    bg: 'Акумулатор'
+  },
+  'car-battery-desc': {
+    en: 'Get help with your car battery issues',
+    bg: 'Получете помощ при проблеми с акумулатора'
   },
   'other-car-problems': {
     en: 'Other Car Problems',
     bg: 'Други проблеми с колата'
   },
-  'car-battery-problems': {
-    en: 'Car Battery Problems/My car would not start.',
-    bg: 'Проблеми с акумулатора/Колата ми не пали.'
+  'other-car-problems-desc': {
+    en: 'Get help with various car problems',
+    bg: 'Получете помощ при различни проблеми с автомобила'
   },
   'tow-truck': {
-    en: 'I Need A Tow Truck.',
-    bg: 'Нужен ми е влекач.'
+    en: 'Tow Truck',
+    bg: 'Пътна помощ'
   },
-  'emergency': {
-    en: 'Call Emergency Services',
-    bg: 'Свържете се със Спешните служби'
+  'tow-truck-desc': {
+    en: 'Request towing service',
+    bg: 'Заявете услуга по теглене'
   },
   'support': {
     en: 'Contact Support',
     bg: 'Свържете се с поддръжката'
   },
-  'flat-tyre-desc': {
-    en: 'Get help changing a flat tyre.',
-    bg: 'Получете помощ за смяна на сукана гума.'
-  },
-  'out-of-fuel-desc': {
-    en: 'Request fuel delivery',
-    bg: 'Доставка на гориво'
-  },
-  'other-car-problems-desc': {
-    en: 'Get help with various car problems.',
-    bg: 'Получете помощ при други проблеми с автомобила ви.'
-  },
-  'car-battery-desc': {
-    en: 'Get help with your car battery issues or with ignition issues.',
-    bg: 'Помощ при проблеми с акумулатора, или ако колата ви не пали.'
-    
-    
-  },
-  'tow-truck-desc': {
-    en: 'Request a towing service',
-    bg: 'Заявка за влекач'
-  },
-  'emergency-desc': {
-    en: 'Contact emergency services',
-    bg: 'Свържете се със Спешни служби'
-  },
   'support-desc': {
-    en: 'Speak with our support team.',
-    bg: 'Говорете с нашия екип за поддръжка.'
+    en: 'Speak with our support team',
+    bg: 'Говорете с нашия екип за поддръжка'
   },
   'service': {
     en: 'Service',
@@ -80,6 +70,10 @@ export const serviceTranslations: TranslationGroup = {
   'services': {
     en: 'Services',
     bg: 'Услуги'
+  },
+  'ongoing-requests': {
+    en: 'Ongoing Requests',
+    bg: 'Текущи заявки'
   },
   'service-requests': {
     en: 'Service Requests',

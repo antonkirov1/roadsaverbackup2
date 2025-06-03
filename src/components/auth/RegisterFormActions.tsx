@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { CardFooter } from "@/components/ui/card";
@@ -19,7 +18,7 @@ const RegisterFormActions: React.FC<RegisterFormActionsProps> = ({ t, onCancel, 
         onClick={onCancel}
         className="border-green-600 text-green-600 hover:bg-green-50"
       >
-        {t('back-to-login')}
+        {t('Back to Login')}
       </Button>
       <Button
         type="submit"

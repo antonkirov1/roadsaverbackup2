@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -83,15 +82,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onCreateAccount, isEmplo
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold">{t('sign-in')}</CardTitle>
+        <CardTitle className="text-2xl font-bold">{t('Sign In')}</CardTitle>
         <CardDescription>
-          {isEmployee ? t('welcome-back') : t('welcome-back')}
+          {isEmployee ? t('Welcome back to RoadSaver') : isAdmin ? t('Welcome back to RoadSaver') : t('Welcome back to RoadSaver')}
         </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="username">{t('username')}</Label>
+            <Label htmlFor="username">{t('Username')}</Label>
             <Input
               id="username"
               placeholder={t('enter-username-placeholder')}
@@ -103,7 +102,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onCreateAccount, isEmplo
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">{t('password')}</Label>
+            <Label htmlFor="password">{t('Password')}</Label>
             <div className="relative">
               <Input
                 id="password"
@@ -137,7 +136,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onCreateAccount, isEmplo
               onClick={onCreateAccount}
               className={outlineClasses}
             >
-              {t('create-account')}
+              {t('Create Account')}
             </Button>
           )}
           <Button 
@@ -145,7 +144,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onCreateAccount, isEmplo
             className={buttonClasses}
             disabled={isLoading}
           >
-            {isLoading ? t('signing-in') : t('sign-in')}
+            {isLoading ? t('signing-in') : t('Sign In')}
           </Button>
         </CardFooter>
       </form>

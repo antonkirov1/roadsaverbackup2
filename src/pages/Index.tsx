@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -52,13 +51,13 @@ const Index = () => {
         <div className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>{t('user-app')}</CardTitle>
-              <CardDescription>{t('for-customers')}</CardDescription>
+              <CardTitle>{t('User App')}</CardTitle>
+              <CardDescription>{t('For Customers Needing Assistance')}</CardDescription>
             </CardHeader>
             <CardContent>
               <Link to="/user">
                 <Button className="w-full bg-green-600 hover:bg-green-700">
-                  <User className="mr-2 h-5 w-5" /> {t('open-user-app')}
+                  <User className="mr-2 h-5 w-5" /> {t('Open User App')}
                 </Button>
               </Link>
             </CardContent>
@@ -66,13 +65,13 @@ const Index = () => {
           
           <Card>
             <CardHeader>
-              <CardTitle>{t('employee-app')}</CardTitle>
-              <CardDescription>{t('for-service-providers')}</CardDescription>
+              <CardTitle>{t('Employee App')}</CardTitle>
+              <CardDescription>{t('For Service Providers')}</CardDescription>
             </CardHeader>
             <CardContent>
               <Link to="/employee">
                 <Button className="w-full bg-blue-600 hover:bg-blue-700">
-                  <Car className="mr-2 h-5 w-5" /> {t('open-employee-app')}
+                  <Car className="mr-2 h-5 w-5" /> {t('Open Employee App')}
                 </Button>
               </Link>
             </CardContent>
@@ -80,13 +79,13 @@ const Index = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle>RoadSaver Account Manager</CardTitle>
-              <CardDescription>Manage user and employee accounts</CardDescription>
+              <CardTitle>{t('RoadSaver Account Manager')}</CardTitle>
+              <CardDescription>{t('Manage User And Employee Accounts')}</CardDescription>
             </CardHeader>
             <CardContent>
               <Link to="/admin">
                 <Button className="w-full bg-purple-600 hover:bg-purple-700">
-                  <Database className="mr-2 h-5 w-5" /> Open Account Manager
+                  <Database className="mr-2 h-5 w-5" /> {t('Open Account Manager')}
                 </Button>
               </Link>
             </CardContent>
