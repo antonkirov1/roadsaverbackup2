@@ -279,108 +279,116 @@ export const useServiceRequest = (
 
   const handleDeclineQuote = async (isSecondDecline: boolean = false) => {
     if (!user) return;
-    // Track declines for current employee
-    const declines = (employeeDeclineCount[currentEmployeeName] || 0) + 1;
+   
+// Track declines per employee
+const [employeeDeclineCount, setEmployeeDeclineCount] = useState<{ [employee: string]: number }>({});
+
+const handleDeclineQuote = async (isSecondDecline: boolean = false) => {
+  if (!user) return;
+  // Track declines for current employee
+  const declines = (employeeDeclineCount[currentEmployeeName] || 0) + 1;
+  setEmployeeDeclineCount(prev => ({
+    ...prev,
+    [currentEmployeeName]: declines
+  }));
+  // Only allow two declines per employee
+  if (declines >= 2 || isSecondDecline || hasDeclinedOnce) {
+    // After two declines, restrict employee and search for another
+    await UserHistoryService.addHistoryEntry({
+      user_id: user.username,
+      username: user.username,
+      service_type: type,
+      status: 'declined',
+      employee_name: currentEmployeeName,
+      request_date: new Date().toISOString(),
+      completion_date: new Date().toISOString(),
+      address_street: 'Sofia Center, Bulgaria',
+      latitude: userLocation.lat,
+      longitude: userLocation.lng,
+      decline_reason: 'User declined quote twice'
+    });
+    const updatedDeclinedEmployees = [...declinedEmployees, currentEmployeeName];
+    setDeclinedEmployees(updatedDeclinedEmployees);
+    // Reset decline state for new employee
+    setHasDeclinedOnce(false);
     setEmployeeDeclineCount(prev => ({
       ...prev,
-      [currentEmployeeName]: declines
+      [currentEmployeeName]: 0
     }));
-    // Only allow two declines per employee
-    if (declines >= 2 || isSecondDecline || hasDeclinedOnce) {
-      // After two declines, restrict employee and search for another
-      await UserHistoryService.addHistoryEntry({
-        user_id: user.username,
-        username: user.username,
-        service_type: type,
-        status: 'declined',
-        employee_name: currentEmployeeName,
-        request_date: new Date().toISOString(),
-        completion_date: new Date().toISOString(),
-        address_street: 'Sofia Center, Bulgaria',
-        latitude: userLocation.lat,
-        longitude: userLocation.lng,
-        decline_reason: 'User declined quote twice'
-      });
-      const updatedDeclinedEmployees = [...declinedEmployees, currentEmployeeName];
-      setDeclinedEmployees(updatedDeclinedEmployees);
-      // Reset decline state for new employee
-      setHasDeclinedOnce(false);
-      setEmployeeDeclineCount(prev => ({
-        ...prev,
-        [currentEmployeeName]: 0
-      }));
-      setShowPriceQuote(false);
-      setShowRealTimeUpdate(true);
-      setStatus('pending');
-      setPriceQuote(originalPriceQuote);
-      const updatedRequest = {
-        ...ongoingRequest,
-        declinedEmployees: updatedDeclinedEmployees,
-        status: 'pending' as const,
-        priceQuote: originalPriceQuote,
-        employeeName: undefined
-      };
-      setOngoingRequest(updatedRequest);
-      toast({
-        title: "Quote Declined",
-        description: "Looking for another available employee..."
-      });
-      setTimeout(() => {
-        const requestId = Date.now().toString();
-        const timestamp = new Date().toISOString();
-        simulateEmployeeResponse(
-          requestId,
-          timestamp,
-          type,
-          userLocation,
-          (quote: number) => {
-            setPriceQuote(originalPriceQuote);
-            setOngoingRequest(prev => {
-              if (!prev) return null;
-              return {
-                ...prev,
-                priceQuote: originalPriceQuote
-              };
-            });
-          },
-          setShowPriceQuote,
-          setShowRealTimeUpdate,
-          setStatus,
-          setDeclineReason,
-          setEmployeeLocation,
-          (employeeName: string) => {
-            setCurrentEmployeeName(employeeName);
-            setOngoingRequest(prev => prev ? {
+    setShowPriceQuote(false);
+    setShowRealTimeUpdate(true);
+    setStatus('pending');
+    setPriceQuote(originalPriceQuote);
+    const updatedRequest = {
+      ...ongoingRequest,
+      declinedEmployees: updatedDeclinedEmployees,
+      status: 'pending' as const,
+      priceQuote: originalPriceQuote,
+      employeeName: undefined
+    };
+    setOngoingRequest(updatedRequest);
+    toast({
+      title: "Quote Declined",
+      description: "Looking for another available employee..."
+    });
+    setTimeout(() => {
+      const requestId = Date.now().toString();
+      const timestamp = new Date().toISOString();
+      simulateEmployeeResponse(
+        requestId,
+        timestamp,
+        type,
+        userLocation,
+        (quote: number) => {
+          setPriceQuote(originalPriceQuote);
+          setOngoingRequest(prev => {
+            if (!prev) return null;
+            return {
               ...prev,
-              employeeName: employeeName
-            } : null);
-            resetDeclineStateForEmployee(employeeName);
-          },
-          updatedDeclinedEmployees
-        );
-      }, 2000);
-    } else {
-      // First decline - employee gets one chance to revise
-      setHasDeclinedOnce(true);
+              priceQuote: originalPriceQuote
+            };
+          });
+        },
+        setShowPriceQuote,
+        setShowRealTimeUpdate,
+        setStatus,
+        setDeclineReason,
+        setEmployeeLocation,
+        (employeeName: string) => {
+          setCurrentEmployeeName(employeeName);
+          setOngoingRequest(prev => prev ? {
+            ...prev,
+            employeeName: employeeName
+          } : null);
+          resetDeclineStateForEmployee(employeeName);
+        },
+        updatedDeclinedEmployees
+      );
+    }, 2000);
+  } else {
+    // First decline - employee gets one chance to revise
+    setHasDeclinedOnce(true);
+    toast({
+      title: "Quote Declined",
+      description: `${currentEmployeeName} will send you a revised quote.`
+    });
+    setTimeout(() => {
+      const revisedQuote = Math.max(10, originalPriceQuote - Math.floor(Math.random() * 15) - 5);
+      setPriceQuote(revisedQuote);
+      setOngoingRequest(prev => prev ? {
+        ...prev,
+        priceQuote: revisedQuote
+      } : null);
       toast({
-        title: "Quote Declined",
-        description: `${currentEmployeeName} will send you a revised quote.`
+        title: "Revised Quote Received",
+        description: `${currentEmployeeName} sent a revised quote of ${revisedQuote} BGN.`
       });
-      setTimeout(() => {
-        const revisedQuote = Math.max(10, originalPriceQuote - Math.floor(Math.random() * 15) - 5);
-        setPriceQuote(revisedQuote);
-        setOngoingRequest(prev => prev ? {
-          ...prev,
-          priceQuote: revisedQuote
-        } : null);
-        toast({
-          title: "Revised Quote Received",
-          description: `${currentEmployeeName} sent a revised quote of ${revisedQuote} BGN.`
-        });
-      }, 3000);
-    }
-  };
-  
+    }, 3000);
+  }
+};
+
+
+      
   const handleCancelRequest = () => cancelRequest(setShowPriceQuote);
 
   const showStoredPriceQuote = () => {
